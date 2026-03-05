@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="MachineSystem/MachineSystem.Client/MachineSystem.Client.csproj" />
+  <Project Path="MachineSystem/MachineSystem/MachineSystem.csproj" />
+</Solution>
