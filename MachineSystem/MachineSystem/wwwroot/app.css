@@ -1,5 +1,5 @@
 @import "tailwindcss";
-@import "./daisyui/daisyui.min.css";
+@import "./lib/daisyui/daisyui.min.css";
 
 /*html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
