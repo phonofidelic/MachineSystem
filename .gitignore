@@ -361,3 +361,6 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# tailwind css output
+MachineSystem/MachineSystem/wwwroot/app.min.css
