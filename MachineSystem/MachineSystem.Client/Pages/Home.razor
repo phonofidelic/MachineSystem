@@ -1,4 +1,6 @@
 ﻿@page "/"
+@using MachineSystem.Client.Components
+@using MachineSystem.Client.Components.Table
 
 <PageTitle>Dashboard</PageTitle>
 
@@ -20,88 +22,7 @@
                 List of Machines
             </h3>
             <div class="overflow-x-auto">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Status</th>
-                            <th>Last Data</th>
-                            <th>Last Updated</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>
-                                <div class="flex-1">
-                                    <h4>Machine 01</h4>
-                                    <p class="text-xs text-nowrap text-base-content/50">
-                                        FA4D78F8-8B94-432C-9BBB-EFCEDE0A1DDE
-                                    </p>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="badge badge-success">
-                                    online
-                                </div>
-                            </td>
-                            <td>
-                                <div class="text-nowrap">
-                                    Temp: 25c
-                                </div>
-                            </td>
-                            <td>2026-03-06 15:05</td>
-                            <td>
-                                <div class="flex gap-2">
-                                    <button class="btn">Stop</button>
-                                    <button class="btn btn-square hover:bg-error">
-                                        <svg 
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            class="h-5 w-5"
-                                            viewBox="0 0 640 640">
-                                            <!--!Font Awesome Free v7.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2026 Fonticons, Inc.-->
-                                            <path d="M232.7 69.9L224 96L128 96C110.3 96 96 110.3 96 128C96 145.7 110.3 160 128 160L512 160C529.7 160 544 145.7 544 128C544 110.3 529.7 96 512 96L416 96L407.3 69.9C402.9 56.8 390.7 48 376.9 48L263.1 48C249.3 48 237.1 56.8 232.7 69.9zM512 208L128 208L149.1 531.1C150.7 556.4 171.7 576 197 576L443 576C468.3 576 489.3 556.4 490.9 531.1L512 208z" />
-                                        </svg>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="flex-1">
-                                    <h4>Machine 02</h4>
-                                    <p class="text-xs text-nowrap text-base-content/50">
-                                        78B36814-3150-455B-935E-EC33CAC78781
-                                    </p>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="badge badge-error">
-                                    offline
-                                </div>
-                            </td>
-                            <td>
-                                <div class="text-nowrap">
-                                    Temp: 25c
-                                </div>
-                            </td>
-                            <td>2026-03-06 15:05</td>
-                            <td>
-                                <div class="flex gap-2">
-                                    <button class="btn">Start</button>
-                                    <button class="btn btn-square hover:bg-error">
-                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                             class="h-5 w-5"
-                                             viewBox="0 0 640 640">
-                                            <!--!Font Awesome Free v7.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2026 Fonticons, Inc.-->
-                                            <path d="M232.7 69.9L224 96L128 96C110.3 96 96 110.3 96 128C96 145.7 110.3 160 128 160L512 160C529.7 160 544 145.7 544 128C544 110.3 529.7 96 512 96L416 96L407.3 69.9C402.9 56.8 390.7 48 376.9 48L263.1 48C249.3 48 237.1 56.8 232.7 69.9zM512 208L128 208L149.1 531.1C150.7 556.4 171.7 576 197 576L443 576C468.3 576 489.3 556.4 490.9 531.1L512 208z" />
-                                        </svg>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                <Table />
             </div>
         </div>
     </div>
