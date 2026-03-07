@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using MachineSystem.Client.Pages;
 using Microsoft.AspNetCore.Components;
 
-namespace MachineSystem.Client.Components.Table;
+namespace MachineSystem.Client.Components.MachineList;
 
 public partial class MachineListTableRow
 {

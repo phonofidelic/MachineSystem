@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Components;
 
-namespace MachineSystem.Client.Components.Table;
+namespace MachineSystem.Client.Components.MachineList;
 
 public partial class Table
 {
