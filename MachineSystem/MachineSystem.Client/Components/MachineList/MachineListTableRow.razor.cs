@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-using MachineSystem.Client.Pages;
+using MachineSystem.Domain.Entities;
 using Microsoft.AspNetCore.Components;
 
 namespace MachineSystem.Client.Components.MachineList;

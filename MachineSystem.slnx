@@ -2,6 +2,7 @@
   <Folder Name="/Solution Items/">
     <File Path="dev.sh" />
   </Folder>
+  <Project Path="MachineSystem.Domain/MachineSystem.Domain.csproj" />
   <Project Path="MachineSystem/MachineSystem.Client/MachineSystem.Client.csproj" />
   <Project Path="MachineSystem/MachineSystem/MachineSystem.csproj" />
 </Solution>
