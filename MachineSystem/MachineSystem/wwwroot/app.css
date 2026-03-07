@@ -1,6 +1,12 @@
 @import "./lib/tailwindcss/index.min.css";
 @import "./lib/daisyui/daisyui.min.css";
 
+@plugin "./lib/daisyui/index.min.js" {
+  themes:
+    light --default,
+    dark --prefersdark;
+}
+
 /*html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
