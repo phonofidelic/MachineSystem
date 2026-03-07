@@ -1,0 +1,25 @@
+@using MachineSystem.Client.Pages
+<tr>
+    <td>
+        <div class="flex-1">
+            <h4>@Title</h4>
+            <p class="text-xs text-nowrap text-base-content/50">
+                @SubTitle
+            </p>
+        </div>
+    </td>
+    <td>
+        <div class="badge badge-@(Status == MachineStatus.Online ? "success" : "error")">
+            @Status.ToString().ToLower()
+        </div>
+    </td>
+    <td>
+        <div class="text-nowrap">
+            @LastData
+        </div>
+    </td>
+    <td>@LastUpdated</td>
+    <td>
+        @Actions
+    </td>
+</tr>
