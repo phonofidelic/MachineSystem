@@ -29,5 +29,15 @@ public partial class MachineList
     {
         await machineService.StopMachineAsync(machineId);
     }
+
+    private async Task ConnectMachine(Guid machineId)
+    {
+        await machineService.ConnectMachineAsync(machineId);
+    }
+
+    private async Task DisconnectMachine(Guid machineId)
+    {
+        await machineService.DisconnectMachineAsync(machineId);
+    }
 }
 

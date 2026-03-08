@@ -33,6 +33,11 @@ public class MockClientMachineService : IMachineService
         return machines;
     }
 
+    public async Task<Machine?> GetMachineAsync(Guid machineId)
+    {
+        return machines.Find(m => m.Id == machineId);
+    }
+
     public async Task StartMachineAsync(Guid machineId)
     {
         var machine = machines.Find(m => m.Id == machineId) ?? throw new Exception("Machine not found");
@@ -60,6 +65,32 @@ public class MockClientMachineService : IMachineService
             isOnline: previousMachineStatus.IsOnline,
             isOperational: previousMachineStatus.IsOperational,
             isRunning: false
+        );
+    }
+
+    public async Task ConnectMachineAsync(Guid machineId)
+    {
+        var machine = machines.Find(m => m.Id == machineId) ?? throw new Exception("Machine not found");
+
+        var previousMachineStatus = machine.Status.Clone();
+        
+        machine.Status = new MachineStatus(
+            isOnline: true,
+            isOperational: previousMachineStatus.IsOperational,
+            isRunning: previousMachineStatus.IsRunning
+        );
+    }
+
+    public async Task DisconnectMachineAsync(Guid machineId)
+    {
+        var machine = machines.Find(m => m.Id == machineId) ?? throw new Exception("Machine not found");
+
+        var previousMachineStatus = machine.Status.Clone();
+        
+        machine.Status = new MachineStatus(
+            isOnline: false,
+            isOperational: previousMachineStatus.IsOperational,
+            isRunning: previousMachineStatus.IsRunning
         );
     }
 
