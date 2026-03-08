@@ -14,7 +14,8 @@ public class MockClientMachineService : IMachineService
             {
                 Name = "Machine 01",
                 Status = new MachineStatus(
-                    isOnline: true, 
+                    isOnline: true,
+                    isOperational: true,
                     isRunning: true),
                 LastData = "Temp: 25c"
             },
@@ -22,7 +23,8 @@ public class MockClientMachineService : IMachineService
             {
                 Name = "Machine 02",
                 Status = new MachineStatus(
-                    isOnline: false, 
+                    isOnline: false,
+                    isOperational: true,
                     isRunning: false),
                 LastData = "Temp: 15c"
             }
