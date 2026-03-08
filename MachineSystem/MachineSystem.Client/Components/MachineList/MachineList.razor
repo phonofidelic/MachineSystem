@@ -63,7 +63,7 @@ else if (machines.Count == 0)
                                 <div class="tooltip" data-tip="@(machine.Status.IsOnline ? "take offline" : "bring online")">
                                 <button class="btn btn-square">
                                     <label class="swap">
-                                    <input type="checkbox" />
+                                    <input type="checkbox" checked="@machine.Status.IsOnline" />
                                         <span class="swap-on btn btn-square btn-outline btn-success hover:btn-error">
                                             <WifiOnIcon />
                                         </span>

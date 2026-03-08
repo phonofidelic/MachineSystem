@@ -13,13 +13,17 @@ public class MockClientMachineService : IMachineService
             new Machine
             {
                 Name = "Machine 01",
-                Status = new MachineStatus(true, true),
+                Status = new MachineStatus(
+                    isOnline: true, 
+                    isRunning: true),
                 LastData = "Temp: 25c"
             },
             new Machine
             {
                 Name = "Machine 02",
-                Status = new MachineStatus(true, false),
+                Status = new MachineStatus(
+                    isOnline: false, 
+                    isRunning: false),
                 LastData = "Temp: 15c"
             }
         ];
