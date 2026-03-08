@@ -2,6 +2,7 @@
 using MachineSystem.Client.Services;
 using MachineSystem.Domain.Entities;
 using MachineSystem.Domain.Services;
+using MachineSystem.Domain.ValueObjects;
 using Microsoft.AspNetCore.Components;
 
 namespace MachineSystem.Client.Components.MachineList;
@@ -18,6 +19,16 @@ public partial class MachineList
     {
         machines = await machineService.GetMachinesAsync();
         IsLoading = false;
+    }
+
+    private async Task StartMachine(Guid machineId)
+    {
+        await machineService.StartMachineAsync(machineId);
+    }
+
+    private async Task StopMachine(Guid machineId)
+    {
+        await machineService.StopMachineAsync(machineId);
     }
 }
 

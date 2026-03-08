@@ -57,9 +57,15 @@ else if (machines.Count == 0)
                     >
                         <Actions>
                             <div class="flex gap-2">
-                                <button class="btn">
-                                    @(machine.Status.IsRunning ? "Stop" : "Start")
-                                </button>
+                                @if (machine.Status.IsRunning) {
+                                    <button class="btn" @onclick="() => StopMachine(machine.Id)">
+                                        Stop
+                                    </button> 
+                                } else {
+                                    <button class="btn" disabled="@(!machine.Status.IsOnline)" @onclick="() => StartMachine(machine.Id)">
+                                        Start
+                                    </button>
+                                }
                                 <div class="tooltip" data-tip="@(machine.Status.IsOnline ? "take offline" : "bring online")">
                                 <button class="btn btn-square">
                                     <label class="swap">

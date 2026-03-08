@@ -12,4 +12,14 @@ public class MockServerMachineService : IMachineService
         // ToDo: use DbContext to query data from web database
         throw new NotImplementedException();
     }
+
+    public Task StartMachineAsync(Guid machineId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task StopMachineAsync(Guid machineId)
+    {
+        throw new NotImplementedException();
+    }
 }

@@ -8,6 +8,8 @@ public class MachineStatus(bool isOnline, bool isOperational, bool isRunning) : 
 
     public bool IsRunning { get; set; } = isRunning;
 
+    public MachineStatus Clone() => new(IsOnline, IsOperational, IsRunning);
+
     public override string ToString()
     {
         return IsOnline ? "online" : "offline";
