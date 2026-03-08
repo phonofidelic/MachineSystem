@@ -2,7 +2,6 @@
 using MachineSystem.Client.Services;
 using MachineSystem.Domain.Entities;
 using MachineSystem.Domain.Services;
-using MachineSystem.Domain.ValueObjects;
 using Microsoft.AspNetCore.Components;
 
 namespace MachineSystem.Client.Components.MachineList;

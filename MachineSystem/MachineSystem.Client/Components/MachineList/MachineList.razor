@@ -67,19 +67,29 @@ else if (machines.Count == 0)
                                     </button>
                                 }
                                 <div class="tooltip" data-tip="@(machine.Status.IsOnline ? "take offline" : "bring online")">
-                                <button class="btn btn-square">
+                                <button class="group">
                                     <label class="swap">
                                     <input type="checkbox" checked="@machine.Status.IsOnline" />
-                                        <span class="swap-on btn btn-square btn-outline btn-success hover:btn-error">
-                                            <WifiOnIcon />
+                                        <span class="swap-on btn btn-square btn-soft group-hover:bg-red-500/20 group-hover:border-red-400 group-hover:text-red-400">
+                                            <span class="group-hover:hidden">
+                                                <WifiOnIcon />
+                                            </span>
+                                            <span class="hidden group-hover:inline">
+                                                <WifiOffIcon />
+                                            </span>
                                         </span>
-                                        <span class="swap-off btn btn-square btn-outline btn-error hover:btn-success">
-                                            <WifiOffIcon />
+                                        <span class="swap-off btn btn-square btn-soft group-hover:bg-green-500/20 group-hover:border-green-400 group-hover:text-green-400">
+                                            <span class="group-hover:hidden">
+                                                <WifiOffIcon />
+                                            </span>
+                                            <span class="hidden group-hover:inline">
+                                                <WifiOnIcon />
+                                            </span>
                                         </span>
                                     </label>
                                 </button>
                                 </div>
-                                <button class="btn btn-square btn-error btn-outline">
+                                <button class="btn btn-square btn-soft hover:bg-red-500/20 hover:border-red-400 hover:text-red-400">
                                     <svg 
                                         xmlns="http://www.w3.org/2000/svg" 
                                         class="h-5 w-5" 
