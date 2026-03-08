@@ -57,8 +57,23 @@ else if (machines.Count == 0)
                     >
                         <Actions>
                             <div class="flex gap-2">
-                                <button class="btn">@(machine.Status == MachineStatus.Online ? "Stop" : "Start")</button>
-                                <button class="btn btn-square hover:bg-error">
+                                <button class="btn">
+                                    @(machine.Status == MachineStatus.Online ? "Stop" : "Start")
+                                </button>
+                                <div class="tooltip" data-tip="@(machine.Status == MachineStatus.Online ? "take offline" : "bring online")">
+                                <button class="btn btn-square">
+                                    <label class="swap">
+                                    <input type="checkbox" />
+                                        <span class="swap-on btn btn-square btn-outline btn-success hover:btn-error">
+                                            <WifiOnIcon />
+                                        </span>
+                                        <span class="swap-off btn btn-square btn-outline btn-error hover:btn-success">
+                                            <WifiOffIcon />
+                                        </span>
+                                    </label>
+                                </button>
+                                </div>
+                                <button class="btn btn-square btn-error btn-outline">
                                     <svg 
                                         xmlns="http://www.w3.org/2000/svg" 
                                         class="h-5 w-5" 
