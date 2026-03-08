@@ -8,7 +8,7 @@ namespace MachineSystem.Client.Components.MachineList;
 
 public partial class MachineList
 {
-    private readonly IMachineService machineService = new MockMachineService();
+    private readonly IMachineService machineService = new MockClientMachineService();
     private List<Machine> machines = [];
 
     [Parameter]

@@ -17,8 +17,4 @@
     <ProjectReference Include="../../MachineSystem.Domain/MachineSystem.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Services/" />
-  </ItemGroup>
-
 </Project>
