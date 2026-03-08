@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-using MachineSystem.Domain.Entities;
+using MachineSystem.Domain.ValueObjects;
 using Microsoft.AspNetCore.Components;
 
 namespace MachineSystem.Client.Components.MachineList;
@@ -13,7 +13,7 @@ public partial class MachineListTableRow
     public string? SubTitle { get; set; }
 
     [Parameter]
-    public  MachineStatus Status { get; set; }
+    public required  MachineStatus Status { get; set; }
 
     [Parameter]
     public string? LastData { get; set; }

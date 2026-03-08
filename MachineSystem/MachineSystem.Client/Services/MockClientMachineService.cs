@@ -1,5 +1,6 @@
 using MachineSystem.Domain.Entities;
 using MachineSystem.Domain.Services;
+using MachineSystem.Domain.ValueObjects;
 
 namespace MachineSystem.Client.Services;
 
@@ -12,12 +13,13 @@ public class MockClientMachineService : IMachineService
             new Machine
             {
                 Name = "Machine 01",
-                Status = MachineStatus.Online,
+                Status = new MachineStatus(true, true),
                 LastData = "Temp: 25c"
             },
             new Machine
             {
                 Name = "Machine 02",
+                Status = new MachineStatus(true, false),
                 LastData = "Temp: 15c"
             }
         ];

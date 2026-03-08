@@ -8,8 +8,8 @@
         </div>
     </td>
     <td>
-        <div class="badge badge-@(Status == MachineStatus.Online ? "success" : "error")">
-            @Status.ToString().ToLower()
+        <div class="badge badge-@(Status.IsOnline ? "success" : "error")">
+            @Status.ToString()
         </div>
     </td>
     <td>

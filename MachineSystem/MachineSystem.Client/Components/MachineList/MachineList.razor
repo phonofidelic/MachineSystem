@@ -58,9 +58,9 @@ else if (machines.Count == 0)
                         <Actions>
                             <div class="flex gap-2">
                                 <button class="btn">
-                                    @(machine.Status == MachineStatus.Online ? "Stop" : "Start")
+                                    @(machine.Status.IsRunning ? "Stop" : "Start")
                                 </button>
-                                <div class="tooltip" data-tip="@(machine.Status == MachineStatus.Online ? "take offline" : "bring online")">
+                                <div class="tooltip" data-tip="@(machine.Status.IsOnline ? "take offline" : "bring online")">
                                 <button class="btn btn-square">
                                     <label class="swap">
                                     <input type="checkbox" />
