@@ -2,9 +2,9 @@ using MachineSystem.Domain.ValueObjects;
 
 namespace MachineSystem.Domain.Entities;
 
-public class Machine
+public class Machine : BaseCreatableEntity<Guid>
 {
-    public Guid Id { get; set; } = Guid.NewGuid();
+    public override Guid Id { get; set; } = Guid.NewGuid();
     
     public required string Name { get; set; }
 
