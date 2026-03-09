@@ -1,11 +1,15 @@
-using MachineSystem.Client.Pages;
 using MachineSystem.Components;
+using MachineSystem.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveWebAssemblyComponents();
+
+builder.Services.AddDbContext<ApplicationDbContext>(
+    options => options.UseInMemoryDatabase("MachineSystem.InMemoryDb"));
 
 var app = builder.Build();
 
