@@ -30,14 +30,18 @@ public partial class MachineList
         commandState.Set(isPending: false);
     }
 
-    private async Task ConnectMachine(Guid machineId)
+    private async Task ConnectMachine(Guid machineId, MachineCommandState? commandState = null)
     {
+        commandState?.Set(isPending: true);
         await machineService.ConnectMachineAsync(machineId);
+        commandState?.Set(isPending: false);
     }
 
-    private async Task DisconnectMachine(Guid machineId)
+    private async Task DisconnectMachine(Guid machineId, MachineCommandState? commandState = null)
     {
+        commandState?.Set(isPending: true);
         await machineService.DisconnectMachineAsync(machineId);
+        commandState?.Set(isPending: false);
     }
 }
 

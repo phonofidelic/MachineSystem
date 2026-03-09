@@ -80,6 +80,8 @@ public class MockClientMachineService : IMachineService
         var machine = machines.Find(m => m.Id == machineId) ?? throw new Exception("Machine not found");
 
         var previousMachineStatus = machine.Status.Clone();
+
+        await FakeDelay();
         
         machine.Status = new MachineStatus(
             isOnline: true,
@@ -93,6 +95,8 @@ public class MockClientMachineService : IMachineService
         var machine = machines.Find(m => m.Id == machineId) ?? throw new Exception("Machine not found");
 
         var previousMachineStatus = machine.Status.Clone();
+
+        await FakeDelay();
         
         machine.Status = new MachineStatus(
             isOnline: false,
