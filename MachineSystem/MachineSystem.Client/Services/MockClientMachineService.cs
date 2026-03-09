@@ -12,6 +12,7 @@ public class MockClientMachineService : IMachineService
             {
                 Id = Guid.Parse("2ceab771-9035-4795-a4ed-2009aa2962c8"),
                 Name = "Machine 01",
+                Type = new MachineType("SCARA"),
                 Status = new MachineStatus(
                     isOnline: true,
                     isOperational: true,
@@ -22,6 +23,18 @@ public class MockClientMachineService : IMachineService
             {
                 Id = Guid.Parse("f21c3814-6364-4a78-882b-1a00e7e16781"),
                 Name = "Machine 02",
+                Type = new MachineType("Delta"),
+                Status = new MachineStatus(
+                    isOnline: false,
+                    isOperational: true,
+                    isRunning: false),
+                LastData = "Temp: 15c"
+            },
+            new Machine
+            {
+                Id = Guid.Parse("8AE6450C-872F-43E6-AFB1-29CCA7890B4C"),
+                Name = "Machine 03",
+                Type = new MachineType("Cartesian"),
                 Status = new MachineStatus(
                     isOnline: false,
                     isOperational: true,

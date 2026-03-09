@@ -8,8 +8,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveWebAssemblyComponents();
 
-builder.Services.AddDbContext<ApplicationDbContext>(
-    options => options.UseInMemoryDatabase("MachineSystem.InMemoryDb"));
+//builder.Services.AddDbContext<ApplicationDbContext>(
+//    options => options.UseInMemoryDatabase("MachineSystem.InMemoryDb"));
 
 var app = builder.Build();
 

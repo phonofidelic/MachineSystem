@@ -8,6 +8,8 @@ public class Machine : BaseCreatableEntity<Guid>
     
     public required string Name { get; set; }
 
+    public required MachineType Type { get; set; }
+
     public required MachineStatus Status { get; set; }
 
     public string? LastData { get; set; }
