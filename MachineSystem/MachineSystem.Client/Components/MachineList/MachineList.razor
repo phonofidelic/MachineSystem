@@ -47,29 +47,31 @@
                                         </label>
                                     </ButtonContent>
                                 </MachineCommandButton>
-                                <MachineCommandButton 
-                                    ClassName="@(
-                                        machine.Status.IsOnline
-                                        ? "group btn btn-square btn-soft hover:bg-red-400/20 hover:border-red-400 hover:text-red-400"
-                                        : "group btn btn-square btn-soft hover:bg-green-400/20 hover:border-green-400 hover:text-green-400")" 
-                                    OnClick="(commandState) => machine.Status.IsOnline ? DisconnectMachine(machine.Id, commandState) : ConnectMachine(machine.Id, commandState)">
-                                    <ButtonContent>
-                                            <span class="group-hover:hidden mx-auto">
-                                                @if (machine.Status.IsOnline) {
-                                                    <WifiOnIcon /> 
-                                                } else {
-                                                    <WifiOffIcon />
-                                                }
-                                            </span>
-                                            <span class="hidden group-hover:inline mx-auto">
-                                                @if (machine.Status.IsOnline) {
-                                                    <WifiOffIcon />
-                                                } else {
-                                                    <WifiOnIcon /> 
-                                                }
-                                            </span>
-                                    </ButtonContent>
-                                </MachineCommandButton>
+                                <div class="tooltip" data-tip="@(machine.Status.IsOnline ? "take offline" : "bring online")">
+                                    <MachineCommandButton 
+                                        ClassName="@(
+                                            machine.Status.IsOnline
+                                            ? "group btn btn-square btn-soft hover:bg-red-400/20 hover:border-red-400 hover:text-red-400"
+                                            : "group btn btn-square btn-soft hover:bg-green-400/20 hover:border-green-400 hover:text-green-400")" 
+                                        OnClick="(commandState) => machine.Status.IsOnline ? DisconnectMachine(machine.Id, commandState) : ConnectMachine(machine.Id, commandState)">
+                                        <ButtonContent>
+                                                <span class="group-hover:hidden mx-auto">
+                                                    @if (machine.Status.IsOnline) {
+                                                        <WifiOnIcon /> 
+                                                    } else {
+                                                        <WifiOffIcon />
+                                                    }
+                                                </span>
+                                                <span class="hidden group-hover:inline mx-auto">
+                                                    @if (machine.Status.IsOnline) {
+                                                        <WifiOffIcon />
+                                                    } else {
+                                                        <WifiOnIcon /> 
+                                                    }
+                                                </span>
+                                        </ButtonContent>
+                                    </MachineCommandButton>
+                                </div>
                                 <button class="btn btn-square btn-soft hover:bg-red-500/20 hover:border-red-400 hover:text-red-400">
                                     <TrashIcon />
                                 </button>
