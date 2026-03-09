@@ -6,9 +6,11 @@ namespace MachineSystem.Client.Services;
 
 public class MockClientMachineService : IMachineService
 {
+    private Random random = new();
     private List<Machine> machines = [
             new Machine
             {
+                Id = Guid.Parse("2ceab771-9035-4795-a4ed-2009aa2962c8"),
                 Name = "Machine 01",
                 Status = new MachineStatus(
                     isOnline: true,
@@ -18,6 +20,7 @@ public class MockClientMachineService : IMachineService
             },
             new Machine
             {
+                Id = Guid.Parse("f21c3814-6364-4a78-882b-1a00e7e16781"),
                 Name = "Machine 02",
                 Status = new MachineStatus(
                     isOnline: false,
@@ -29,7 +32,7 @@ public class MockClientMachineService : IMachineService
     public async Task<List<Machine>> GetMachinesAsync()
     {
         // ToDo: use HttpClient to fetch data from web API
-        await Task.Delay(2000);
+        await FakeDelay();
         return machines;
     }
 
@@ -46,6 +49,8 @@ public class MockClientMachineService : IMachineService
 
         var previousMachineStatus = machine.Status.Clone();
 
+        await FakeDelay();
+
         machine.Status = new MachineStatus(
             isOnline: previousMachineStatus.IsOnline,
             isOperational: previousMachineStatus.IsOperational,
@@ -60,6 +65,8 @@ public class MockClientMachineService : IMachineService
         if (!CanStopMachine(machine)) return;
 
         var previousMachineStatus = machine.Status.Clone();
+
+        await FakeDelay();
 
         machine.Status = new MachineStatus(
             isOnline: previousMachineStatus.IsOnline,
@@ -118,5 +125,11 @@ public class MockClientMachineService : IMachineService
             throw new Exception("Could not connect to machine");
 
         return true;
+    }
+
+    private async Task FakeDelay()
+    {
+        int delayTime = random.Next(0, 5) * 1000;
+        await Task.Delay(delayTime);
     }
 }
