@@ -1,0 +1,30 @@
+using System;
+using Microsoft.AspNetCore.Components;
+
+namespace MachineSystem.Client.Components.MachineList;
+
+public partial class MachineCommandButton
+{
+    [Parameter]
+    public MachineCommandState CommandState { get; set; } = new();
+
+    [Parameter]
+    public RenderFragment? ButtonContent { get; set; }
+
+    [Parameter]
+    public bool Disabled { get; set; } = false;
+
+    [Parameter]
+    public EventCallback<MachineCommandState> OnClick { get; set; }
+
+    [Parameter]
+    public string ClassName { get; set; } = string.Empty;
+
+    private async Task InvokeCommandAsync()
+    {
+        if (OnClick.HasDelegate)
+        {
+            await OnClick.InvokeAsync(CommandState);
+        }
+    }
+}

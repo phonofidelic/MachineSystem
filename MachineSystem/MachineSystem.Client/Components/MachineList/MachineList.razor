@@ -39,15 +39,14 @@
                     >
                         <Actions>
                             <div class="flex gap-2">
-                                @if (machine.Status.IsRunning) {
-                                    <button class="btn" disabled="@(!machine.Status.IsOnline)" @onclick="() => StopMachine(machine.Id)">
-                                        Stop
-                                    </button> 
-                                } else {
-                                    <button class="btn" disabled="@(!machine.Status.IsOnline)" @onclick="() => StartMachine(machine.Id)">
-                                        Start
-                                    </button>
-                                }
+                                <MachineCommandButton ClassName="btn" Disabled="@(!machine.Status.IsOnline)" OnClick="(commandState) => machine.Status.IsRunning ? StopMachine(machine.Id, commandState) : StartMachine(machine.Id, commandState)">
+                                    <ButtonContent>
+                                        <label class="swap @(machine.Status.IsRunning ? "swap-active" : "")">
+                                            <span class="swap-off">Start</span>
+                                            <span class="swap-on">Stop</span>
+                                        </label>
+                                    </ButtonContent>
+                                </MachineCommandButton> 
                                 <MachineConnectivityButton IsOnline="machine.Status.IsOnline" OnClick="() => machine.Status.IsOnline ? DisconnectMachine(machine.Id) : ConnectMachine(machine.Id)" />
                                 <button class="btn btn-square btn-soft hover:bg-red-500/20 hover:border-red-400 hover:text-red-400">
                                     <TrashIcon />

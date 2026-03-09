@@ -16,14 +16,18 @@ public partial class MachineList
         machines = await machineService.GetMachinesAsync();
     }
 
-    private async Task StartMachine(Guid machineId)
+    private async Task StartMachine(Guid machineId, MachineCommandState commandState)
     {
+        commandState.Set(isPending: true);
         await machineService.StartMachineAsync(machineId);
+        commandState.Set(isPending: false);
     }
 
-    private async Task StopMachine(Guid machineId)
+    private async Task StopMachine(Guid machineId, MachineCommandState commandState)
     {
+        commandState.Set(isPending: true);
         await machineService.StopMachineAsync(machineId);
+        commandState.Set(isPending: false);
     }
 
     private async Task ConnectMachine(Guid machineId)
@@ -36,4 +40,5 @@ public partial class MachineList
         await machineService.DisconnectMachineAsync(machineId);
     }
 }
+
 

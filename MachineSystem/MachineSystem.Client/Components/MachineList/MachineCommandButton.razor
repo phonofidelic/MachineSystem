@@ -1,0 +1,10 @@
+﻿<button class="@ClassName relative" disabled="@(Disabled || CommandState.IsPending)" @onclick="() => InvokeCommandAsync()">
+    <div class="flex w-full justify-end relative">
+        @ButtonContent
+        @if(CommandState.IsPending) {
+            <div class="relative h-full w-full">
+                <span class="loading loading-ring loading-xl absolute -top-[16px] z-10"></span>
+            </div>
+        }
+    </div>
+</button>
