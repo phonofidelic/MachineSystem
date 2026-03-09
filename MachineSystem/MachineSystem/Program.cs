@@ -8,8 +8,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveWebAssemblyComponents();
 
-//builder.Services.AddDbContext<ApplicationDbContext>(
-//    options => options.UseInMemoryDatabase("MachineSystem.InMemoryDb"));
+builder.Services.AddDbContext<ApplicationDbContext>(
+   options => options.UseInMemoryDatabase("MachineSystem.InMemoryDb"));
 
 var app = builder.Build();
 
@@ -17,6 +17,8 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseWebAssemblyDebugging();
+
+    await Seeder.SeedDatabase(5, app.Services);
 }
 else
 {
