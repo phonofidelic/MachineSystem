@@ -1,3 +1,4 @@
+using MachineSystem.Application.Repositories;
 using MachineSystem.Components;
 using MachineSystem.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,8 @@ builder.Services.AddRazorComponents()
 builder.Services.AddDbContext<ApplicationDbContext>(
    options => options.UseInMemoryDatabase("MachineSystem.InMemoryDb"));
 
+builder.Services.AddScoped<IMachineRepository, MachineRepository>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -18,7 +21,8 @@ if (app.Environment.IsDevelopment())
 {
     app.UseWebAssemblyDebugging();
 
-    await Seeder.SeedDatabase(5, app.Services);
+    using (var scope = app.Services.CreateScope())
+    await Seeder.SeedDatabase(5, scope.ServiceProvider);
 }
 else
 {

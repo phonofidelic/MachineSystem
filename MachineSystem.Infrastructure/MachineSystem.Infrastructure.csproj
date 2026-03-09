@@ -12,7 +12,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="../MachineSystem.Application/MachineSystem.Application.csproj" />
     <ProjectReference Include="..\MachineSystem.Domain\MachineSystem.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Data/Configurations/" />
   </ItemGroup>
 
 </Project>

@@ -1,4 +1,5 @@
-﻿using MachineSystem.Domain.Entities;
+﻿using System.Reflection;
+using MachineSystem.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace MachineSystem.Infrastructure.Data;
@@ -7,6 +8,13 @@ public class ApplicationDbContext(
     DbContextOptions<ApplicationDbContext> options) : DbContext(options)
 {
     public DbSet<Machine> Machines { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+
+        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+    }
 
     public override int SaveChanges()
     {
