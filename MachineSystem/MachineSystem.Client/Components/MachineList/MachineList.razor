@@ -1,19 +1,6 @@
-@if (IsLoading) {
-    <div class="flex flex-col w-full gap-2">
-        <div class="flex w-full justify-between">
-            <div class="flex flex-1 w-full flex-col justify-end">
-                <div class="skeleton w-1/2 h-[1.5rem]"></div>
-            </div>
-            <div class="flex-1 w-full h-[2rem]"></div>
-            <div class="flex-1 w-full h-[2rem]"></div>
-            <div class="skeleton flex-1 w-full h-[2rem]"></div>
-        </div>
-        <div class="skeleton w-full h-[4rem]"></div>
-        <div class="skeleton w-full h-[4rem]"></div>
-        <div class="skeleton w-full h-[4rem]"></div>
-    </div>
-} 
-else if (machines.Count == 0)
+@if (machines is null) {
+    <MachineListSkeleton />
+} else if (machines.Count == 0)
 {
     <div class="hero py-6 min-h-auto">
         <div class="hero-content text-center">
@@ -30,14 +17,8 @@ else if (machines.Count == 0)
     <div class="flex w-full justify-between">
         <h3 class="text-lg">Machines</h3>
         <button class="btn btn-primary btn-sm">
-            <svg 
-                class="h-5 w-5" 
-                viewBox="0 0 640 640"
-                fill="currentColor"
-            >
-                <path d="M352 128c0-17.7-14.3-32-32-32s-32 14.3-32 32v160H128c-17.7 0-32 14.3-32 32s14.3 32 32 32h160v160c0 17.7 14.3 32 32 32s32-14.3 32-32V352h160c17.7 0 32-14.3 32-32s-14.3-32-32-32H352z"/>
-            </svg>
-        Add Machine
+            <PlusIcon />
+            Add Machine
         </button>
     </div>
     <div class="overflow-x-auto">
@@ -49,6 +30,7 @@ else if (machines.Count == 0)
                 @foreach (var machine in machines) 
                 {
                     <MachineListTableRow
+                        @key="machine.Id"
                         Title="@machine.Name"
                         SubTitle="@machine.Id.ToString()"
                         Status="@machine.Status"
@@ -57,32 +39,41 @@ else if (machines.Count == 0)
                     >
                         <Actions>
                             <div class="flex gap-2">
-                                <button class="btn">
-                                    @(machine.Status.IsRunning ? "Stop" : "Start")
-                                </button>
+                                <MachineCommandButton ClassName="btn" Disabled="@(!machine.Status.IsOnline)" OnClick="(commandState) => machine.Status.IsRunning ? StopMachine(machine.Id, commandState) : StartMachine(machine.Id, commandState)">
+                                    <ButtonContent>
+                                        <label class="swap @(machine.Status.IsRunning ? "swap-active" : "")">
+                                            <span class="swap-off">Start</span>
+                                            <span class="swap-on">Stop</span>
+                                        </label>
+                                    </ButtonContent>
+                                </MachineCommandButton>
                                 <div class="tooltip" data-tip="@(machine.Status.IsOnline ? "take offline" : "bring online")">
-                                <button class="btn btn-square">
-                                    <label class="swap">
-                                    <input type="checkbox" checked="@machine.Status.IsOnline" />
-                                        <span class="swap-on btn btn-square btn-outline btn-success hover:btn-error">
-                                            <WifiOnIcon />
-                                        </span>
-                                        <span class="swap-off btn btn-square btn-outline btn-error hover:btn-success">
-                                            <WifiOffIcon />
-                                        </span>
-                                    </label>
-                                </button>
+                                    <MachineCommandButton 
+                                        ClassName="@(
+                                            machine.Status.IsOnline
+                                            ? "group btn btn-square btn-soft hover:bg-red-400/20 hover:border-red-400 hover:text-red-400"
+                                            : "group btn btn-square btn-soft hover:bg-green-400/20 hover:border-green-400 hover:text-green-400")" 
+                                        OnClick="(commandState) => machine.Status.IsOnline ? DisconnectMachine(machine.Id, commandState) : ConnectMachine(machine.Id, commandState)">
+                                        <ButtonContent>
+                                                <span class="group-hover:hidden mx-auto">
+                                                    @if (machine.Status.IsOnline) {
+                                                        <WifiOnIcon /> 
+                                                    } else {
+                                                        <WifiOffIcon />
+                                                    }
+                                                </span>
+                                                <span class="hidden group-hover:inline mx-auto">
+                                                    @if (machine.Status.IsOnline) {
+                                                        <WifiOffIcon />
+                                                    } else {
+                                                        <WifiOnIcon /> 
+                                                    }
+                                                </span>
+                                        </ButtonContent>
+                                    </MachineCommandButton>
                                 </div>
-                                <button class="btn btn-square btn-error btn-outline">
-                                    <svg 
-                                        xmlns="http://www.w3.org/2000/svg" 
-                                        class="h-5 w-5" 
-                                        viewBox="0 0 640 640"
-                                        fill="currentColor"
-                                    >
-                                        <path
-                                            d="M232.7 69.9L224 96L128 96C110.3 96 96 110.3 96 128C96 145.7 110.3 160 128 160L512 160C529.7 160 544 145.7 544 128C544 110.3 529.7 96 512 96L416 96L407.3 69.9C402.9 56.8 390.7 48 376.9 48L263.1 48C249.3 48 237.1 56.8 232.7 69.9zM512 208L128 208L149.1 531.1C150.7 556.4 171.7 576 197 576L443 576C468.3 576 489.3 556.4 490.9 531.1L512 208z" />
-                                    </svg>
+                                <button class="btn btn-square btn-soft hover:bg-red-500/20 hover:border-red-400 hover:text-red-400">
+                                    <TrashIcon />
                                 </button>
                             </div>
                         </Actions>

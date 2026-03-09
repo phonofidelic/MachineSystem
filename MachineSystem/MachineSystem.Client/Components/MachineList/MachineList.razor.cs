@@ -2,22 +2,47 @@
 using MachineSystem.Client.Services;
 using MachineSystem.Domain.Entities;
 using MachineSystem.Domain.Services;
-using Microsoft.AspNetCore.Components;
 
 namespace MachineSystem.Client.Components.MachineList;
 
 public partial class MachineList
 {
     private readonly IMachineService machineService = new MockClientMachineService();
-    private List<Machine> machines = [];
+    
+    private List<Machine>? machines;
 
-    [Parameter]
-    public bool IsLoading { get; set; } = true;
-
-    protected async override Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync()
     {
         machines = await machineService.GetMachinesAsync();
-        IsLoading = false;
+    }
+
+    private async Task StartMachine(Guid machineId, MachineCommandState commandState)
+    {
+        commandState.Set(isPending: true);
+        await machineService.StartMachineAsync(machineId);
+        commandState.Set(isPending: false);
+    }
+
+    private async Task StopMachine(Guid machineId, MachineCommandState commandState)
+    {
+        commandState.Set(isPending: true);
+        await machineService.StopMachineAsync(machineId);
+        commandState.Set(isPending: false);
+    }
+
+    private async Task ConnectMachine(Guid machineId, MachineCommandState? commandState = null)
+    {
+        commandState?.Set(isPending: true);
+        await machineService.ConnectMachineAsync(machineId);
+        commandState?.Set(isPending: false);
+    }
+
+    private async Task DisconnectMachine(Guid machineId, MachineCommandState? commandState = null)
+    {
+        commandState?.Set(isPending: true);
+        await machineService.DisconnectMachineAsync(machineId);
+        commandState?.Set(isPending: false);
     }
 }
+
 
