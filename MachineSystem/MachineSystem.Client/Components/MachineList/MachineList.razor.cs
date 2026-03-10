@@ -1,47 +1,56 @@
-
-using MachineSystem.Client.Services;
 using MachineSystem.Domain.Entities;
 using MachineSystem.Domain.Services;
+using Microsoft.AspNetCore.Components;
 
 namespace MachineSystem.Client.Components.MachineList;
 
 public partial class MachineList
 {
-    private readonly IMachineService machineService = new MockClientMachineService();
-    
     private List<Machine>? machines;
+
+    [Inject]
+    private IMachineService MachineService { get; set; } = default!;
 
     protected override async Task OnInitializedAsync()
     {
-        machines = await machineService.GetMachinesAsync();
+        await FetchMachinesAsync();
+    }
+
+    private async Task FetchMachinesAsync()
+    {
+        machines = await MachineService.GetMachinesAsync();
     }
 
     private async Task StartMachine(Guid machineId, MachineCommandState commandState)
     {
         commandState.Set(isPending: true);
-        await machineService.StartMachineAsync(machineId);
+        await MachineService.StartMachineAsync(machineId);
         commandState.Set(isPending: false);
+        await FetchMachinesAsync();
     }
 
     private async Task StopMachine(Guid machineId, MachineCommandState commandState)
     {
         commandState.Set(isPending: true);
-        await machineService.StopMachineAsync(machineId);
+        await MachineService.StopMachineAsync(machineId);
         commandState.Set(isPending: false);
+        await FetchMachinesAsync();
     }
 
     private async Task ConnectMachine(Guid machineId, MachineCommandState? commandState = null)
     {
         commandState?.Set(isPending: true);
-        await machineService.ConnectMachineAsync(machineId);
+        await MachineService.ConnectMachineAsync(machineId);
         commandState?.Set(isPending: false);
+        await FetchMachinesAsync();
     }
 
     private async Task DisconnectMachine(Guid machineId, MachineCommandState? commandState = null)
     {
         commandState?.Set(isPending: true);
-        await machineService.DisconnectMachineAsync(machineId);
+        await MachineService.DisconnectMachineAsync(machineId);
         commandState?.Set(isPending: false);
+        await FetchMachinesAsync();
     }
 }
 

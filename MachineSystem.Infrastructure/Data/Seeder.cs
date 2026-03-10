@@ -11,6 +11,7 @@ public static class Seeder
     
     public static List<Machine> GenerateMachines(int count)
     {
+        Randomizer.Seed = new Random(2435);
         MachineType[] machineTypes = [
             new MachineType("SCARA"),
             new MachineType("Delta"),
@@ -19,9 +20,12 @@ public static class Seeder
 
         var machineGenerator = new Faker<Machine>()
             .RuleFor(m => m.Id, f => f.Random.Guid())
-            .RuleFor(m => m.Name, f => $"{f.Name.FirstName} 0${f.Random.Digits(1)}{f.Random.Digits(1)}")
+            .RuleFor(m => m.Name, f => $"{f.Name.FirstName()} 0{f.Random.Int(0, 9)}{f.Random.Int(0, 9)}")
             .RuleFor(m => m.Type, f => f.PickRandom(machineTypes))
-            .RuleFor(m => m.Status, f => new MachineStatus(f.PickRandom(true, false), f.PickRandom(true, false), f.PickRandom(true, false)))
+            .RuleFor(m => m.Status, f => new MachineStatus(
+                isOnline: f.PickRandom(true, false), 
+                isOperational: true, 
+                isRunning: f.PickRandom(true, false)))
             .RuleFor(m => m.LastData, f => f.Hacker.IngVerb())
             .RuleFor(m => m.LastUpdated, f => f.Date.Recent());
 

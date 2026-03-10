@@ -15,6 +15,7 @@ public class MachineRepository(ApplicationDbContext ctx) : IMachineRepository
 
     public async Task<List<Machine>> GetMachinesAsync()
     {
-        return await context.Machines.ToListAsync();
+        // ToDo: Implement a PagingService
+        return await context.Machines.Take(50).ToListAsync();
     }
 }

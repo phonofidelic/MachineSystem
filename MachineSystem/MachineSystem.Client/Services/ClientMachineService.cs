@@ -1,0 +1,39 @@
+using System.Net;
+using System.Net.Http.Json;
+using MachineSystem.Domain.Entities;
+using MachineSystem.Domain.Services;
+
+namespace MachineSystem.Client.Services;
+
+public class ClientMachineService(IServiceProvider serviceProvider) : IMachineService
+{
+    private readonly HttpClient client = serviceProvider.GetRequiredService<HttpClient>();    
+
+    public async Task<List<Machine>> GetMachinesAsync()
+    {
+        var response = await client.GetAsync("/api/machines");
+        if (response.StatusCode is not HttpStatusCode.OK) throw new Exception("Something went wrong");
+
+        return await response.Content.ReadFromJsonAsync<List<Machine>>() ?? throw new Exception("Something went wrong");
+    }
+
+    public async Task StartMachineAsync(Guid machineId)
+    {
+        await client.PatchAsync($"/api/machines/{machineId}/start", null);
+    }
+
+    public async Task StopMachineAsync(Guid machineId)
+    {
+        await client.PatchAsync($"/api/machines/{machineId}/stop", null);
+    }
+
+    public async Task ConnectMachineAsync(Guid machineId)
+    {
+        await client.PatchAsync($"/api/machines/{machineId}/connect", null);
+    }
+
+    public async Task DisconnectMachineAsync(Guid machineId)
+    {
+        await client.PatchAsync($"/api/machines/{machineId}/disconnect", null);
+    }
+}
