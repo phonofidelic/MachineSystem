@@ -1,6 +1,7 @@
 using System.Net;
 using System.Net.Http.Json;
 using MachineSystem.Application.Services.MachineService;
+using MachineSystem.Application.Services.MachineService.Exceptions;
 using MachineSystem.Domain.Entities;
 using Microsoft.AspNetCore.Components;
 
@@ -37,12 +38,16 @@ public class ClientMachineService(IServiceProvider serviceProvider) : IMachineSe
 
     public async Task StartMachineAsync(Guid machineId)
     {
-        await client.PatchAsync($"/api/machines/{machineId}/start", null);
+        var response = await client.PatchAsync($"/api/machines/{machineId}/start", null, new CancellationToken());
+
+        if (response.StatusCode != HttpStatusCode.OK) throw new MachineNotFoundException();
     }
 
     public async Task StopMachineAsync(Guid machineId)
     {
-        await client.PatchAsync($"/api/machines/{machineId}/stop", null);
+        var response = await client.PatchAsync($"/api/machines/{machineId}/stop", null);
+
+        if (response.StatusCode is not HttpStatusCode.OK) throw new MachineNotFoundException();
     }
 
     public async Task ConnectMachineAsync(Guid machineId)

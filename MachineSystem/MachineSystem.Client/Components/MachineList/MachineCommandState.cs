@@ -1,14 +1,23 @@
 
 namespace MachineSystem.Client.Components.MachineList;
 
-public class MachineCommandState
+public class MachineCommandState /* <TResult> */
 {
     public bool IsPending { get; set; }
+
     public bool IsError { get; set; }
 
-    public void Set(bool? isPending = null, bool? isError = null)
+    public string? ErrorMessage { get; private set; }
+
+    // public TResult Result { get; set; } = default!;
+
+    public void Set(
+        bool? isPending = null, 
+        bool? isError = null, 
+        string? errorMessage = null)
     {
         IsPending = isPending ?? IsPending;
         IsError = isError ?? IsError;
+        ErrorMessage = errorMessage ?? ErrorMessage;
     }
 };

@@ -18,7 +18,7 @@ public static class EndpointExtensions
                 // ToDo: Log error
                 if (ex is MachineNotFoundException)
                 {
-                    return Results.NotFound(ex);
+                    return Results.NotFound();
                 }
 
                 return Results.InternalServerError();
@@ -34,7 +34,7 @@ public static class EndpointExtensions
             {
                 // ToDo: Log error
                 if (ex is MachineNotFoundException)
-                    return Results.NotFound(ex);
+                    return Results.NotFound();
 
                 return Results.InternalServerError();
             }
@@ -48,8 +48,8 @@ public static class EndpointExtensions
             {
                 // ToDo: Log error
                 if (ex is MachineNotFoundException)
-                    return Results.NotFound(ex);
-                
+                    return Results.NotFound();
+
                 return Results.InternalServerError();
             }
         });
@@ -63,7 +63,7 @@ public static class EndpointExtensions
             {
                 // ToDo: Log error
                 if (ex is MachineNotFoundException)
-                    return Results.NotFound(ex);
+                    return Results.NotFound();
                 
                 return Results.InternalServerError();
             }
@@ -78,7 +78,7 @@ public static class EndpointExtensions
             {
                 // ToDo: Log error
                 if (ex is MachineNotFoundException)
-                    return Results.NotFound(ex);
+                    return Results.NotFound();
                 
                 return Results.InternalServerError();
             }
@@ -93,7 +93,7 @@ public static class EndpointExtensions
             {
                 // ToDo: Log error
                 if (ex is MachineNotFoundException)
-                    return Results.NotFound(ex);
+                    return Results.NotFound();
                 
                 return Results.InternalServerError();
             }

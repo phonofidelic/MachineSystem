@@ -1,12 +1,15 @@
 using MachineSystem.Domain.Entities;
 using MachineSystem.Application.Services.MachineService;
 using Microsoft.AspNetCore.Components;
+using MachineSystem.Application.Services.MachineService.Exceptions;
 
 namespace MachineSystem.Client.Components.MachineList;
 
 public partial class MachineList
 {
     private List<Machine>? machines;
+
+    private string? errorMessage { get; set; } = null;
 
     [Inject]
     private IMachineService MachineService { get; set; } = default!;
@@ -22,12 +25,36 @@ public partial class MachineList
         machines = await MachineService.GetMachinesAsync();
     }
 
+    private string GetUiErrorMessage(Exception ex)
+    {
+        return ex is MachineNotFoundException
+            ? "This Machine could not be found"
+            : "An unexpected error occurred";
+    }
     private async Task StartMachine(Guid machineId, MachineCommandState commandState)
     {
-        commandState.Set(isPending: true);
-        await MachineService.StartMachineAsync(machineId);
-        commandState.Set(isPending: false);
-        await FetchMachinesAsync();
+        try
+        {
+            var machineToUpdate = machines?.Find(m => m.Id == machineId) ?? throw new MachineNotFoundException();
+
+            commandState.Set(isPending: true);
+
+            await MachineService.StartMachineAsync(machineId);
+
+            machineToUpdate.SetStatus(new(
+                isOnline: machineToUpdate.Status.IsOnline,
+                isOperational: machineToUpdate.Status.IsRunning,
+                isRunning: true));
+
+            commandState.Set(isPending: false);
+        } catch(Exception ex)
+        {
+            commandState.Set(isPending: false, isError: true);
+            // Show error UI
+            errorMessage = GetUiErrorMessage(ex);
+            await Task.Delay(3000);
+            errorMessage = null;
+        }
     }
 
     private async Task StopMachine(Guid machineId, MachineCommandState commandState)

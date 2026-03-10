@@ -26,23 +26,26 @@ public class ServerMachineService(
     {
         return await machineRepository.GetMachineAsync(machineId) ?? throw new MachineNotFoundException();
     }
-    public async Task StartMachineAsync(Guid machineId)
+    public async Task<MachineStatus> StartMachineAsync(Guid machineId)
     {
         var machine = await machineRepository.GetMachineAsync(machineId) ?? throw new MachineNotFoundException();
 
-        if (!CanStartMachine(machine)) return;
+        if (!CanStartMachine(machine)) return machine.Status;
 
-        var previousMachineStatus = machine.Status.Clone();
+        var previousMachineStatus = machine.Status;
 
         await FakeDelay();
 
-        machine.Status = new MachineStatus(
-            isOnline: previousMachineStatus.IsOnline,
-            isOperational: previousMachineStatus.IsOperational,
-            isRunning: true
-        );
+        var newMachineStatus = new MachineStatus(
+             isOnline: previousMachineStatus.IsOnline,
+             isOperational: previousMachineStatus.IsOperational,
+             isRunning: true);
+
+        machine.SetStatus(newMachineStatus);
 
         await unitOfWork.SaveAsync();
+
+        return newMachineStatus;
     }
 
     public async Task StopMachineAsync(Guid machineId)
@@ -55,11 +58,13 @@ public class ServerMachineService(
 
         await FakeDelay();
 
-        machine.Status = new MachineStatus(
+        var newMachineStatus = new MachineStatus(
             isOnline: previousMachineStatus.IsOnline,
             isOperational: previousMachineStatus.IsOperational,
             isRunning: false
         );
+
+        machine.SetStatus(newMachineStatus);
 
         await unitOfWork.SaveAsync();
     }
@@ -71,12 +76,14 @@ public class ServerMachineService(
         var previousMachineStatus = machine.Status.Clone();
 
         await FakeDelay();
-        
-        machine.Status = new MachineStatus(
+
+        var newMachineStatus = new MachineStatus(
             isOnline: true,
             isOperational: previousMachineStatus.IsOperational,
             isRunning: previousMachineStatus.IsRunning
         );
+
+        machine.SetStatus(newMachineStatus);
 
         await unitOfWork.SaveAsync();
     }
@@ -88,12 +95,14 @@ public class ServerMachineService(
         var previousMachineStatus = machine.Status.Clone();
 
         await FakeDelay();
-        
-        machine.Status = new MachineStatus(
+
+        var newMachineStatus = new MachineStatus(
             isOnline: false,
             isOperational: previousMachineStatus.IsOperational,
             isRunning: previousMachineStatus.IsRunning
         );
+
+        machine.SetStatus(newMachineStatus);
 
         await unitOfWork.SaveAsync();
     }

@@ -1,4 +1,4 @@
-using System;
+using MachineSystem.Api.Dtos;
 
 namespace MachineSystem.Application.Services.MachineService.Exceptions;
 
@@ -16,5 +16,10 @@ public class MachineNotFoundException : Exception
     public MachineNotFoundException() : base(DefaultMessage)
     {
         Message = DefaultMessage;
+    }
+
+    public MachineNotFoundExceptionDto ToExceptionDto()
+    {
+        return new MachineNotFoundExceptionDto(Message, 404);
     }
 }

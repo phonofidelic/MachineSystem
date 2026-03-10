@@ -18,11 +18,8 @@
     <ProjectReference Include="..\..\MachineSystem.Infrastructure\MachineSystem.Infrastructure.csproj" />
     <ProjectReference Include="..\MachineSystem.Client\MachineSystem.Client.csproj" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="10.0.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="10.0.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="10.0.3" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Api\Dtos\" />
   </ItemGroup>
 
 </Project>

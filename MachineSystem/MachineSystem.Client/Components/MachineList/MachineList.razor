@@ -85,3 +85,12 @@
         </div>
     </div>
 }
+
+<div class="@(errorMessage is null ? "invisible" : "visible") fixed bottom-0 flex right-0 left-0 p-4">
+    <div role="alert" class="alert alert-vertical sm:alert-horizontal alert-warning w-full max-w-fit mx-auto">
+        <AlertIcon />
+        <span>
+            @errorMessage
+        </span>
+    </div>
+</div>
