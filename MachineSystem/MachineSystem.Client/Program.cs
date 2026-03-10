@@ -1,5 +1,5 @@
 using MachineSystem.Client.Services;
-using MachineSystem.Domain.Services;
+using MachineSystem.Domain.Services.MachineService;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);

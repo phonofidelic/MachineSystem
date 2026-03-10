@@ -1,7 +1,5 @@
-using System;
 using MachineSystem.Domain.Entities;
-using MachineSystem.Domain.Services;
-using MachineSystem.Domain.ValueObjects;
+using MachineSystem.Domain.Services.MachineService;
 
 namespace MachineSystem.Services;
 
@@ -17,7 +15,7 @@ public class MockServerMachineService : IMachineService
         throw new NotImplementedException();
     }
 
-    public Task<Machine?> GetMachineAsync(Guid machineId)
+    public Task<Machine> GetMachineAsync(Guid machineId)
     {
         throw new NotImplementedException();
     }

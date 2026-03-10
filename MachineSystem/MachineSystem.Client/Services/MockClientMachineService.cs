@@ -1,5 +1,5 @@
 using MachineSystem.Domain.Entities;
-using MachineSystem.Domain.Services;
+using MachineSystem.Domain.Services.MachineService;
 using MachineSystem.Domain.ValueObjects;
 
 namespace MachineSystem.Client.Services;
@@ -49,9 +49,9 @@ public class MockClientMachineService : IMachineService
         return machines;
     }
 
-    public async Task<Machine?> GetMachineAsync(Guid machineId)
+    public async Task<Machine> GetMachineAsync(Guid machineId)
     {
-        return machines.Find(m => m.Id == machineId);
+        return machines.Find(m => m.Id == machineId) ?? throw new Exception("Machine not found");;
     }
 
     public async Task StartMachineAsync(Guid machineId)
