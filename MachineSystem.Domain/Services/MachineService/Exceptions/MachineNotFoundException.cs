@@ -2,7 +2,7 @@ using System;
 
 namespace MachineSystem.Domain.Services.MachineService.Exceptions;
 
-public class MachineNotFoundException : Exception, IMachineServiceExceptionProvider
+public class MachineNotFoundException : Exception
 {
     private static string DefaultMessage { get => "Machine not found"; }
     

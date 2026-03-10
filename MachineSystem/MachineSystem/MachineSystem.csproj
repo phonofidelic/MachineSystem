@@ -8,6 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Dtos\**" />
+    <Content Remove="Dtos\**" />
+    <EmbeddedResource Remove="Dtos\**" />
+    <None Remove="Dtos\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\MachineSystem.Infrastructure\MachineSystem.Infrastructure.csproj" />
     <ProjectReference Include="..\MachineSystem.Client\MachineSystem.Client.csproj" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="10.0.3" />
@@ -15,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Dtos/" />
+    <Folder Include="Api\Dtos\" />
   </ItemGroup>
 
 </Project>
