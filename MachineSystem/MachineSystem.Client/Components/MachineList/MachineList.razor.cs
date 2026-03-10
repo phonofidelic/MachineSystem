@@ -1,5 +1,5 @@
 using MachineSystem.Domain.Entities;
-using MachineSystem.Domain.Services;
+using MachineSystem.Domain.Services.MachineService;
 using Microsoft.AspNetCore.Components;
 
 namespace MachineSystem.Client.Components.MachineList;
@@ -16,6 +16,7 @@ public partial class MachineList
         await FetchMachinesAsync();
     }
 
+    // ToDo: Should not need to re-fetch machines list after each state update?
     private async Task FetchMachinesAsync()
     {
         machines = await MachineService.GetMachinesAsync();

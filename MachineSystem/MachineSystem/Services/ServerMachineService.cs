@@ -2,7 +2,8 @@ using System;
 using MachineSystem.Application.Repositories;
 using MachineSystem.Application.Services;
 using MachineSystem.Domain.Entities;
-using MachineSystem.Domain.Services;
+using MachineSystem.Domain.Services.MachineService;
+using MachineSystem.Domain.Services.MachineService.Exceptions;
 using MachineSystem.Domain.ValueObjects;
 
 namespace MachineSystem.Services;
@@ -22,13 +23,13 @@ public class ServerMachineService(
         return await machineRepository.GetMachinesAsync();
     }
 
-    public async Task<Machine>? GetMachineAsync(Guid machineId)
+    public async Task<Machine> GetMachineAsync(Guid machineId)
     {
-        return await machineRepository.GetMachineAsync(machineId) ?? throw new Exception("Machine not found");
+        return await machineRepository.GetMachineAsync(machineId) ?? throw new MachineNotFoundException();
     }
     public async Task StartMachineAsync(Guid machineId)
     {
-        var machine = await machineRepository.GetMachineAsync(machineId) ?? throw new Exception("Machine not found");
+        var machine = await machineRepository.GetMachineAsync(machineId) ?? throw new MachineNotFoundException();
 
         if (!CanStartMachine(machine)) return;
 
@@ -47,7 +48,7 @@ public class ServerMachineService(
 
     public async Task StopMachineAsync(Guid machineId)
     {
-        var machine = await machineRepository.GetMachineAsync(machineId) ?? throw new Exception("Machine not found");
+        var machine = await machineRepository.GetMachineAsync(machineId) ?? throw new MachineNotFoundException();
 
         if (!CanStopMachine(machine)) return;
 
@@ -66,7 +67,7 @@ public class ServerMachineService(
 
     public async Task ConnectMachineAsync(Guid machineId)
     {
-        var machine = await machineRepository.GetMachineAsync(machineId) ?? throw new Exception("Machine not found");
+        var machine = await machineRepository.GetMachineAsync(machineId) ?? throw new MachineNotFoundException();
 
         var previousMachineStatus = machine.Status.Clone();
 
@@ -83,7 +84,7 @@ public class ServerMachineService(
 
     public async Task DisconnectMachineAsync(Guid machineId)
     {
-        var machine = await machineRepository.GetMachineAsync(machineId) ?? throw new Exception("Machine not found");
+        var machine = await machineRepository.GetMachineAsync(machineId) ?? throw new MachineNotFoundException();
 
         var previousMachineStatus = machine.Status.Clone();
 

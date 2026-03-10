@@ -1,7 +1,7 @@
 using System.Net;
 using System.Net.Http.Json;
 using MachineSystem.Domain.Entities;
-using MachineSystem.Domain.Services;
+using MachineSystem.Domain.Services.MachineService;
 
 namespace MachineSystem.Client.Services;
 

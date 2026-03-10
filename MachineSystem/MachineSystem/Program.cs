@@ -1,7 +1,7 @@
 using MachineSystem.Application.Repositories;
 using MachineSystem.Application.Services;
 using MachineSystem.Components;
-using MachineSystem.Domain.Services;
+using MachineSystem.Domain.Services.MachineService;
 using MachineSystem.Infrastructure.Data;
 using MachineSystem.Services;
 using Microsoft.EntityFrameworkCore;
@@ -51,6 +51,7 @@ app.MapRazorComponents<App>()
     .AddInteractiveWebAssemblyRenderMode()
     .AddAdditionalAssemblies(typeof(MachineSystem.Client._Imports).Assembly);
 
+// ToDo: Move to an IEndpointRouteBuilder implementation?
 app.MapGet("/api/machines", async (IMachineRepository repository) => await repository.GetMachinesAsync());
 app.MapGet("/api/machines/{id:Guid}", async (Guid id, IMachineRepository repository) => await repository.GetMachineAsync(id));
 app.MapPatch("/api/machines/{id:Guid}/start", async (Guid id, IMachineService machineService) => await machineService.StartMachineAsync(id));

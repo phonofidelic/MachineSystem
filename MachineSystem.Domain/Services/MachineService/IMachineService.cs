@@ -1,12 +1,12 @@
 using MachineSystem.Domain.Entities;
 
-namespace MachineSystem.Domain.Services;
+namespace MachineSystem.Domain.Services.MachineService;
 
 public interface IMachineService
 {
     public Task<List<Machine>> GetMachinesAsync();
 
-    public Task<Machine>? GetMachineAsync(Guid machineId);
+    public Task<Machine> GetMachineAsync(Guid machineId);
 
     public Task StartMachineAsync(Guid machineId);
 
