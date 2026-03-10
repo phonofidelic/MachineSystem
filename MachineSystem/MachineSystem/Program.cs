@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveWebAssemblyComponents();
@@ -20,6 +21,17 @@ builder.Services.AddScoped(provider => new HttpClient
 {
     BaseAddress = new Uri("http://localhost:5088")
 });
+
+// ToDo: When API is moved to separate project
+
+//builder.Services.AddHttpClient("MachineApiClient", client =>
+//{
+//    //var apiBaseUrl = builder.Configuration.GetSection(nameof(AppConfig)).Get<AppSettings>().BaseUrl
+//    client.BaseAddress = new Uri("...");
+//    client.Timeout = TimeSpan.FromSeconds(20);
+//    client.DefaultRequestHeaders.Clear();
+//    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json));
+//});
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IMachineRepository, MachineRepository>();

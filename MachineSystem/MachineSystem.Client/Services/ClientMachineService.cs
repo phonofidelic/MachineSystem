@@ -6,11 +6,12 @@ using Microsoft.AspNetCore.Components;
 
 namespace MachineSystem.Client.Services;
 
+// ToDo: Use cancellation tokens
 public class ClientMachineService(IServiceProvider serviceProvider) : IMachineService
 {
     private readonly HttpClient client = serviceProvider.GetRequiredService<HttpClient>();    
     private readonly NavigationManager navigationManager = serviceProvider.GetRequiredService<NavigationManager>();
-
+    
     public async Task<List<Machine>> GetMachinesAsync()
     {
         var response = await client.GetAsync("/api/machines");
