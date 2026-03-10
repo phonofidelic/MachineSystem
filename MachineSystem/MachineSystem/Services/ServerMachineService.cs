@@ -21,6 +21,11 @@ public class ServerMachineService(
     {
         return await machineRepository.GetMachinesAsync();
     }
+
+    public async Task<Machine>? GetMachineAsync(Guid machineId)
+    {
+        return await machineRepository.GetMachineAsync(machineId) ?? throw new Exception("Machine not found");
+    }
     public async Task StartMachineAsync(Guid machineId)
     {
         var machine = await machineRepository.GetMachineAsync(machineId) ?? throw new Exception("Machine not found");

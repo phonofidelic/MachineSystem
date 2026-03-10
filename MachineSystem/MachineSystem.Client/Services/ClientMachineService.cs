@@ -17,6 +17,17 @@ public class ClientMachineService(IServiceProvider serviceProvider) : IMachineSe
         return await response.Content.ReadFromJsonAsync<List<Machine>>() ?? throw new Exception("Something went wrong");
     }
 
+    public async Task<Machine>? GetMachineAsync(Guid machineId)
+    {
+        var response = await client.GetAsync($"/api/{machineId}");
+        if (response.StatusCode is not HttpStatusCode.OK) throw new Exception("Machine not found");
+        if (response.Content is null) throw new Exception("Something went wrong");
+
+        var content = await response.Content.ReadFromJsonAsync<Machine>();
+
+        return content ?? throw new Exception("Something went wrong");
+    }
+
     public async Task StartMachineAsync(Guid machineId)
     {
         await client.PatchAsync($"/api/machines/{machineId}/start", null);
