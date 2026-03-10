@@ -1,6 +1,6 @@
 using MachineSystem.Domain.Entities;
 
-namespace MachineSystem.Domain.Services.MachineService;
+namespace MachineSystem.Application.Services.MachineService;
 
 public interface IMachineService
 {

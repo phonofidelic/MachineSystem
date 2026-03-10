@@ -1,5 +1,5 @@
 using MachineSystem.Domain.Entities;
-using MachineSystem.Domain.Services.MachineService;
+using MachineSystem.Application.Services.MachineService;
 using Microsoft.AspNetCore.Components;
 
 namespace MachineSystem.Client.Components.MachineList;

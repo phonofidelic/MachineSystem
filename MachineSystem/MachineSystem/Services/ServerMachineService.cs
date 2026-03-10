@@ -1,9 +1,8 @@
-using System;
 using MachineSystem.Application.Repositories;
 using MachineSystem.Application.Services;
+using MachineSystem.Application.Services.MachineService;
+using MachineSystem.Application.Services.MachineService.Exceptions;
 using MachineSystem.Domain.Entities;
-using MachineSystem.Domain.Services.MachineService;
-using MachineSystem.Domain.Services.MachineService.Exceptions;
 using MachineSystem.Domain.ValueObjects;
 
 namespace MachineSystem.Services;

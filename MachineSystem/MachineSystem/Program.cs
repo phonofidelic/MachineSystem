@@ -1,7 +1,7 @@
 using MachineSystem.Application.Repositories;
 using MachineSystem.Application.Services;
+using MachineSystem.Application.Services.MachineService;
 using MachineSystem.Components;
-using MachineSystem.Domain.Services.MachineService;
 using MachineSystem.Api.Extensions;
 using MachineSystem.Infrastructure.Data;
 using MachineSystem.Services;

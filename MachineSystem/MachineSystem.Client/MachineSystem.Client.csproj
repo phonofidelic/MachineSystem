@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="../../MachineSystem.Domain/MachineSystem.Domain.csproj" />
+    <ProjectReference Include="..\..\MachineSystem.Application\MachineSystem.Application.csproj" />
   </ItemGroup>
 
 </Project>

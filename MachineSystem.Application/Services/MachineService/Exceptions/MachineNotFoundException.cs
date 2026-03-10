@@ -1,6 +1,6 @@
 using System;
 
-namespace MachineSystem.Domain.Services.MachineService.Exceptions;
+namespace MachineSystem.Application.Services.MachineService.Exceptions;
 
 public class MachineNotFoundException : Exception
 {

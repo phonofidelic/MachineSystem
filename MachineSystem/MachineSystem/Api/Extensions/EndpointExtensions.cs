@@ -1,5 +1,5 @@
-using MachineSystem.Domain.Services.MachineService;
-using MachineSystem.Domain.Services.MachineService.Exceptions;
+using MachineSystem.Application.Services.MachineService;
+using MachineSystem.Application.Services.MachineService.Exceptions;
 
 // ToDo: Move to separate project
 namespace MachineSystem.Api.Extensions;

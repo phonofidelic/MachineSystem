@@ -1,5 +1,5 @@
+using MachineSystem.Application.Services.MachineService;
 using MachineSystem.Domain.Entities;
-using MachineSystem.Domain.Services.MachineService;
 using MachineSystem.Domain.ValueObjects;
 
 namespace MachineSystem.Client.Services;

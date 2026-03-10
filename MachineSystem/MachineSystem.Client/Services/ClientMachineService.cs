@@ -1,7 +1,7 @@
 using System.Net;
 using System.Net.Http.Json;
+using MachineSystem.Application.Services.MachineService;
 using MachineSystem.Domain.Entities;
-using MachineSystem.Domain.Services.MachineService;
 using Microsoft.AspNetCore.Components;
 
 namespace MachineSystem.Client.Services;
