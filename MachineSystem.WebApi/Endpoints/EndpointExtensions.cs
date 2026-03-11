@@ -1,6 +1,8 @@
+using MachineSystem.Application;
 using MachineSystem.Application.Services.MachineService;
 using MachineSystem.Application.Services.MachineService.Dtos;
 using MachineSystem.Application.Services.MachineService.Exceptions;
+using MachineSystem.Application.UseCases.StartMachine;
 
 // ToDo: Move to separate project
 namespace MachineSystem.WebApi.Endpoints;
@@ -41,19 +43,14 @@ public static class EndpointExtensions
             }
         });
 
-        builder.MapPatch("/api/machines/{id:Guid}/start", async (Guid id, IMachineService machineService) => {
-            try {
-                var result = await machineService.StartMachineAsync(new StartMachineCommandDto(id));
-                return Results.Ok(result);
-            } catch (Exception ex)
-            {
-                // ToDo: Log error
-                if (ex is MachineNotFoundException)
-                    return Results.NotFound();
+        builder.MapPatch("/api/machines/{id:Guid}/start", async (
+            Guid id,
+            IHandler<StartMachineCommand, StartMachineResult> handler) => {
 
-                return Results.InternalServerError();
-            }
-        });
+                var result = await handler.HandleAsync(new StartMachineCommand(id));
+
+                return Results.Ok(result);
+            });
 
         builder.MapPatch("/api/machines/{id:Guid}/stop", async (Guid id, IMachineService machineService) => {
             try

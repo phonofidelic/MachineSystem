@@ -1,0 +1,17 @@
+[
+  {
+    "Name": "dev mac",
+    "Projects": [
+      {
+        "Path": "MachineSystem.WebApi\\MachineSystem.WebApi.csproj",
+        "Action": "Start",
+        "DebugTarget": "http"
+      },
+      {
+        "Path": "MachineSystem\\MachineSystem\\MachineSystem.BlazorHost.csproj",
+        "Action": "Start",
+        "DebugTarget": "http"
+      }
+    ]
+  }
+]

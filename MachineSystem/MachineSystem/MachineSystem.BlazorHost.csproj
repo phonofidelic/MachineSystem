@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\MachineSystem.Application\MachineSystem.Application.csproj" />
     <ProjectReference Include="..\..\MachineSystem.Infrastructure\MachineSystem.Infrastructure.csproj" />
     <ProjectReference Include="..\MachineSystem.Client\MachineSystem.BlazorClient.csproj" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="10.0.3" />

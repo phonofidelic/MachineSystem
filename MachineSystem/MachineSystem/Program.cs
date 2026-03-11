@@ -1,11 +1,8 @@
-using MachineSystem.Application.Repositories;
-using MachineSystem.Application.Services;
-using MachineSystem.Application.Services.MachineService;
 using MachineSystem.Infrastructure.Data;
-using MachineSystem.Services;
 using Microsoft.EntityFrameworkCore;
 using MachineSystem.BlazorHost.Components;
-using MachineSystem.BlazorHost.Api.Extensions;
+using System.Net.Http.Headers;
+using System.Net.Mime;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,19 +21,14 @@ builder.Services.AddScoped(provider => new HttpClient
 
 // ToDo: When API is moved to separate project
 
-//builder.Services.AddHttpClient("MachineApiClient", client =>
-//{
-//    //var apiBaseUrl = builder.Configuration.GetSection(nameof(AppConfig)).Get<AppSettings>().BaseUrl
-//    client.BaseAddress = new Uri("...");
-//    client.Timeout = TimeSpan.FromSeconds(20);
-//    client.DefaultRequestHeaders.Clear();
-//    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json));
-//});
-
-builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-builder.Services.AddScoped<IMachineRepository, MachineRepository>();
-builder.Services.AddScoped<IMachineService, BlazorHostMachineService>();
-
+builder.Services.AddHttpClient("MachineApiClient", client =>
+{
+    //var apiBaseUrl = builder.Configuration.GetSection(nameof(AppConfig)).Get<AppSettings>().BaseUrl
+    client.BaseAddress = new Uri("localhost:5218");
+    client.Timeout = TimeSpan.FromSeconds(20);
+    client.DefaultRequestHeaders.Clear();
+    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json));
+});
 
 var app = builder.Build();
 
@@ -63,8 +55,5 @@ app.MapStaticAssets();
 app.MapRazorComponents<App>()
     .AddInteractiveWebAssemblyRenderMode()
     .AddAdditionalAssemblies(typeof(MachineSystem.BlazorClient._Imports).Assembly);
-
-// ToDo: Move to separate project
-app.MapApiEndpoints();
 
 app.Run();
