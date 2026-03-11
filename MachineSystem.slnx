@@ -5,6 +5,7 @@
   <Project Path="MachineSystem.Application/MachineSystem.Application.csproj" Id="93bdafd0-2b7b-45b4-b00d-12ae12ecc7d8" />
   <Project Path="MachineSystem.Domain/MachineSystem.Domain.csproj" />
   <Project Path="MachineSystem.Infrastructure/MachineSystem.Infrastructure.csproj" Id="79a67534-1a57-4265-82b5-8f83643d8a3c" />
+  <Project Path="MachineSystem.WebApi/MachineSystem.WebApi.csproj" Id="616710ec-9f0d-4ac7-a987-ded705a8ceeb" />
   <Project Path="MachineSystem/MachineSystem.Client/MachineSystem.Client.csproj" />
   <Project Path="MachineSystem/MachineSystem/MachineSystem.csproj" />
 </Solution>
