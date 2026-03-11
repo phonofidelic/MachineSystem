@@ -37,9 +37,9 @@ public class ClientMachineService(IServiceProvider serviceProvider) : IMachineSe
         return content ?? throw new Exception("Something went wrong");
     }
 
-    public async Task<StartMachineResultDto> StartMachineAsync(Guid machineId)
+    public async Task<StartMachineResultDto> StartMachineAsync(StartMachineCommandDto command)
     {
-        var response = await client.PatchAsync($"/api/machines/{machineId}/start", null, new CancellationToken());
+        var response = await client.PatchAsync($"/api/machines/{command.MachineId}/start", null, new CancellationToken());
 
         if (response.StatusCode != HttpStatusCode.OK) throw new MachineNotFoundException();
             

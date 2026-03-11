@@ -2,6 +2,7 @@ using MachineSystem.Domain.Entities;
 using MachineSystem.Application.Services.MachineService;
 using Microsoft.AspNetCore.Components;
 using MachineSystem.Application.Services.MachineService.Exceptions;
+using MachineSystem.Application.Services.MachineService.Dtos;
 
 namespace MachineSystem.Client.Components.MachineList;
 
@@ -42,7 +43,7 @@ public partial class MachineList
 
             commandState.Set(isPending: true);
 
-            var result = await MachineService.StartMachineAsync(machineId);
+            var result = await MachineService.StartMachineAsync(new StartMachineCommandDto(machineId));
 
             machineToUpdate.SetStatus(new(
                 isOnline: result.IsOnline,

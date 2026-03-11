@@ -27,9 +27,9 @@ public class ServerMachineService(
     {
         return await machineRepository.GetMachineAsync(machineId) ?? throw new MachineNotFoundException();
     }
-    public async Task<StartMachineResultDto> StartMachineAsync(Guid machineId)
+    public async Task<StartMachineResultDto> StartMachineAsync(StartMachineCommandDto command)
     {
-        var machine = await machineRepository.GetMachineAsync(machineId) ?? throw new MachineNotFoundException();
+        var machine = await machineRepository.GetMachineAsync(command.MachineId) ?? throw new MachineNotFoundException();
 
         var currentMachineStatus = machine.Status;
 

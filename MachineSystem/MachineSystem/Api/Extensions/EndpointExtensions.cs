@@ -1,4 +1,5 @@
 using MachineSystem.Application.Services.MachineService;
+using MachineSystem.Application.Services.MachineService.Dtos;
 using MachineSystem.Application.Services.MachineService.Exceptions;
 
 // ToDo: Move to separate project
@@ -42,7 +43,7 @@ public static class EndpointExtensions
 
         builder.MapPatch("/api/machines/{id:Guid}/start", async (Guid id, IMachineService machineService) => {
             try {
-                var result = await machineService.StartMachineAsync(id);
+                var result = await machineService.StartMachineAsync(new StartMachineCommandDto(id));
                 return Results.Ok(result);
             } catch (Exception ex)
             {

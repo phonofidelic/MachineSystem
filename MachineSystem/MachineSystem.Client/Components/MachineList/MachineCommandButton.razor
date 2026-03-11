@@ -1,4 +1,6 @@
-﻿<button class="@ClassName relative" disabled="@(Disabled || CommandState.IsPending)" @onclick="(e) => InvokeCommandAsync()">
+﻿<button class="@ClassName relative"
+        disabled="@(Disabled || CommandState.IsPending)"
+        @onclick="async (e) => await InvokeCommandAsync()">
     <div class="flex w-full">
         @ButtonContent
     </div>

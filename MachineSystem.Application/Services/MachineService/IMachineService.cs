@@ -9,7 +9,7 @@ public interface IMachineService
 
     public Task<Machine> GetMachineAsync(Guid machineId);
 
-    public Task<StartMachineResultDto> StartMachineAsync(Guid machineId);
+    public Task<StartMachineResultDto> StartMachineAsync(StartMachineCommandDto command);
 
     public Task StopMachineAsync(Guid machineId);
 
