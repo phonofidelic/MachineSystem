@@ -19,17 +19,16 @@ public class StartMachineHandler(
         {
             var machine = await machineRepository.GetMachineAsync(command.machineId) ?? throw new MachineNotFoundException();
 
-            // Machine entity enforces invariants to ensure valid state
-            machine.Start();
-
-            // ToDo: Simulate request to a physical machine
+            // ToDo: Simulate request to a physical machine in MachineService implementation
             await Task.Delay(random.Next(0, 3) * 1000);
-            await machineService.StartMachineAsync()
 
+            // Machine entity enforces invariants to ensure valid state
+            var status = await machineService.StartMachineAsync(machine);
 
+            return new StartMachineResult(status.IsOnline, status.IsOperational, status.IsRunning);
         } catch (Exception)
         {
-
+            throw;
         }
     }
 }

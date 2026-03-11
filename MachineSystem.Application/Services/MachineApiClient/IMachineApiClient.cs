@@ -1,4 +1,5 @@
-﻿using MachineSystem.Application.UseCases.StartMachine;
+﻿using MachineSystem.Application.Queries;
+using MachineSystem.Application.UseCases.StartMachine;
 
 namespace MachineSystem.Application.Services.MachineApiClient;
 
