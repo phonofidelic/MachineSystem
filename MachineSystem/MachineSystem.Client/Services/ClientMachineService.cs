@@ -1,6 +1,7 @@
 using System.Net;
 using System.Net.Http.Json;
 using MachineSystem.Application.Services.MachineService;
+using MachineSystem.Application.Services.MachineService.Dtos;
 using MachineSystem.Application.Services.MachineService.Exceptions;
 using MachineSystem.Domain.Entities;
 using Microsoft.AspNetCore.Components;
@@ -36,18 +37,20 @@ public class ClientMachineService(IServiceProvider serviceProvider) : IMachineSe
         return content ?? throw new Exception("Something went wrong");
     }
 
-    public async Task StartMachineAsync(Guid machineId)
+    public async Task<StartMachineResultDto> StartMachineAsync(Guid machineId)
     {
         var response = await client.PatchAsync($"/api/machines/{machineId}/start", null, new CancellationToken());
 
         if (response.StatusCode != HttpStatusCode.OK) throw new MachineNotFoundException();
+            
+        return await response.Content.ReadFromJsonAsync<StartMachineResultDto>() ?? throw new Exception("Could not read content");
     }
 
     public async Task StopMachineAsync(Guid machineId)
     {
         var response = await client.PatchAsync($"/api/machines/{machineId}/stop", null);
 
-        if (response.StatusCode is not HttpStatusCode.OK) throw new MachineNotFoundException();
+        if (response.StatusCode is not HttpStatusCode.NoContent) throw new MachineNotFoundException();
     }
 
     public async Task ConnectMachineAsync(Guid machineId)

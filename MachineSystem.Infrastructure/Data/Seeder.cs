@@ -8,7 +8,6 @@ namespace MachineSystem.Infrastructure.Data;
 
 public static class Seeder
 {
-    
     public static List<Machine> GenerateMachines(int count)
     {
         Randomizer.Seed = new Random(2435);

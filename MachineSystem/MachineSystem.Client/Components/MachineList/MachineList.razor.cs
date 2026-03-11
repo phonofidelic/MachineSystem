@@ -7,7 +7,10 @@ namespace MachineSystem.Client.Components.MachineList;
 
 public partial class MachineList
 {
-    private List<Machine>? machines;
+    // ToDo: Make read-only
+    // This list should only be modified through the API, not direct access.
+    // Should it be modifiable through the Machine entity's API?
+    private IReadOnlyList<Machine>? machines;
 
     private string? errorMessage { get; set; } = null;
 
@@ -35,16 +38,16 @@ public partial class MachineList
     {
         try
         {
-            var machineToUpdate = machines?.Find(m => m.Id == machineId) ?? throw new MachineNotFoundException();
+            var machineToUpdate = machines?.FirstOrDefault(m => m.Id == machineId) ?? throw new MachineNotFoundException();
 
             commandState.Set(isPending: true);
 
-            await MachineService.StartMachineAsync(machineId);
+            var result = await MachineService.StartMachineAsync(machineId);
 
             machineToUpdate.SetStatus(new(
-                isOnline: machineToUpdate.Status.IsOnline,
-                isOperational: machineToUpdate.Status.IsRunning,
-                isRunning: true));
+                isOnline: result.IsOnline,
+                isOperational: result.IsOperational,
+                isRunning: result.IsRunning));
 
             commandState.Set(isPending: false);
         } catch(Exception ex)

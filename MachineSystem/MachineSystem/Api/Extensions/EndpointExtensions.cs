@@ -42,8 +42,8 @@ public static class EndpointExtensions
 
         builder.MapPatch("/api/machines/{id:Guid}/start", async (Guid id, IMachineService machineService) => {
             try {
-                await machineService.StartMachineAsync(id);
-                return Results.NoContent();
+                var result = await machineService.StartMachineAsync(id);
+                return Results.Ok(result);
             } catch (Exception ex)
             {
                 // ToDo: Log error

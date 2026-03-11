@@ -4,27 +4,13 @@ namespace MachineSystem.Domain.Entities;
 
 public class Machine : BaseCreatableEntity<Guid>
 {
-    public override Guid Id { get; protected init; }
-
-    private MachineStatus status { get; set; }
-
-    public Machine(MachineStatus? initialStatus = null) : base()
-    {
-        Id = Guid.NewGuid();
-        status = initialStatus ?? new();
-    }
-
-    public Machine(Guid id, MachineStatus? initialStatus = null) : base()
-    {
-        Id = id;
-        status = initialStatus ?? new();
-    }
+    public override Guid Id { get; set; } = Guid.NewGuid();
 
     public required string Name { get; set; }
 
     public required MachineType Type { get; set; }
 
-    public MachineStatus Status { get => status.Clone(); }
+    public MachineStatus Status { get; set; } = default!;
 
     public string? LastData { get; set; }
 
@@ -32,6 +18,82 @@ public class Machine : BaseCreatableEntity<Guid>
 
     public void SetStatus(MachineStatus newStatus)
     {
-        status = newStatus.Clone();
+        Status = newStatus.Clone();
+    }
+
+    public MachineStatus Start()
+    {
+        var currentStatus = Status.Clone();
+
+        // Enforce invariants
+        if (
+            currentStatus.IsOnline && 
+            currentStatus.IsOperational && 
+            !currentStatus.IsRunning)
+        {
+            Status = new MachineStatus(
+                isOnline: currentStatus.IsOnline,
+                isOperational: currentStatus.IsOperational,
+                isRunning: true
+            );
+        }
+
+        return Status.Clone();
+    }
+
+    public MachineStatus Stop()
+    {
+        var currentStatus = Status.Clone();
+
+        // Enforce invariants
+        if (
+            currentStatus.IsOnline && 
+            currentStatus.IsOperational && 
+            currentStatus.IsRunning)
+        {
+            Status = new MachineStatus(
+                isOnline: currentStatus.IsOnline,
+                isOperational: currentStatus.IsOperational,
+                isRunning: false
+            );
+        }
+
+        return Status.Clone();
+    }
+
+    public MachineStatus Connect()
+    {
+        var currentStatus = Status.Clone();
+
+        // Enforce invariants
+        if (
+            !currentStatus.IsOnline && 
+            currentStatus.IsOperational)
+        {
+            Status = new MachineStatus(
+                isOnline: true,
+                isOperational: currentStatus.IsOperational,
+                isRunning: currentStatus.IsRunning
+            );
+        }
+
+        return Status.Clone();
+    }
+
+    public MachineStatus Disconnect()
+    {
+        var currentStatus = Status.Clone();
+
+        // Enforce invariants
+        if (currentStatus.IsOnline)
+        {
+            Status = new MachineStatus(
+                isOnline: false,
+                isOperational: currentStatus.IsOperational,
+                isRunning: false
+            );
+        }
+
+        return Status.Clone();
     }
 }

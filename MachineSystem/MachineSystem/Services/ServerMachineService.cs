@@ -1,6 +1,7 @@
 using MachineSystem.Application.Repositories;
 using MachineSystem.Application.Services;
 using MachineSystem.Application.Services.MachineService;
+using MachineSystem.Application.Services.MachineService.Dtos;
 using MachineSystem.Application.Services.MachineService.Exceptions;
 using MachineSystem.Domain.Entities;
 using MachineSystem.Domain.ValueObjects;
@@ -26,26 +27,34 @@ public class ServerMachineService(
     {
         return await machineRepository.GetMachineAsync(machineId) ?? throw new MachineNotFoundException();
     }
-    public async Task<MachineStatus> StartMachineAsync(Guid machineId)
+    public async Task<StartMachineResultDto> StartMachineAsync(Guid machineId)
     {
         var machine = await machineRepository.GetMachineAsync(machineId) ?? throw new MachineNotFoundException();
 
-        if (!CanStartMachine(machine)) return machine.Status;
+        var currentMachineStatus = machine.Status;
 
-        var previousMachineStatus = machine.Status;
+        if (!CanStartMachine(machine)) return new StartMachineResultDto(
+            IsOnline: currentMachineStatus.IsOnline,
+            IsOperational: currentMachineStatus.IsOperational,
+            IsRunning: currentMachineStatus.IsRunning
+        );
 
         await FakeDelay();
 
         var newMachineStatus = new MachineStatus(
-             isOnline: previousMachineStatus.IsOnline,
-             isOperational: previousMachineStatus.IsOperational,
-             isRunning: true);
+            isOnline: currentMachineStatus.IsOnline,
+            isOperational: currentMachineStatus.IsOperational,
+            isRunning: true);
 
         machine.SetStatus(newMachineStatus);
 
         await unitOfWork.SaveAsync();
 
-        return newMachineStatus;
+        return new StartMachineResultDto(
+            IsOnline: newMachineStatus.IsOnline,
+            IsOperational: newMachineStatus.IsOperational,
+            IsRunning: newMachineStatus.IsRunning
+        );
     }
 
     public async Task StopMachineAsync(Guid machineId)
