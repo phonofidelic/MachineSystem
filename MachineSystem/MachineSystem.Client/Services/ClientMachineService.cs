@@ -6,7 +6,7 @@ using MachineSystem.Application.Services.MachineService.Exceptions;
 using MachineSystem.Domain.Entities;
 using Microsoft.AspNetCore.Components;
 
-namespace MachineSystem.Client.Services;
+namespace MachineSystem.BlazorClient.Services;
 
 // ToDo: Use cancellation tokens
 public class ClientMachineService(IServiceProvider serviceProvider) : IMachineService

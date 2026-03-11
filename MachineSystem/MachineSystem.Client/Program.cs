@@ -1,5 +1,5 @@
 using MachineSystem.Application.Services.MachineService;
-using MachineSystem.Client.Services;
+using MachineSystem.BlazorClient.Services;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);

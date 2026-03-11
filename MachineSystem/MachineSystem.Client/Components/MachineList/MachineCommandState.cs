@@ -1,5 +1,5 @@
 
-namespace MachineSystem.Client.Components.MachineList;
+namespace MachineSystem.BlazorClient.Components.MachineList;
 
 public class MachineCommandState /* <TResult> */
 {

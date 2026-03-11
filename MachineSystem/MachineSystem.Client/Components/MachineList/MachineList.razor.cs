@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Components;
 using MachineSystem.Application.Services.MachineService.Exceptions;
 using MachineSystem.Application.Services.MachineService.Dtos;
 
-namespace MachineSystem.Client.Components.MachineList;
+namespace MachineSystem.BlazorClient.Components.MachineList;
 
 public partial class MachineList
 {

@@ -62,7 +62,7 @@ app.UseAntiforgery();
 app.MapStaticAssets();
 app.MapRazorComponents<App>()
     .AddInteractiveWebAssemblyRenderMode()
-    .AddAdditionalAssemblies(typeof(MachineSystem.Client._Imports).Assembly);
+    .AddAdditionalAssemblies(typeof(MachineSystem.BlazorClient._Imports).Assembly);
 
 // ToDo: Move to separate project
 app.MapApiEndpoints();
