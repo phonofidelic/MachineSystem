@@ -1,4 +1,3 @@
-using System;
 using MachineSystem.Application.Repositories;
 using MachineSystem.Domain.Entities;
 using Microsoft.EntityFrameworkCore;

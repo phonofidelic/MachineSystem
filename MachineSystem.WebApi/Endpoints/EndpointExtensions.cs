@@ -3,7 +3,7 @@ using MachineSystem.Application.Services.MachineService.Dtos;
 using MachineSystem.Application.Services.MachineService.Exceptions;
 
 // ToDo: Move to separate project
-namespace MachineSystem.WebApi.Extensions;
+namespace MachineSystem.WebApi.Endpoints;
 
 public static class EndpointExtensions
 {

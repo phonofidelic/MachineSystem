@@ -1,8 +1,11 @@
-using MachineSystem.WebApi.Extensions;
+using MachineSystem.Application.Services.MachineService;
+using MachineSystem.Infrastructure.Services;
+using MachineSystem.WebApi.Endpoints;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Add services to the container
+builder.Services.AddScoped<IMachineService, MachineService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
