@@ -1,11 +1,11 @@
 using MachineSystem.Application.Repositories;
 using MachineSystem.Application.Services;
 using MachineSystem.Application.Services.MachineService;
-using MachineSystem.Components;
-using MachineSystem.Api.Extensions;
 using MachineSystem.Infrastructure.Data;
 using MachineSystem.Services;
 using Microsoft.EntityFrameworkCore;
+using MachineSystem.BlazorHost.Components;
+using MachineSystem.BlazorHost.Api.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,7 +35,7 @@ builder.Services.AddScoped(provider => new HttpClient
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IMachineRepository, MachineRepository>();
-builder.Services.AddScoped<IMachineService, ServerMachineService>();
+builder.Services.AddScoped<IMachineService, BlazorHostMachineService>();
 
 
 var app = builder.Build();

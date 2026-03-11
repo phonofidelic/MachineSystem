@@ -8,7 +8,7 @@ using MachineSystem.Domain.ValueObjects;
 
 namespace MachineSystem.Services;
 
-public class ServerMachineService(
+public class BlazorHostMachineService(
     IMachineRepository repo,
     IUnitOfWork unitOfWork) : IMachineService
 {

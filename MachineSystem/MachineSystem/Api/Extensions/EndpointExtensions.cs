@@ -3,7 +3,7 @@ using MachineSystem.Application.Services.MachineService.Dtos;
 using MachineSystem.Application.Services.MachineService.Exceptions;
 
 // ToDo: Move to separate project
-namespace MachineSystem.Api.Extensions;
+namespace MachineSystem.BlazorHost.Api.Extensions;
 
 public static class EndpointExtensions
 {
