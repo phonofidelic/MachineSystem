@@ -1,5 +1,6 @@
 using MachineSystem.Application.Queries;
 using MachineSystem.Application.Repositories;
+using MachineSystem.Application.ServiceContracts;
 using MachineSystem.Application.Services.MachineService.Exceptions;
 using MachineSystem.Application.ViewModels;
 

@@ -1,5 +1,6 @@
 using MachineSystem.Application.Queries;
 using MachineSystem.Application.Repositories;
+using MachineSystem.Application.ServiceContracts;
 using MachineSystem.Application.ViewModels;
 
 namespace MachineSystem.Application.Handlers;

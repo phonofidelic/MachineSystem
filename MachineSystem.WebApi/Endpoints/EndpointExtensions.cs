@@ -1,6 +1,6 @@
-using MachineSystem.Application;
 using MachineSystem.Application.Commands;
 using MachineSystem.Application.Queries;
+using MachineSystem.Application.ServiceContracts;
 
 // ToDo: Move to separate project
 namespace MachineSystem.WebApi.Endpoints;

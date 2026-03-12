@@ -1,6 +1,6 @@
 using MachineSystem.Application.Commands;
 using MachineSystem.Application.Repositories;
-using MachineSystem.Application.Services.MachineService;
+using MachineSystem.Application.ServiceContracts;
 using MachineSystem.Application.Services.MachineService.Exceptions;
 
 namespace MachineSystem.Application.Handlers;
