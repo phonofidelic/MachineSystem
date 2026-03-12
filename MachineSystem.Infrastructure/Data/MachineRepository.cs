@@ -15,6 +15,11 @@ public class MachineRepository(ApplicationDbContext ctx) : IMachineRepository
     public async Task<List<Machine>> GetMachinesAsync()
     {
         // ToDo: Implement a PagingService
-        return await context.Machines.Take(50).ToListAsync();
+        return await context.Machines.ToListAsync();
+    }
+
+    public IQueryable<Machine> FindAll(bool trackChanges = false)
+    {
+        return trackChanges ? context.Machines : context.Machines.AsNoTracking();
     }
 }

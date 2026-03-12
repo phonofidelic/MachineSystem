@@ -1,6 +1,6 @@
 using MachineSystem.Application;
+using MachineSystem.Application.Queries;
 using MachineSystem.Application.Services.MachineService;
-using MachineSystem.Application.Services.MachineService.Dtos;
 using MachineSystem.Application.Services.MachineService.Exceptions;
 using MachineSystem.Application.UseCases.StartMachine;
 
@@ -11,18 +11,18 @@ public static class EndpointExtensions
 {
     public static IEndpointRouteBuilder MapApiEndpoints(this IEndpointRouteBuilder builder)
     {
-        builder.MapGet("/api/machines", async (IMachineService machineService) => {
+        builder.MapGet("/api/machines", async (
+            IHandler<GetMachinesQuery, GetMachinesResult> handler
+        ) => {
             try
             {
-                var machines = await machineService.GetMachinesAsync();
-                return Results.Ok(machines);
+                var result = await handler.HandleAsync(new GetMachinesQuery());
+                return Results.Ok(result);
             } catch (Exception ex)
             {
                 // ToDo: Log error
                 if (ex is MachineNotFoundException)
-                {
                     return Results.NotFound();
-                }
 
                 return Results.InternalServerError();
             }
@@ -46,9 +46,7 @@ public static class EndpointExtensions
         builder.MapPatch("/api/machines/{id:Guid}/start", async (
             Guid id,
             IHandler<StartMachineCommand, StartMachineResult> handler) => {
-
                 var result = await handler.HandleAsync(new StartMachineCommand(id));
-
                 return Results.Ok(result);
             });
 
