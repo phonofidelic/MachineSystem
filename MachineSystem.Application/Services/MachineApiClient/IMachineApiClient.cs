@@ -1,4 +1,5 @@
-﻿using MachineSystem.Application.Queries;
+﻿using MachineSystem.Application.Commands;
+using MachineSystem.Application.Queries;
 using MachineSystem.Application.UseCases.StartMachine;
 
 namespace MachineSystem.Application.Services.MachineApiClient;
@@ -9,5 +10,5 @@ public interface IMachineApiClient
 
     public Task<GetMachineResult> GetMachineAsync(GetMachineQuery query);
 
-    Task<StartMachineResult> StartMachineAsync(StartMachineCommand command);
+    Task<MachineActionResult> StartMachineAsync(StartMachineCommand command);
 }

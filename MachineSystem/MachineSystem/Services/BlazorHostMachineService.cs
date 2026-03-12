@@ -27,55 +27,18 @@ public class BlazorHostMachineService(
     {
         return await machineRepository.GetMachineAsync(machineId) ?? throw new MachineNotFoundException();
     }
-    public async Task<StartMachineResultDto> StartMachineAsync(StartMachineCommandDto command)
+    public async Task<MachineStatus> StartMachineAsync(Machine machine)
     {
-        var machine = await machineRepository.GetMachineAsync(command.MachineId) ?? throw new MachineNotFoundException();
-
-        var currentMachineStatus = machine.Status;
-
-        if (!CanStartMachine(machine)) return new StartMachineResultDto(
-            IsOnline: currentMachineStatus.IsOnline,
-            IsOperational: currentMachineStatus.IsOperational,
-            IsRunning: currentMachineStatus.IsRunning
-        );
-
         await FakeDelay();
 
-        var newMachineStatus = new MachineStatus(
-            isOnline: currentMachineStatus.IsOnline,
-            isOperational: currentMachineStatus.IsOperational,
-            isRunning: true);
-
-        machine.SetStatus(newMachineStatus);
-
-        await unitOfWork.SaveAsync();
-
-        return new StartMachineResultDto(
-            IsOnline: newMachineStatus.IsOnline,
-            IsOperational: newMachineStatus.IsOperational,
-            IsRunning: newMachineStatus.IsRunning
-        );
+        return machine.Start();
     }
 
-    public async Task StopMachineAsync(Guid machineId)
+    public async Task<MachineStatus> StopMachineAsync(Machine machine)
     {
-        var machine = await machineRepository.GetMachineAsync(machineId) ?? throw new MachineNotFoundException();
-
-        if (!CanStopMachine(machine)) return;
-
-        var previousMachineStatus = machine.Status.Clone();
-
         await FakeDelay();
 
-        var newMachineStatus = new MachineStatus(
-            isOnline: previousMachineStatus.IsOnline,
-            isOperational: previousMachineStatus.IsOperational,
-            isRunning: false
-        );
-
-        machine.SetStatus(newMachineStatus);
-
-        await unitOfWork.SaveAsync();
+        return machine.Stop();
     }
 
     public async Task ConnectMachineAsync(Guid machineId)

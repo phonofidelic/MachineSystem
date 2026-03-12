@@ -1,4 +1,5 @@
 using MachineSystem.Application;
+using MachineSystem.Application.Commands;
 using MachineSystem.Application.Queries;
 using MachineSystem.Application.Services.MachineService;
 using MachineSystem.Application.Services.MachineService.Exceptions;
@@ -47,7 +48,7 @@ public static class EndpointExtensions
 
         builder.MapPatch("/api/machines/{id:Guid}/start", async (
             Guid id,
-            IHandler<StartMachineCommand, StartMachineResult> handler) => {
+            IHandler<StartMachineCommand, MachineActionResult> handler) => {
                 var result = await handler.HandleAsync(new StartMachineCommand(id));
                 return Results.Ok(result);
             });

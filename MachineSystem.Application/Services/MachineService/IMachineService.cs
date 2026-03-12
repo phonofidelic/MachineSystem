@@ -1,4 +1,3 @@
-using MachineSystem.Application.Services.MachineService.Dtos;
 using MachineSystem.Domain.Entities;
 using MachineSystem.Domain.ValueObjects;
 
@@ -12,7 +11,7 @@ public interface IMachineService
 
     public Task<MachineStatus> StartMachineAsync(Machine machine);
 
-    public Task StopMachineAsync(Guid machineId);
+    public Task<MachineStatus> StopMachineAsync(Machine machine);
 
     public Task ConnectMachineAsync(Guid machineId);
 

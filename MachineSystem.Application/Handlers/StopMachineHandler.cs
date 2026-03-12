@@ -1,19 +1,16 @@
-﻿using MachineSystem.Application.Commands;
+using MachineSystem.Application.Commands;
 using MachineSystem.Application.Repositories;
 using MachineSystem.Application.Services.MachineService;
 using MachineSystem.Application.Services.MachineService.Exceptions;
 
-namespace MachineSystem.Application.UseCases.StartMachine;
+namespace MachineSystem.Application.Handlers;
 
-public class StartMachineHandler(
+public class StopMachineHandler(
     IMachineRepository machineRepository,
-    IMachineService machineService) : IHandler<StartMachineCommand, MachineActionResult>
+    IMachineService machineService
+) : IHandler<StopMachineCommand, MachineActionResult>
 {
-    private readonly IMachineRepository machineRepository = machineRepository;
-    
-    private readonly IMachineService machineService = machineService;
-
-    public async Task<MachineActionResult> HandleAsync(StartMachineCommand command)
+    public async Task<MachineActionResult> HandleAsync(StopMachineCommand command)
     {
         try
         {
@@ -21,7 +18,7 @@ public class StartMachineHandler(
 
             // Simulate request to a physical machine in MachineService implementation.
             // Machine entity enforces invariants to ensure valid state.
-            var status = await machineService.StartMachineAsync(machine);
+            var status = await machineService.StopMachineAsync(machine);
 
             return new MachineActionResult(status.IsOnline, status.IsOperational, status.IsRunning);
         } catch (Exception)
