@@ -48,24 +48,18 @@ public static class EndpointExtensions
 
         builder.MapPatch("/api/machines/{id:Guid}/start", async (
             Guid id,
-            IHandler<StartMachineCommand, MachineActionResult> handler) => {
-                var result = await handler.HandleAsync(new StartMachineCommand(id));
-                return Results.Ok(result);
-            });
+            IHandler<StartMachineCommand, MachineActionResult> handler) => 
+        {
+            var result = await handler.HandleAsync(new StartMachineCommand(id));
+            return Results.Ok(result);
+        });
 
-        builder.MapPatch("/api/machines/{id:Guid}/stop", async (Guid id, IMachineService machineService) => {
-            try
-            {
-                await machineService.StopMachineAsync(id);
-                return Results.NoContent();
-            } catch (Exception ex)
-            {
-                // ToDo: Log error
-                if (ex is MachineNotFoundException)
-                    return Results.NotFound();
-                
-                return Results.InternalServerError();
-            }
+        builder.MapPatch("/api/machines/{id:Guid}/stop", async (
+            Guid id,
+            IHandler<StopMachineCommand, MachineActionResult> handler) => 
+        {
+            var result = await handler.HandleAsync(new StopMachineCommand(id));
+            return Results.Ok(result);
         });
 
         builder.MapPatch("/api/machines/{id:Guid}/connect", async (Guid id, IMachineService machineService) => {
