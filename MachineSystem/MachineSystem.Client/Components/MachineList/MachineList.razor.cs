@@ -1,8 +1,9 @@
-using MachineSystem.Domain.Entities;
-using MachineSystem.Application.Services.MachineService;
 using Microsoft.AspNetCore.Components;
 using MachineSystem.Application.Services.MachineService.Exceptions;
-using MachineSystem.Application.Services.MachineService.Dtos;
+using MachineSystem.Application.ServiceContracts;
+using MachineSystem.Application.Queries;
+using MachineSystem.Application.Commands;
+using MachineSystem.Application.ViewModels;
 
 namespace MachineSystem.BlazorClient.Components.MachineList;
 
@@ -11,12 +12,12 @@ public partial class MachineList
     // ToDo: Make read-only
     // This list should only be modified through the API, not direct access.
     // Should it be modifiable through the Machine entity's API?
-    private IReadOnlyList<Machine>? machines;
+    private List<MachineListItem>? machines = [];
 
     private string? errorMessage { get; set; } = null;
 
     [Inject]
-    private IMachineService MachineService { get; set; } = default!;
+    private IMachineApiClient MachineApiClient { get; set; } = default!;
 
     protected override async Task OnInitializedAsync()
     {
@@ -26,7 +27,16 @@ public partial class MachineList
     // ToDo: Should not need to re-fetch machines list after each state update?
     private async Task FetchMachinesAsync()
     {
-        machines = await MachineService.GetMachinesAsync();
+        var result = await MachineApiClient.GetMachinesAsync(new GetMachinesQuery());
+
+        if (result == null) {
+            errorMessage = GetUiErrorMessage(new MachineNotFoundException());
+            await Task.Delay(3000);
+            errorMessage = null;
+            return;
+        }
+
+        machines = result.Machines.ToList();
     }
 
     private string GetUiErrorMessage(Exception ex)
@@ -39,16 +49,16 @@ public partial class MachineList
     {
         try
         {
-            var machineToUpdate = machines?.FirstOrDefault(m => m.Id == machineId) ?? throw new MachineNotFoundException();
+            //var machineToUpdate = machines?.FirstOrDefault(m => m.Id == machineId) ?? throw new MachineNotFoundException();
 
             commandState.Set(isPending: true);
 
-            var result = await MachineService.StartMachineAsync(new StartMachineCommandDto(machineId));
+            var result = await MachineApiClient.StartMachineAsync(new StartMachineCommand(machineId));
 
-            machineToUpdate.SetStatus(new(
-                isOnline: result.IsOnline,
-                isOperational: result.IsOperational,
-                isRunning: result.IsRunning));
+            //machineToUpdate.SetStatus(new(
+            //    isOnline: result.IsOnline,
+            //    isOperational: result.IsOperational,
+            //    isRunning: result.IsRunning));
 
             commandState.Set(isPending: false);
         } catch(Exception ex)
@@ -64,7 +74,7 @@ public partial class MachineList
     private async Task StopMachine(Guid machineId, MachineCommandState commandState)
     {
         commandState.Set(isPending: true);
-        await MachineService.StopMachineAsync(machineId);
+        var result = await MachineApiClient.StopMachineAsync(new StopMachineCommand(machineId));
         commandState.Set(isPending: false);
         await FetchMachinesAsync();
     }
@@ -72,7 +82,7 @@ public partial class MachineList
     private async Task ConnectMachine(Guid machineId, MachineCommandState? commandState = null)
     {
         commandState?.Set(isPending: true);
-        await MachineService.ConnectMachineAsync(machineId);
+        var result = await MachineApiClient.ConnectMachineAsync(new ConnectMachineCommand(machineId));
         commandState?.Set(isPending: false);
         await FetchMachinesAsync();
     }
@@ -80,7 +90,7 @@ public partial class MachineList
     private async Task DisconnectMachine(Guid machineId, MachineCommandState? commandState = null)
     {
         commandState?.Set(isPending: true);
-        await MachineService.DisconnectMachineAsync(machineId);
+        var result = await MachineApiClient.DisconnectMachineAsync(new DisconnectMachineCommand(machineId));
         commandState?.Set(isPending: false);
         await FetchMachinesAsync();
     }

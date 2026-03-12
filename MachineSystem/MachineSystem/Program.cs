@@ -1,9 +1,10 @@
+using MachineSystem.Application.ServiceContracts;
+using MachineSystem.BlazorClient.Services;
+using MachineSystem.BlazorHost.Components;
 using MachineSystem.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
-using MachineSystem.BlazorHost.Components;
 using System.Net.Http.Headers;
 using System.Net.Mime;
-using MachineSystem.Application.ServiceContracts;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,11 +22,12 @@ builder.Services.AddScoped(provider => new HttpClient
 });
 
 // ToDo: When API is moved to separate project
+builder.Services.AddScoped<IMachineApiClient, MachineApiClient>();
 
-builder.Services.AddHttpClient<IMachineApiClient>(client =>
+builder.Services.AddHttpClient<MachineApiClient>(client =>
 {
     //var apiBaseUrl = builder.Configuration.GetSection(nameof(AppConfig)).Get<AppSettings>().BaseUrl
-    client.BaseAddress = new Uri("localhost:5218");
+    client.BaseAddress = new Uri("https://localhost:5218");
     client.Timeout = TimeSpan.FromSeconds(20);
     client.DefaultRequestHeaders.Clear();
     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json));

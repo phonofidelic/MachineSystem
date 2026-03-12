@@ -4,4 +4,4 @@ namespace MachineSystem.Application.Queries;
 
 public record GetMachinesQuery();
 
-public record GetMachinesResult(IEnumerable<MachineListItem> Machines);
+public record GetMachinesResult(List<MachineListItem> Machines);

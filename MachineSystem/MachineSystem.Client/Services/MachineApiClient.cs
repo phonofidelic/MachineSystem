@@ -19,6 +19,7 @@ public class MachineApiClient(IServiceProvider serviceProvider) : IMachineApiCli
         var response = await client.GetAsync("/api/machines");
         if (response.StatusCode is HttpStatusCode.NotFound)
         {
+            return new(Machines: []);
             navigationManager.NavigateTo("/not-found");
         }
         if (response.StatusCode is not HttpStatusCode.OK) throw new Exception("Something went wrong");

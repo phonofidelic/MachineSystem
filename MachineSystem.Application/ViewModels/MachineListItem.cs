@@ -11,4 +11,8 @@ public class MachineListItem
     public string Type { get; set; } = string.Empty;
 
     public MachineStatus Status { get; set; } = default!;
+
+    public string? LastData { get; set; }
+
+    public DateTime LastUpdated { get; set; }
 }
