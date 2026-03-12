@@ -12,69 +12,44 @@ public static class EndpointExtensions
 {
     public static IEndpointRouteBuilder MapApiEndpoints(this IEndpointRouteBuilder builder)
     {
-        builder.MapGet("/api/machines", async (
-            IHandler<GetMachinesQuery, GetMachinesResult> handler
-        ) => {
-            try
-            {
-                var result = await handler.HandleAsync(new GetMachinesQuery());
-                return Results.Ok(result);
-            } catch (Exception ex)
-            {
-                // ToDo: Log error
-                if (ex is MachineNotFoundException)
-                    return Results.NotFound();
-
-                return Results.InternalServerError();
-            }
+        builder.MapGet(
+            "/api/machines", 
+            async (IHandler<GetMachinesQuery, GetMachinesResult> handler) => 
+        {
+            var result = await handler.HandleAsync(new GetMachinesQuery());
+            return Results.Ok(result);
         });
 
-        builder.MapGet("/api/machines/{id:Guid}", async (
-            Guid id,
-            IHandler<GetMachineQuery, GetMachineResult> handler) => {
-            try
-            {
-                var result = await handler.HandleAsync(new GetMachineQuery(id));
-                return Results.Ok(result);
-            } catch (Exception ex)
-            {
-                // ToDo: Log error
-                if (ex is MachineNotFoundException)
-                    return Results.NotFound();
-
-                return Results.InternalServerError();
-            }
+        builder.MapGet(
+            "/api/machines/{id:Guid}", 
+            async (Guid id, IHandler<GetMachineQuery, GetMachineResult> handler) => 
+        {
+            var result = await handler.HandleAsync(new GetMachineQuery(id));
+            return Results.Ok(result);
         });
 
-        builder.MapPatch("/api/machines/{id:Guid}/start", async (
-            Guid id,
-            IHandler<StartMachineCommand, MachineActionResult> handler) => 
+        builder.MapPatch(
+            "/api/machines/{id:Guid}/start", 
+            async (Guid id, IHandler<StartMachineCommand, MachineActionResult> handler) => 
         {
             var result = await handler.HandleAsync(new StartMachineCommand(id));
             return Results.Ok(result);
         });
 
-        builder.MapPatch("/api/machines/{id:Guid}/stop", async (
-            Guid id,
-            IHandler<StopMachineCommand, MachineActionResult> handler) => 
+        builder.MapPatch(
+            "/api/machines/{id:Guid}/stop", 
+            async (Guid id, IHandler<StopMachineCommand, MachineActionResult> handler) => 
         {
             var result = await handler.HandleAsync(new StopMachineCommand(id));
             return Results.Ok(result);
         });
 
-        builder.MapPatch("/api/machines/{id:Guid}/connect", async (Guid id, IMachineService machineService) => {
-            try
-            {
-                await machineService.ConnectMachineAsync(id);
-                return Results.NoContent();
-            } catch (Exception ex)
-            {
-                // ToDo: Log error
-                if (ex is MachineNotFoundException)
-                    return Results.NotFound();
-                
-                return Results.InternalServerError();
-            }
+        builder.MapPatch(
+            "/api/machines/{id:Guid}/connect", 
+            async (Guid id, IHandler<ConnectMachineCommand, MachineActionResult> handler) => 
+        {
+            var result = await handler.HandleAsync(new ConnectMachineCommand(id));
+            return Results.Ok(result);
         });
 
         builder.MapPatch("/api/machines/{id:Guid}/disconnect", async (Guid id, IMachineService machineService) => {

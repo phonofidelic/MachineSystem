@@ -13,7 +13,7 @@ public interface IMachineService
 
     public Task<MachineStatus> StopMachineAsync(Machine machine);
 
-    public Task ConnectMachineAsync(Guid machineId);
+    public Task<MachineStatus> ConnectMachineAsync(Machine machine);
 
     public Task DisconnectMachineAsync(Guid machineId);
 }

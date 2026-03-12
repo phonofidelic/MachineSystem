@@ -41,23 +41,11 @@ public class BlazorHostMachineService(
         return machine.Stop();
     }
 
-    public async Task ConnectMachineAsync(Guid machineId)
+    public async Task<MachineStatus> ConnectMachineAsync(Machine machine)
     {
-        var machine = await machineRepository.GetMachineAsync(machineId) ?? throw new MachineNotFoundException();
-
-        var previousMachineStatus = machine.Status.Clone();
-
         await FakeDelay();
 
-        var newMachineStatus = new MachineStatus(
-            isOnline: true,
-            isOperational: previousMachineStatus.IsOperational,
-            isRunning: previousMachineStatus.IsRunning
-        );
-
-        machine.SetStatus(newMachineStatus);
-
-        await unitOfWork.SaveAsync();
+        return machine.Connect();
     }
 
     public async Task DisconnectMachineAsync(Guid machineId)
@@ -79,35 +67,9 @@ public class BlazorHostMachineService(
         await unitOfWork.SaveAsync();
     }
 
-    private static bool CanStartMachine(Machine machine)
-    {
-        if (machine.Status.IsRunning) return false;
-
-        if (!machine.Status.IsOperational)
-            throw new Exception("Machine is not operational");
-
-        if (!machine.Status.IsOnline)
-            throw new Exception("Could not connect to machine");
-
-        return true;
-    }
-
-    private static bool CanStopMachine(Machine machine)
-    {
-        if (!machine.Status.IsRunning) return false;
-
-        if (!machine.Status.IsOperational)
-            throw new Exception("Machine is not operational");
-
-        if (!machine.Status.IsOnline)
-            throw new Exception("Could not connect to machine");
-
-        return true;
-    }
-
     private async Task FakeDelay()
     {
-        int delayTime = random.Next(0, 5) * 1000;
+        int delayTime = random.Next(1, 5) * 1000;
         await Task.Delay(delayTime);
     }
 }
