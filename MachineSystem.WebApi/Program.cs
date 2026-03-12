@@ -2,6 +2,7 @@ using MachineSystem.Application.Repositories;
 using MachineSystem.Application.ServiceContracts;
 using MachineSystem.Infrastructure.Data;
 using MachineSystem.Infrastructure.Services;
+using MachineSystem.WebApi;
 using MachineSystem.WebApi.Endpoints;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,6 +15,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IMachineRepository, MachineRepository>();
 builder.Services.AddScoped<IMachineService, MachineService>();
+builder.Services.AddScopedHandlers();
 
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
