@@ -1,4 +1,3 @@
-using System;
 using MachineSystem.Domain.ValueObjects;
 
 namespace MachineSystem.Application.ViewModels;

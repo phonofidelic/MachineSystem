@@ -28,11 +28,13 @@ public static class EndpointExtensions
             }
         });
 
-        builder.MapGet("/api/machines/{id:Guid}", async (Guid id, IMachineService machineService) => {
+        builder.MapGet("/api/machines/{id:Guid}", async (
+            Guid id,
+            IHandler<GetMachineQuery, GetMachineResult> handler) => {
             try
             {
-                var machine = await machineService.GetMachineAsync(id);
-                return Results.Ok(machine);
+                var result = await handler.HandleAsync(new GetMachineQuery(id));
+                return Results.Ok(result);
             } catch (Exception ex)
             {
                 // ToDo: Log error
