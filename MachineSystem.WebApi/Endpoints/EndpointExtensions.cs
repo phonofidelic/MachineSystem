@@ -1,9 +1,6 @@
 using MachineSystem.Application;
 using MachineSystem.Application.Commands;
 using MachineSystem.Application.Queries;
-using MachineSystem.Application.Services.MachineService;
-using MachineSystem.Application.Services.MachineService.Exceptions;
-using MachineSystem.Application.UseCases.StartMachine;
 
 // ToDo: Move to separate project
 namespace MachineSystem.WebApi.Endpoints;
@@ -52,19 +49,12 @@ public static class EndpointExtensions
             return Results.Ok(result);
         });
 
-        builder.MapPatch("/api/machines/{id:Guid}/disconnect", async (Guid id, IMachineService machineService) => {
-            try
-            {
-                await machineService.DisconnectMachineAsync(id);
-                return Results.NoContent();
-            } catch (Exception ex)
-            {
-                // ToDo: Log error
-                if (ex is MachineNotFoundException)
-                    return Results.NotFound();
-                
-                return Results.InternalServerError();
-            }
+        builder.MapPatch(
+            "/api/machines/{id:Guid}/disconnect", 
+            async (Guid id, IHandler<DisconnectMachineCommand, MachineActionResult> handler) => 
+        {
+            var result = await handler.HandleAsync(new DisconnectMachineCommand(id));
+            return Results.Ok(result);
         });
 
         return builder;
