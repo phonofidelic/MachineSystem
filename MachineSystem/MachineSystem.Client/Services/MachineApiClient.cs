@@ -9,22 +9,22 @@ using Microsoft.AspNetCore.Components;
 namespace MachineSystem.BlazorClient.Services;
 
 // ToDo: Use cancellation tokens
-public class MachineApiClient(IServiceProvider serviceProvider) : IMachineApiClient
+public class MachineApiClient(HttpClient client) : IMachineApiClient
 {
-    private readonly HttpClient client = serviceProvider.GetRequiredService<HttpClient>();    
-    private readonly NavigationManager navigationManager = serviceProvider.GetRequiredService<NavigationManager>();
+    //private readonly HttpClient client = serviceProvider.GetRequiredService<HttpClient>();    
+    //private readonly NavigationManager navigationManager = serviceProvider.GetRequiredService<NavigationManager>();
     
     public async Task<GetMachinesResult> GetMachinesAsync(GetMachinesQuery query)
     {
-        var response = await client.GetAsync("/api/machines");
-        if (response.StatusCode is HttpStatusCode.NotFound)
-        {
-            return new(Machines: []);
-            navigationManager.NavigateTo("/not-found");
-        }
-        if (response.StatusCode is not HttpStatusCode.OK) throw new Exception("Something went wrong");
+        return await client.GetFromJsonAsync<GetMachinesResult>("https://localhost:7026/api/machines") ?? throw new Exception("Something went wrong");
+        //if (response.StatusCode is HttpStatusCode.NotFound)
+        //{
+        //    return new(Machines: []);
+        //    //navigationManager.NavigateTo("/not-found");
+        //}
+        //if (response.StatusCode is not HttpStatusCode.OK) throw new Exception("Something went wrong");
 
-        return await response.Content.ReadFromJsonAsync<GetMachinesResult>() ?? throw new Exception("Something went wrong");
+        //return await response.Content.ReadFromJsonAsync<GetMachinesResult>() ?? throw new Exception("Something went wrong");
     }
 
     public async Task<GetMachineResult> GetMachineAsync(GetMachineQuery query)

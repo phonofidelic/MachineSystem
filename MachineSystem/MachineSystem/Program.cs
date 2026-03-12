@@ -1,8 +1,7 @@
 using MachineSystem.Application.ServiceContracts;
 using MachineSystem.BlazorClient.Services;
 using MachineSystem.BlazorHost.Components;
-using MachineSystem.Infrastructure.Data;
-using Microsoft.EntityFrameworkCore;
+using MachineSystem.BlazorHost.Endpoints;
 using System.Net.Http.Headers;
 using System.Net.Mime;
 
@@ -13,21 +12,32 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveWebAssemblyComponents();
 
-builder.Services.AddDbContext<ApplicationDbContext>(
-   options => options.UseInMemoryDatabase("MachineSystem.InMemoryDb"));
+builder.Services.AddScoped<ILogger, Logger<LoggerFactory>>();
 
-builder.Services.AddScoped(provider => new HttpClient
-{
-    BaseAddress = new Uri("http://localhost:5088")
-});
+//builder.Services.AddDbContext<ApplicationDbContext>(
+//   options => options.UseInMemoryDatabase("MachineSystem.InMemoryDb"));
+
+//builder.Services.AddScoped(provider => new HttpClient
+//{
+//    BaseAddress = new Uri("http://localhost:5088")
+//});
 
 // ToDo: When API is moved to separate project
 builder.Services.AddScoped<IMachineApiClient, MachineApiClient>();
 
+builder.Services.AddHttpClient("DefaultClient", client =>
+{
+    //var apiBaseUrl = builder.Configuration.GetSection(nameof(AppConfig)).Get<AppSettings>().BaseUrl
+    client.BaseAddress = new Uri("https://localhost:7026");
+    client.Timeout = TimeSpan.FromSeconds(20);
+    client.DefaultRequestHeaders.Clear();
+    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json));
+});
+
 builder.Services.AddHttpClient<MachineApiClient>(client =>
 {
     //var apiBaseUrl = builder.Configuration.GetSection(nameof(AppConfig)).Get<AppSettings>().BaseUrl
-    client.BaseAddress = new Uri("https://localhost:5218");
+    client.BaseAddress = new Uri("https://localhost:7026");
     client.Timeout = TimeSpan.FromSeconds(20);
     client.DefaultRequestHeaders.Clear();
     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json));
@@ -40,8 +50,8 @@ if (app.Environment.IsDevelopment())
 {
     app.UseWebAssemblyDebugging();
 
-    using var scope = app.Services.CreateScope();
-    await Seeder.SeedDatabase(15, scope.ServiceProvider);
+    //using var scope = app.Services.CreateScope();
+    //await Seeder.SeedDatabase(15, scope.ServiceProvider);
 }
 else
 {
@@ -58,5 +68,7 @@ app.MapStaticAssets();
 app.MapRazorComponents<App>()
     .AddInteractiveWebAssemblyRenderMode()
     .AddAdditionalAssemblies(typeof(MachineSystem.BlazorClient._Imports).Assembly);
+
+app.MapApiClientProxyEndpoints();
 
 app.Run();
