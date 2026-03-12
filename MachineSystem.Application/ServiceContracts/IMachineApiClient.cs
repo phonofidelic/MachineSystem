@@ -1,7 +1,7 @@
 ﻿using MachineSystem.Application.Commands;
 using MachineSystem.Application.Queries;
 
-namespace MachineSystem.Application.Services.MachineApiClient;
+namespace MachineSystem.Application.ServiceContracts;
 
 public interface IMachineApiClient
 {

@@ -1,4 +1,4 @@
-﻿using MachineSystem.Application.Services.MachineService;
+﻿using MachineSystem.Application.ServiceContracts;
 using MachineSystem.Domain.Entities;
 using MachineSystem.Domain.ValueObjects;
 

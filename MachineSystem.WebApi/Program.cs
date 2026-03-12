@@ -1,6 +1,5 @@
 using MachineSystem.Application.Repositories;
-using MachineSystem.Application.Services;
-using MachineSystem.Application.Services.MachineService;
+using MachineSystem.Application.ServiceContracts;
 using MachineSystem.Infrastructure.Data;
 using MachineSystem.Infrastructure.Services;
 using MachineSystem.WebApi.Endpoints;

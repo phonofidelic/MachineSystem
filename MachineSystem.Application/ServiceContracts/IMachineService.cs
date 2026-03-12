@@ -1,7 +1,7 @@
 using MachineSystem.Domain.Entities;
 using MachineSystem.Domain.ValueObjects;
 
-namespace MachineSystem.Application.Services.MachineService;
+namespace MachineSystem.Application.ServiceContracts;
 
 public interface IMachineService
 {

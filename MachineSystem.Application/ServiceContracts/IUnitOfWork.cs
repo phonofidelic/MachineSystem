@@ -1,4 +1,4 @@
-﻿namespace MachineSystem.Application.Services;
+﻿namespace MachineSystem.Application.ServiceContracts;
 
 public interface IUnitOfWork
 {

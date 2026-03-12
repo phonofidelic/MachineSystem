@@ -1,5 +1,4 @@
-using System;
-using MachineSystem.Application.Services;
+using MachineSystem.Application.ServiceContracts;
 
 namespace MachineSystem.Infrastructure.Data;
 
