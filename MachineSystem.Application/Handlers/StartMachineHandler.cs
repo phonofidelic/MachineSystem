@@ -17,7 +17,7 @@ public class StartMachineHandler(
     {
         try
         {
-            var machine = await machineRepository.GetMachineAsync(command.machineId) ?? throw new MachineNotFoundException();
+            var machine = await machineRepository.GetMachineAsync(command.MachineId) ?? throw new MachineNotFoundException();
 
             // ToDo: Simulate request to a physical machine in MachineService implementation
             await Task.Delay(random.Next(0, 3) * 1000);
