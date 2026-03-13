@@ -9,6 +9,8 @@ public static class EndpointExtensions
 {
     public static IEndpointRouteBuilder MapApiEndpoints(this IEndpointRouteBuilder builder)
     {
+        var logger = builder.ServiceProvider.GetRequiredService<ILogger<LoggerFactory>>();
+
         builder.MapGet(
             "/api/machines", 
             async (IHandler<GetMachinesQuery, GetMachinesResult> handler) => 
@@ -29,6 +31,7 @@ public static class EndpointExtensions
             "/api/machines/{id:Guid}/start", 
             async (Guid id, IHandler<StartMachineCommand, MachineActionResult> handler) => 
         {
+            logger.LogInformation($"Starting machine {id}");
             var result = await handler.HandleAsync(new StartMachineCommand(id));
             return Results.Ok(result);
         });

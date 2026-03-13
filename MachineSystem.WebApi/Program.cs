@@ -12,6 +12,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(
    options => options.UseInMemoryDatabase("MachineSystem.InMemoryDb"));
 
 // Add services to the container
+builder.Services.AddSingleton<ILogger, Logger<LoggerFactory>>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IMachineRepository, MachineRepository>();
 builder.Services.AddScoped<IMachineService, MachineService>();
