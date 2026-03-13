@@ -1,85 +1,114 @@
-@if (machines is null) {
-    <MachineListSkeleton />
-} else if (machines.Count == 0)
-{
-    <div class="hero py-6 min-h-auto">
-        <div class="hero-content text-center">
-            <div class="max-w-md">
-                <h4 class="text-5xl">All quiet...</h4>
-                <p class="py-5">
-                    Added machines will show up here.
-                </p>
-                <button class="btn btn-primary">Add a Machine</button>
+@rendermode InteractiveWebAssembly
+
+<ErrorBoundary @ref="errorBoundary">
+    <ChildContent>
+    @if (machines is null) {
+        <MachineListSkeleton />
+    } else if (machines.Count == 0)
+    {
+        <div class="hero py-6 min-h-auto">
+            <div class="hero-content text-center">
+                <div class="max-w-md">
+                    <h4 class="text-5xl">All quiet...</h4>
+                    <p class="py-5">
+                        Added machines will show up here.
+                    </p>
+                    <button class="btn btn-primary">Add a Machine</button>
+                </div>
             </div>
         </div>
+    } else {
+        <div class="flex w-full justify-between p-2">
+            <h3 class="text-lg">Machines</h3>
+            <button class="btn btn-primary btn-sm">
+                <PlusIcon />
+                Add Machine
+            </button>
+        </div>
+        <div class="relative h-full w-full">
+            <div class="overflow-x-auto overflow-y-scroll h-full w-full absolute bottom-0 top-0 pb-12">
+                <Table>
+                    <TableHeader>
+                        <MachineListTableHeader />
+                    </TableHeader>
+                    <TableBody>
+                        @foreach (var machine in machines) 
+                        {
+                            <MachineListTableRow
+                                @key="machine.Id"
+                                Title="@machine.Name"
+                                SubTitle="@machine.Id.ToString()"
+                                Status="@machine.Status"
+                                LastData="@machine.LastData"
+                                LastUpdated="@machine.LastUpdated"
+                            >
+                                <Actions>
+                                    <div class="flex gap-2">
+                                        <MachineCommandButton ClassName="btn" Disabled="@(!machine.Status.IsOnline)" OnClick="@((commandState) => machine.Status.IsRunning ? StopMachine(machine.Id, commandState) : StartMachine(machine.Id, commandState))">
+                                            <ButtonContent>
+                                                <label class="swap @(machine.Status.IsRunning ? "swap-active" : "")">
+                                                    <span class="swap-off">Start</span>
+                                                    <span class="swap-on">Stop</span>
+                                                </label>
+                                            </ButtonContent>
+                                        </MachineCommandButton>
+                                        <div class="tooltip" data-tip="@(machine.Status.IsOnline ? "take offline" : "bring online")">
+                                            <MachineCommandButton 
+                                                ClassName="@(
+                                                    machine.Status.IsOnline
+                                                    ? "group btn btn-square btn-soft hover:bg-red-400/20 hover:border-red-400 hover:text-red-400"
+                                                    : "group btn btn-square btn-soft hover:bg-green-400/20 hover:border-green-400 hover:text-green-400")" 
+                                                OnClick="(commandState) => machine.Status.IsOnline ? DisconnectMachine(machine.Id, commandState) : ConnectMachine(machine.Id, commandState)">
+                                                <ButtonContent>
+                                                        <span class="group-hover:hidden mx-auto">
+                                                            @if (machine.Status.IsOnline) {
+                                                                <WifiOnIcon /> 
+                                                            } else {
+                                                                <WifiOffIcon />
+                                                            }
+                                                        </span>
+                                                        <span class="hidden group-hover:inline mx-auto">
+                                                            @if (machine.Status.IsOnline) {
+                                                                <WifiOffIcon />
+                                                            } else {
+                                                                <WifiOnIcon /> 
+                                                            }
+                                                        </span>
+                                                </ButtonContent>
+                                            </MachineCommandButton>
+                                        </div>
+                                        <button class="btn btn-square btn-soft hover:bg-red-500/20 hover:border-red-400 hover:text-red-400">
+                                            <TrashIcon />
+                                        </button>
+                                    </div>
+                                </Actions>
+                            </MachineListTableRow>
+                        }
+                    </TableBody>
+                </Table>
+            </div>
+        </div>
+    }
+    <div class="@(ErrorMessage is null ? "hidden" : "visible") fixed w-full bottom-0 flex right-0 left-0 p-4 z-40">
+        <div role="alert" class="alert alert-vertical sm:alert-horizontal alert-warning w-full max-w-fit mx-auto">
+            <AlertIcon />
+            <span>
+                @ErrorMessage
+            </span>
+        </div>
     </div>
-} else {
-    <div class="flex w-full justify-between">
-        <h3 class="text-lg">Machines</h3>
-        <button class="btn btn-primary btn-sm">
-            <PlusIcon />
-            Add Machine
-        </button>
-    </div>
-    <div class="overflow-x-auto">
-        <Table>
-            <TableHeader>
-                <MachineListTableHeader />
-            </TableHeader>
-            <TableBody>
-                @foreach (var machine in machines) 
-                {
-                    <MachineListTableRow
-                        @key="machine.Id"
-                        Title="@machine.Name"
-                        SubTitle="@machine.Id.ToString()"
-                        Status="@machine.Status"
-                        LastData="@machine.LastData"
-                        LastUpdated="@machine.LastUpdated"
-                    >
-                        <Actions>
-                            <div class="flex gap-2">
-                                <MachineCommandButton ClassName="btn" Disabled="@(!machine.Status.IsOnline)" OnClick="(commandState) => machine.Status.IsRunning ? StopMachine(machine.Id, commandState) : StartMachine(machine.Id, commandState)">
-                                    <ButtonContent>
-                                        <label class="swap @(machine.Status.IsRunning ? "swap-active" : "")">
-                                            <span class="swap-off">Start</span>
-                                            <span class="swap-on">Stop</span>
-                                        </label>
-                                    </ButtonContent>
-                                </MachineCommandButton>
-                                <div class="tooltip" data-tip="@(machine.Status.IsOnline ? "take offline" : "bring online")">
-                                    <MachineCommandButton 
-                                        ClassName="@(
-                                            machine.Status.IsOnline
-                                            ? "group btn btn-square btn-soft hover:bg-red-400/20 hover:border-red-400 hover:text-red-400"
-                                            : "group btn btn-square btn-soft hover:bg-green-400/20 hover:border-green-400 hover:text-green-400")" 
-                                        OnClick="(commandState) => machine.Status.IsOnline ? DisconnectMachine(machine.Id, commandState) : ConnectMachine(machine.Id, commandState)">
-                                        <ButtonContent>
-                                                <span class="group-hover:hidden mx-auto">
-                                                    @if (machine.Status.IsOnline) {
-                                                        <WifiOnIcon /> 
-                                                    } else {
-                                                        <WifiOffIcon />
-                                                    }
-                                                </span>
-                                                <span class="hidden group-hover:inline mx-auto">
-                                                    @if (machine.Status.IsOnline) {
-                                                        <WifiOffIcon />
-                                                    } else {
-                                                        <WifiOnIcon /> 
-                                                    }
-                                                </span>
-                                        </ButtonContent>
-                                    </MachineCommandButton>
-                                </div>
-                                <button class="btn btn-square btn-soft hover:bg-red-500/20 hover:border-red-400 hover:text-red-400">
-                                    <TrashIcon />
-                                </button>
-                            </div>
-                        </Actions>
-                    </MachineListTableRow>
-                }
-            </TableBody>
-        </Table>
-    </div>
-}
+    </ChildContent>
+    <ErrorContent>
+        <div class="hero py-6 min-h-auto">
+            <div class="hero-content text-center">
+                <div class="max-w-md">
+                    <h4 class="text-5xl">Oops!</h4>
+                    <p class="py-5">
+                        Something went wrong :(
+                    </p>
+                    <button class="btn btn-primary" @onclick="() => errorBoundary?.Recover()">Try to reload</button>
+                </div>
+            </div>
+        </div>
+    </ErrorContent>
+</ErrorBoundary>

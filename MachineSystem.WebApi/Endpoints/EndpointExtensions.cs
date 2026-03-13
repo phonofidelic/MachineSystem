@@ -1,0 +1,65 @@
+using MachineSystem.Application.Commands;
+using MachineSystem.Application.Queries;
+using MachineSystem.Application.ServiceContracts;
+
+// ToDo: Move to separate project
+namespace MachineSystem.WebApi.Endpoints;
+
+public static class EndpointExtensions
+{
+    public static IEndpointRouteBuilder MapApiEndpoints(this IEndpointRouteBuilder builder)
+    {
+        var logger = builder.ServiceProvider.GetRequiredService<ILogger<LoggerFactory>>();
+
+        builder.MapGet(
+            "/api/machines", 
+            async (IHandler<GetMachinesQuery, GetMachinesResult> handler) => 
+        {
+            var result = await handler.HandleAsync(new GetMachinesQuery());
+            return Results.Ok(result);
+        });
+
+        builder.MapGet(
+            "/api/machines/{id:Guid}", 
+            async (Guid id, IHandler<GetMachineQuery, GetMachineResult> handler) => 
+        {
+            var result = await handler.HandleAsync(new GetMachineQuery(id));
+            return Results.Ok(result);
+        });
+
+        builder.MapPatch(
+            "/api/machines/{id:Guid}/start", 
+            async (Guid id, IHandler<StartMachineCommand, MachineActionResult> handler) => 
+        {
+            logger.LogInformation($"Starting machine {id}");
+            var result = await handler.HandleAsync(new StartMachineCommand(id));
+            return Results.Ok(result);
+        });
+
+        builder.MapPatch(
+            "/api/machines/{id:Guid}/stop", 
+            async (Guid id, IHandler<StopMachineCommand, MachineActionResult> handler) => 
+        {
+            var result = await handler.HandleAsync(new StopMachineCommand(id));
+            return Results.Ok(result);
+        });
+
+        builder.MapPatch(
+            "/api/machines/{id:Guid}/connect", 
+            async (Guid id, IHandler<ConnectMachineCommand, MachineActionResult> handler) => 
+        {
+            var result = await handler.HandleAsync(new ConnectMachineCommand(id));
+            return Results.Ok(result);
+        });
+
+        builder.MapPatch(
+            "/api/machines/{id:Guid}/disconnect", 
+            async (Guid id, IHandler<DisconnectMachineCommand, MachineActionResult> handler) => 
+        {
+            var result = await handler.HandleAsync(new DisconnectMachineCommand(id));
+            return Results.Ok(result);
+        });
+
+        return builder;
+    }
+}

@@ -1,14 +1,13 @@
 
-namespace MachineSystem.Client.Components.MachineList;
+namespace MachineSystem.BlazorClient.Components.MachineList;
 
 public class MachineCommandState
 {
     public bool IsPending { get; set; }
-    public bool IsError { get; set; }
 
-    public void Set(bool? isPending = null, bool? isError = null)
+    public void Set(
+        bool isPending)
     {
-        IsPending = isPending ?? IsPending;
-        IsError = isError ?? IsError;
+        IsPending = isPending;
     }
 };
