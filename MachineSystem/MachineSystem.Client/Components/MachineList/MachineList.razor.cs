@@ -12,7 +12,7 @@ public partial class MachineList
 {
     private IReadOnlyList<MachineListItem>? machines = [];
 
-    private string? errorMessage { get; set; } = null;
+    private string? ErrorMessage { get; set; } = null;
 
     private ErrorBoundaryBase? errorBoundary;
 
@@ -30,9 +30,9 @@ public partial class MachineList
         var result = await MachineApiClient.GetMachinesAsync(new GetMachinesQuery());
 
         if (result == null) {
-            errorMessage = GetUiErrorMessage(new MachineNotFoundException());
+            ErrorMessage = GetUiErrorMessage(new MachineNotFoundException());
             await Task.Delay(3000);
-            errorMessage = null;
+            ErrorMessage = null;
             return;
         }
 
@@ -66,17 +66,17 @@ public partial class MachineList
         {
             commandState.Set(isPending: true);
 
-            var result = await MachineApiClient.StartMachineAsync(new StartMachineCommand(machineId));
+            var result = await MachineApiClient.StartMachineAsync(new StartMachineCommand(Guid.NewGuid()));
             UpdateMachineStatus(machineId, result);
 
             commandState.Set(isPending: false);
         } catch(Exception ex)
         {
-            commandState.Set(isPending: false, isError: true);
+            commandState.Set(isPending: false);
             // Show error UI
-            errorMessage = GetUiErrorMessage(ex);
+            ErrorMessage = GetUiErrorMessage(ex);
             await Task.Delay(3000);
-            errorMessage = null;
+            ErrorMessage = null;
         }
     }
 
