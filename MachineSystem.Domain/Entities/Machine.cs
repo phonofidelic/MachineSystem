@@ -14,7 +14,7 @@ public class Machine : BaseCreatableEntity<Guid>
 
     public string? LastData { get; set; }
 
-    public DateTime LastUpdated { get; set; } = DateTime.UtcNow;
+    public DateTime LastUpdated { get; set; }
 
     public void SetStatus(MachineStatus newStatus)
     {

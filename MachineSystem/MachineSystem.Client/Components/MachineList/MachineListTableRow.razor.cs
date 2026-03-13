@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using MachineSystem.Domain.ValueObjects;
 using Microsoft.AspNetCore.Components;
 
-namespace MachineSystem.Client.Components.MachineList;
+namespace MachineSystem.BlazorClient.Components.MachineList;
 
 public partial class MachineListTableRow
 {

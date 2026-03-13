@@ -1,42 +1,30 @@
-using MachineSystem.Application.Repositories;
-using MachineSystem.Application.Services;
-using MachineSystem.Application.Services.MachineService;
-using MachineSystem.Components;
-using MachineSystem.Api.Extensions;
-using MachineSystem.Infrastructure.Data;
-using MachineSystem.Services;
-using Microsoft.EntityFrameworkCore;
+using MachineSystem.Application.ServiceContracts;
+using MachineSystem.BlazorClient.Services;
+using MachineSystem.BlazorHost.Components;
+using MachineSystem.BlazorHost.Endpoints;
+using System.Net.Http.Headers;
+using System.Net.Mime;
 
 var builder = WebApplication.CreateBuilder(args);
 
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
+    .AddInteractiveServerComponents()
     .AddInteractiveWebAssemblyComponents();
 
-builder.Services.AddDbContext<ApplicationDbContext>(
-   options => options.UseInMemoryDatabase("MachineSystem.InMemoryDb"));
+builder.Services.AddScoped<ILogger, Logger<LoggerFactory>>();
 
-builder.Services.AddScoped(provider => new HttpClient
+builder.Services.AddHttpClient(nameof(MachineApiClient), client =>
 {
-    BaseAddress = new Uri("http://localhost:5088")
+    //var apiBaseUrl = builder.Configuration.GetSection(nameof(AppConfig)).Get<AppSettings>().BaseUrl
+    client.BaseAddress = new Uri("http://localhost:5218");
+    client.Timeout = TimeSpan.FromSeconds(20);
+    client.DefaultRequestHeaders.Clear();
+    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json));
 });
 
-// ToDo: When API is moved to separate project
-
-//builder.Services.AddHttpClient("MachineApiClient", client =>
-//{
-//    //var apiBaseUrl = builder.Configuration.GetSection(nameof(AppConfig)).Get<AppSettings>().BaseUrl
-//    client.BaseAddress = new Uri("...");
-//    client.Timeout = TimeSpan.FromSeconds(20);
-//    client.DefaultRequestHeaders.Clear();
-//    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json));
-//});
-
-builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-builder.Services.AddScoped<IMachineRepository, MachineRepository>();
-builder.Services.AddScoped<IMachineService, ServerMachineService>();
-
+builder.Services.AddScoped<IMachineApiClient, MachineApiClient>();
 
 var app = builder.Build();
 
@@ -45,8 +33,8 @@ if (app.Environment.IsDevelopment())
 {
     app.UseWebAssemblyDebugging();
 
-    using var scope = app.Services.CreateScope();
-    await Seeder.SeedDatabase(15, scope.ServiceProvider);
+    //using var scope = app.Services.CreateScope();
+    //await Seeder.SeedDatabase(15, scope.ServiceProvider);
 }
 else
 {
@@ -61,10 +49,10 @@ app.UseAntiforgery();
 
 app.MapStaticAssets();
 app.MapRazorComponents<App>()
+    .AddInteractiveServerRenderMode()
     .AddInteractiveWebAssemblyRenderMode()
-    .AddAdditionalAssemblies(typeof(MachineSystem.Client._Imports).Assembly);
+    .AddAdditionalAssemblies(typeof(MachineSystem.BlazorClient._Imports).Assembly);
 
-// ToDo: Move to separate project
-app.MapApiEndpoints();
+app.MapApiClientProxyEndpoints(nameof(MachineApiClient));
 
 app.Run();

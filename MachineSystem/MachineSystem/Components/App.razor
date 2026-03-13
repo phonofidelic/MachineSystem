@@ -10,13 +10,13 @@
     <link rel="stylesheet" href="@Assets["MachineSystem.styles.css"]" />
     <ImportMap />
     <link rel="icon" type="image/png" href="favicon.png" />
-    <script src="@Assets["daisyui/index.min.js"]"></script>
+    <script type="module" src="@Assets["/lib/daisyui/index.min.js"]"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <HeadOutlet @rendermode="InteractiveWebAssembly" />
 </head>
 
 <body class="bg-base-200 w-screen h-screen">
-    <Routes @rendermode="InteractiveWebAssembly" />
+    <Routes @rendermode="InteractiveAuto" />
     <script src="@Assets["_framework/blazor.web.js"]"></script>
 </body>
 

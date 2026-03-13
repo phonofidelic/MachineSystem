@@ -1,4 +1,4 @@
 
-namespace MachineSystem.Client.Pages;
+namespace MachineSystem.BlazorClient.Pages;
 public partial class Home
 ();
