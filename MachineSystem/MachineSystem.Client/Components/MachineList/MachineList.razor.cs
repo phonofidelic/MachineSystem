@@ -63,23 +63,12 @@ public partial class MachineList
 
             machines = machines?.Select(m =>
                 { 
-                    if (m.Id == machineId)
-                    {
-                        return new MachineListItem
-                        {
-                            Id = m.Id,
-                            Name = m.Name,
-                            Type = m.Type,
-                            Status = new MachineStatus(
-                                isOnline: result.IsOnline,
-                                isOperational: result.IsOperational,
-                                isRunning: result.IsRunning
-                            ),
-                            LastData = m.LastData,
-                            LastUpdated = m.LastUpdated
-                        };
-                    }
-
+                    if (m.Id != machineId) return m;
+                    m.Status = new MachineStatus(
+                        isOnline: result.IsOnline,
+                        isOperational: result.IsOperational,
+                        isRunning: result.IsRunning
+                    );
                     return m;
                 }).ToList();
 

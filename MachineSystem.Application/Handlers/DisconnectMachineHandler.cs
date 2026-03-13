@@ -7,11 +7,14 @@ namespace MachineSystem.Application.Handlers;
 
 public class DisconnectMachineHandler(
     IMachineRepository machineRepository,
-    IMachineService machineService) : IHandler<DisconnectMachineCommand, MachineActionResult>
+    IMachineService machineService,
+    IUnitOfWork unitOfWork) : IHandler<DisconnectMachineCommand, MachineActionResult>
 {
     private readonly IMachineRepository machineRepository = machineRepository;
     
     private readonly IMachineService machineService = machineService;    
+
+    private readonly IUnitOfWork unitOfWork = unitOfWork;
     
     public async Task<MachineActionResult> HandleAsync(DisconnectMachineCommand command)
     {
@@ -22,6 +25,7 @@ public class DisconnectMachineHandler(
             // Simulate request to a physical machine in MachineService implementation.
             // Machine entity enforces invariants to ensure valid state.
             var status = await machineService.DisconnectMachineAsync(machine);
+            await unitOfWork.SaveAsync();
 
             return new MachineActionResult(status.IsOnline, status.IsOperational, status.IsRunning);
         } catch (Exception)
