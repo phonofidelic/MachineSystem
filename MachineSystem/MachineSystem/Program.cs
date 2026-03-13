@@ -10,38 +10,21 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
+    .AddInteractiveServerComponents()
     .AddInteractiveWebAssemblyComponents();
 
 builder.Services.AddScoped<ILogger, Logger<LoggerFactory>>();
 
-//builder.Services.AddDbContext<ApplicationDbContext>(
-//   options => options.UseInMemoryDatabase("MachineSystem.InMemoryDb"));
+builder.Services.AddHttpClient(nameof(MachineApiClient), client =>
+{
+    //var apiBaseUrl = builder.Configuration.GetSection(nameof(AppConfig)).Get<AppSettings>().BaseUrl
+    client.BaseAddress = new Uri("http://localhost:5218");
+    client.Timeout = TimeSpan.FromSeconds(20);
+    client.DefaultRequestHeaders.Clear();
+    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json));
+});
 
-//builder.Services.AddScoped(provider => new HttpClient
-//{
-//    BaseAddress = new Uri("http://localhost:5088")
-//});
-
-// ToDo: When API is moved to separate project
 builder.Services.AddScoped<IMachineApiClient, MachineApiClient>();
-
-builder.Services.AddHttpClient("DefaultClient", client =>
-{
-    //var apiBaseUrl = builder.Configuration.GetSection(nameof(AppConfig)).Get<AppSettings>().BaseUrl
-    client.BaseAddress = new Uri("https://localhost:7026");
-    client.Timeout = TimeSpan.FromSeconds(20);
-    client.DefaultRequestHeaders.Clear();
-    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json));
-});
-
-builder.Services.AddHttpClient<MachineApiClient>(client =>
-{
-    //var apiBaseUrl = builder.Configuration.GetSection(nameof(AppConfig)).Get<AppSettings>().BaseUrl
-    client.BaseAddress = new Uri("https://localhost:7026");
-    client.Timeout = TimeSpan.FromSeconds(20);
-    client.DefaultRequestHeaders.Clear();
-    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json));
-});
 
 var app = builder.Build();
 
@@ -66,9 +49,10 @@ app.UseAntiforgery();
 
 app.MapStaticAssets();
 app.MapRazorComponents<App>()
+    .AddInteractiveServerRenderMode()
     .AddInteractiveWebAssemblyRenderMode()
     .AddAdditionalAssemblies(typeof(MachineSystem.BlazorClient._Imports).Assembly);
 
-app.MapApiClientProxyEndpoints();
+app.MapApiClientProxyEndpoints(nameof(MachineApiClient));
 
 app.Run();

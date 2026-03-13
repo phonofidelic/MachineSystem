@@ -4,14 +4,9 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
-//builder.Services.AddScoped(provider => new HttpClient
-//{
-//    BaseAddress = new Uri(builder.HostEnvironment.BaseAddress)
-//});
+builder.Services.AddHttpClient(nameof(MachineApiClient), client =>
+    client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress));
 
 builder.Services.AddScoped<IMachineApiClient, MachineApiClient>();
-
-builder.Services.AddHttpClient<MachineApiClient>(client =>
-    client.BaseAddress = new Uri($"{builder.HostEnvironment.BaseAddress}/proxy"));
 
 await builder.Build().RunAsync();

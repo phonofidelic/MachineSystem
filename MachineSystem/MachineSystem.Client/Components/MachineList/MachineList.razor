@@ -1,3 +1,5 @@
+@rendermode InteractiveWebAssembly
+
 @if (machines is null) {
     <MachineListSkeleton />
 } else if (machines.Count == 0)
@@ -40,7 +42,7 @@
                         >
                             <Actions>
                                 <div class="flex gap-2">
-                                    <MachineCommandButton ClassName="btn" Disabled="@(!machine.Status.IsOnline)" OnClick="(commandState) => machine.Status.IsRunning ? StopMachine(machine.Id, commandState) : StartMachine(machine.Id, commandState)">
+                                    <MachineCommandButton ClassName="btn" Disabled="@(!machine.Status.IsOnline)" OnClick="@((commandState) => machine.Status.IsRunning ? StopMachine(machine.Id, commandState) : StartMachine(machine.Id, commandState))">
                                         <ButtonContent>
                                             <label class="swap @(machine.Status.IsRunning ? "swap-active" : "")">
                                                 <span class="swap-off">Start</span>

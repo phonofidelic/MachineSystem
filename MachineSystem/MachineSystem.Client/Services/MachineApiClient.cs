@@ -4,43 +4,31 @@ using MachineSystem.Application.Commands;
 using MachineSystem.Application.Queries;
 using MachineSystem.Application.ServiceContracts;
 using MachineSystem.Application.Services.MachineService.Exceptions;
-using Microsoft.AspNetCore.Components;
 
 namespace MachineSystem.BlazorClient.Services;
 
 // ToDo: Use cancellation tokens
-public class MachineApiClient(HttpClient client) : IMachineApiClient
+public class MachineApiClient(IHttpClientFactory clientFactory) : IMachineApiClient
 {
-    //private readonly HttpClient client = serviceProvider.GetRequiredService<HttpClient>();    
+    private readonly HttpClient client = clientFactory.CreateClient("MachineApiClient");
     //private readonly NavigationManager navigationManager = serviceProvider.GetRequiredService<NavigationManager>();
     
     public async Task<GetMachinesResult> GetMachinesAsync(GetMachinesQuery query)
     {
-        return await client.GetFromJsonAsync<GetMachinesResult>("https://localhost:7026/api/machines") ?? throw new Exception("Something went wrong");
-        //if (response.StatusCode is HttpStatusCode.NotFound)
-        //{
-        //    return new(Machines: []);
-        //    //navigationManager.NavigateTo("/not-found");
-        //}
-        //if (response.StatusCode is not HttpStatusCode.OK) throw new Exception("Something went wrong");
-
-        //return await response.Content.ReadFromJsonAsync<GetMachinesResult>() ?? throw new Exception("Something went wrong");
+        return await client.GetFromJsonAsync<GetMachinesResult>("/api/machines") ?? throw new Exception("Something went wrong");
     }
 
     public async Task<GetMachineResult> GetMachineAsync(GetMachineQuery query)
     {
-        var response = await client.GetAsync($"/api/{query.MachineId}");
-        if (response.StatusCode is not HttpStatusCode.OK) throw new Exception("Machine not found");
-        if (response.Content is null) throw new Exception("Something went wrong");
-
-        var content = await response.Content.ReadFromJsonAsync<GetMachineResult>();
-
-        return content ?? throw new Exception("Something went wrong");
+        return await client.GetFromJsonAsync<GetMachineResult>($"/api/{query.MachineId}") ?? throw new MachineNotFoundException();
     }
 
     public async Task<MachineActionResult> StartMachineAsync(StartMachineCommand command)
     {
-        var response = await client.PatchAsync($"/api/machines/{command.MachineId}/start", null, new CancellationToken());
+        Console.WriteLine("START MACHINE CALLED");
+        // return await client.PatchAsync($"/api/machines/{command.MachineId}/start", null, new CancellationToken());
+        
+        var response = await client.PatchAsJsonAsync<StartMachineCommand>($"/api/machines/{command.MachineId}/start", command);
 
         if (response.StatusCode != HttpStatusCode.OK) throw new MachineNotFoundException();
             

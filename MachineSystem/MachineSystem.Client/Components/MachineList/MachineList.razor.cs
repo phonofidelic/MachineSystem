@@ -4,6 +4,7 @@ using MachineSystem.Application.ServiceContracts;
 using MachineSystem.Application.Queries;
 using MachineSystem.Application.Commands;
 using MachineSystem.Application.ViewModels;
+using MachineSystem.Domain.ValueObjects;
 
 namespace MachineSystem.BlazorClient.Components.MachineList;
 
@@ -45,8 +46,13 @@ public partial class MachineList
             ? "This Machine could not be found"
             : "An unexpected error occurred";
     }
+
+    // [Parameter]
+    // public EventCallback<MachineCommandButton> OnCommandClicked { get; set; }
+    
     private async Task StartMachine(Guid machineId, MachineCommandState commandState)
     {
+        Console.WriteLine("START MACHINE CLICKED");
         try
         {
             //var machineToUpdate = machines?.FirstOrDefault(m => m.Id == machineId) ?? throw new MachineNotFoundException();
@@ -55,10 +61,27 @@ public partial class MachineList
 
             var result = await MachineApiClient.StartMachineAsync(new StartMachineCommand(machineId));
 
-            //machineToUpdate.SetStatus(new(
-            //    isOnline: result.IsOnline,
-            //    isOperational: result.IsOperational,
-            //    isRunning: result.IsRunning));
+            machines = machines?.Select(m =>
+                { 
+                    if (m.Id == machineId)
+                    {
+                        return new MachineListItem
+                        {
+                            Id = m.Id,
+                            Name = m.Name,
+                            Type = m.Type,
+                            Status = new MachineStatus(
+                                isOnline: result.IsOnline,
+                                isOperational: result.IsOperational,
+                                isRunning: result.IsRunning
+                            ),
+                            LastData = m.LastData,
+                            LastUpdated = m.LastUpdated
+                        };
+                    }
+
+                    return m;
+                }).ToList();
 
             commandState.Set(isPending: false);
         } catch(Exception ex)
