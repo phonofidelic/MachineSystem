@@ -25,14 +25,10 @@ public class MachineApiClient(IHttpClientFactory clientFactory) : IMachineApiCli
 
     public async Task<MachineActionResult> StartMachineAsync(StartMachineCommand command)
     {
-        Console.WriteLine("START MACHINE CALLED");
-        // return await client.PatchAsync($"/api/machines/{command.MachineId}/start", null, new CancellationToken());
-        
-        var response = await client.PatchAsJsonAsync<StartMachineCommand>($"/api/machines/{command.MachineId}/start", command);
+        var response = await client.PatchAsync($"/api/machines/{command.MachineId}/start", null) ?? throw new MachineNotFoundException();
+        var result = await response.Content.ReadFromJsonAsync<MachineActionResult>() ?? throw new Exception("Could not read response");
 
-        if (response.StatusCode != HttpStatusCode.OK) throw new MachineNotFoundException();
-            
-        return await response.Content.ReadFromJsonAsync<MachineActionResult>() ?? throw new Exception("Could not read content");
+        return result;
     }
 
     public async Task<MachineActionResult> StopMachineAsync(StopMachineCommand command)
