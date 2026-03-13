@@ -14,6 +14,8 @@ public partial class MachineList
 
     private string? errorMessage { get; set; } = null;
 
+    private ErrorBoundaryBase? errorBoundary;
+
     [Inject]
     private IMachineApiClient MachineApiClient { get; set; } = default!;
 
