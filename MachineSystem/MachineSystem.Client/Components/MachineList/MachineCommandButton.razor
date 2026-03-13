@@ -1,9 +1,8 @@
 ﻿@if (!RendererInfo.IsInteractive) {
-    <button disabled class="@ClassName">
-        <div class="flex w-full skeleton skeleton-text">
-            @ButtonContent
-        </div>
-    </button>
+    <div class="@ClassName flex justify-center relative">
+        <div class="z-10 opacity-1/10">@ButtonContent</div>
+        <div class="absolute w-full h-full skeleton"></div>
+    </div>
 } else {
     <button class="@ClassName relative"
             disabled="@(Disabled || CommandState.IsPending)"
