@@ -19,7 +19,9 @@ public class GetMachinesHandler(
             Id = m.Id,
             Name = m.Name,
             Type = m.Type.Name,
-            Status = m.Status.Clone()
+            Status = m.Status.Clone(),
+            LastData = m.LastData,
+            LastUpdated = m.LastUpdated
         }).ToList();
 
         return new GetMachinesResult(items);

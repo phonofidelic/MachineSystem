@@ -66,7 +66,7 @@ public partial class MachineList
         {
             commandState.Set(isPending: true);
 
-            var result = await MachineApiClient.StartMachineAsync(new StartMachineCommand(Guid.NewGuid()));
+            var result = await MachineApiClient.StartMachineAsync(new StartMachineCommand(machineId));
             UpdateMachineStatus(machineId, result);
 
             commandState.Set(isPending: false);
