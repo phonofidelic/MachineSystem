@@ -20,7 +20,7 @@ public class MachineApiClient(IHttpClientFactory clientFactory) : IMachineApiCli
 
     public async Task<GetMachineResult> GetMachineAsync(GetMachineQuery query)
     {
-        return await client.GetFromJsonAsync<GetMachineResult>($"/api/{query.MachineId}") 
+        return await client.GetFromJsonAsync<GetMachineResult>($"/api/machines/{query.MachineId}") 
             ?? throw new MachineNotFoundException();
     }
 

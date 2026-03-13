@@ -62,22 +62,22 @@ public partial class MachineList
     
     private async Task StartMachine(Guid machineId, MachineCommandState commandState)
     {
-        try
-        {
+        //try
+        //{
             commandState.Set(isPending: true);
 
-            var result = await MachineApiClient.StartMachineAsync(new StartMachineCommand(Guid.NewGuid()));
+            var result = await MachineApiClient.StartMachineAsync(new StartMachineCommand(machineId));
             UpdateMachineStatus(machineId, result);
 
             commandState.Set(isPending: false);
-        } catch(Exception ex)
-        {
-            commandState.Set(isPending: false);
-            // Show error UI
-            ErrorMessage = GetUiErrorMessage(ex);
-            await Task.Delay(3000);
-            ErrorMessage = null;
-        }
+        //} catch(Exception ex)
+        //{
+        //    commandState.Set(isPending: false);
+        //    // Show error UI
+        //    ErrorMessage = GetUiErrorMessage(ex);
+        //    await Task.Delay(3000);
+        //    ErrorMessage = null;
+        //}
     }
 
     private async Task StopMachine(Guid machineId, MachineCommandState commandState)
