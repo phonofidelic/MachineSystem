@@ -10,10 +10,7 @@ namespace MachineSystem.BlazorClient.Components.MachineList;
 
 public partial class MachineList
 {
-    // ToDo: Make read-only
-    // This list should only be modified through the API, not direct access.
-    // Should it be modifiable through the Machine entity's API?
-    private List<MachineListItem>? machines = [];
+    private IReadOnlyList<MachineListItem>? machines = [];
 
     private string? errorMessage { get; set; } = null;
 
@@ -25,7 +22,7 @@ public partial class MachineList
         await FetchMachinesAsync();
     }
 
-    // ToDo: Should not need to re-fetch machines list after each state update?
+    // ToDo: Cache result of first fetch?
     private async Task FetchMachinesAsync()
     {
         var result = await MachineApiClient.GetMachinesAsync(new GetMachinesQuery());
@@ -40,37 +37,35 @@ public partial class MachineList
         machines = result.Machines.ToList();
     }
 
-    private string GetUiErrorMessage(Exception ex)
+    private static string GetUiErrorMessage(Exception ex)
     {
         return ex is MachineNotFoundException
             ? "This Machine could not be found"
             : "An unexpected error occurred";
     }
 
-    // [Parameter]
-    // public EventCallback<MachineCommandButton> OnCommandClicked { get; set; }
+    private void UpdateMachineStatus(Guid machineId, MachineActionResult result)
+    {
+        machines = machines?.Select(m =>
+        {
+            if (m.Id != machineId) return m;
+            m.Status = new MachineStatus(
+                isOnline: result.IsOnline,
+                isOperational: result.IsOperational,
+                isRunning: result.IsRunning
+            );
+            return m;
+        }).ToList();
+    }
     
     private async Task StartMachine(Guid machineId, MachineCommandState commandState)
     {
-        Console.WriteLine("START MACHINE CLICKED");
         try
         {
-            //var machineToUpdate = machines?.FirstOrDefault(m => m.Id == machineId) ?? throw new MachineNotFoundException();
-
             commandState.Set(isPending: true);
 
             var result = await MachineApiClient.StartMachineAsync(new StartMachineCommand(machineId));
-
-            machines = machines?.Select(m =>
-                { 
-                    if (m.Id != machineId) return m;
-                    m.Status = new MachineStatus(
-                        isOnline: result.IsOnline,
-                        isOperational: result.IsOperational,
-                        isRunning: result.IsRunning
-                    );
-                    return m;
-                }).ToList();
+            UpdateMachineStatus(machineId, result);
 
             commandState.Set(isPending: false);
         } catch(Exception ex)
@@ -86,25 +81,31 @@ public partial class MachineList
     private async Task StopMachine(Guid machineId, MachineCommandState commandState)
     {
         commandState.Set(isPending: true);
+
         var result = await MachineApiClient.StopMachineAsync(new StopMachineCommand(machineId));
+        UpdateMachineStatus(machineId, result);
+
         commandState.Set(isPending: false);
-        await FetchMachinesAsync();
     }
 
     private async Task ConnectMachine(Guid machineId, MachineCommandState? commandState = null)
     {
         commandState?.Set(isPending: true);
+
         var result = await MachineApiClient.ConnectMachineAsync(new ConnectMachineCommand(machineId));
+        UpdateMachineStatus(machineId, result);
+
         commandState?.Set(isPending: false);
-        await FetchMachinesAsync();
     }
 
     private async Task DisconnectMachine(Guid machineId, MachineCommandState? commandState = null)
     {
         commandState?.Set(isPending: true);
+
         var result = await MachineApiClient.DisconnectMachineAsync(new DisconnectMachineCommand(machineId));
+        UpdateMachineStatus(machineId, result);
+
         commandState?.Set(isPending: false);
-        await FetchMachinesAsync();
     }
 }
 
