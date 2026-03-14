@@ -1,0 +1,23 @@
+﻿<form>
+    <h3 class="text-lg">Add a new Machine</h3>
+    <div class="flex flex-col gap-2 w-full sm:w-sm mx-auto py-4">
+        <fieldset class="fieldset w-full">
+            <legend class="fieldset-legend">Name</legend>
+            <input type="text" class="input w-full" placeholder="Mr. Robot" />
+            <p class="label">Add a human-friendly name for the machine</p>
+        </fieldset>
+        <fieldset class="fieldset">
+            <legend class="fieldset-legend">Type</legend>
+            <select class="select w-full">
+                <option disabled selected>Pick a machine type</option>
+                <option>Cartesian</option>
+                <option>Delta</option>
+                <option>SCARA</option>
+            </select>
+            <p class="label">Select the type of machine</p>
+        </fieldset>
+    </div>
+    <div class="flex w-full justify-end">
+        <button class="btn btn-primary">Create</button>
+    </div>
+</form>

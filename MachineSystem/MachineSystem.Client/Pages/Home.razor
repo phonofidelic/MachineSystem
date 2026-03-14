@@ -1,6 +1,7 @@
 ﻿@page "/" 
 @attribute [StreamRendering(true)]
 @using MachineSystem.BlazorClient.Components
+@using MachineSystem.BlazorClient.Components.CreateMachineForm
 @using MachineSystem.BlazorClient.Components.MachineList
 
 <PageTitle>Dashboard</PageTitle>
@@ -21,17 +22,11 @@
   </div>
 </main>
 
-<dialog id="my_modal_1" class="modal">
+<dialog id="my_modal_1" class="modal modal-bottom sm:modal-middle">
   <div class="modal-box">
     <form method="dialog">
       <button title="Cancel" class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
     </form>
-    <h3 class="text-lg">Add a new Machine</h3>
-    <p class="py-4 text-base">Enter details for the new Machine</p>
-      <form>
-        <div class="modal-action">
-          <button class="btn btn-primary">Create</button>
-        </div>
-      </form>
+    <CreateMachineForm />
   </div>
 </dialog>
