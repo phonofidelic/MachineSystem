@@ -2,9 +2,9 @@
 
 <ErrorBoundary @ref="errorBoundary">
     <ChildContent>
-    @if (machines is null) {
+    @if (Machines is null) {
         <MachineListSkeleton />
-    } else if (machines.Count == 0)
+    } else if (Machines.Count == 0)
     {
         <div class="hero py-6 min-h-auto">
             <div class="hero-content text-center">
@@ -32,7 +32,7 @@
                         <MachineListTableHeader />
                     </TableHeader>
                     <TableBody>
-                        @foreach (var machine in machines) 
+                        @foreach (var machine in Machines) 
                         {
                             <MachineListTableRow
                                 @key="machine.Id"

@@ -1,7 +1,5 @@
 using Microsoft.AspNetCore.Components;
-using MachineSystem.Application.Services.MachineService.Exceptions;
 using MachineSystem.Application.ServiceContracts;
-using MachineSystem.Application.Queries;
 using MachineSystem.Application.Commands;
 using MachineSystem.Application.ViewModels;
 using MachineSystem.Domain.ValueObjects;
@@ -10,7 +8,8 @@ namespace MachineSystem.BlazorClient.Components.MachineList;
 
 public partial class MachineList
 {
-    private IReadOnlyList<MachineListItem>? machines = [];
+    [Parameter]
+    public IReadOnlyList<MachineListItem>? Machines { get; set; } = null;
 
     private string? ErrorMessage { get; set; } = null;
 
@@ -19,36 +18,9 @@ public partial class MachineList
     [Inject]
     private IMachineApiClient MachineApiClient { get; set; } = default!;
 
-    protected override async Task OnInitializedAsync()
-    {
-        await FetchMachinesAsync();
-    }
-
-    // ToDo: Cache result of first fetch?
-    private async Task FetchMachinesAsync()
-    {
-        var result = await MachineApiClient.GetMachinesAsync(new GetMachinesQuery());
-
-        if (result == null) {
-            ErrorMessage = GetUiErrorMessage(new MachineNotFoundException());
-            await Task.Delay(3000);
-            ErrorMessage = null;
-            return;
-        }
-
-        machines = result.Machines.ToList();
-    }
-
-    private static string GetUiErrorMessage(Exception ex)
-    {
-        return ex is MachineNotFoundException
-            ? "This Machine could not be found"
-            : "An unexpected error occurred";
-    }
-
     private void UpdateMachineStatus(Guid machineId, MachineActionResult result)
     {
-        machines = machines?.Select(m =>
+        Machines = Machines?.Select(m =>
         {
             if (m.Id != machineId) return m;
             m.Status = new MachineStatus(
