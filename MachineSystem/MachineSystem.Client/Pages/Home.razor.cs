@@ -36,14 +36,6 @@ public partial class Home
         machines = result.Machines.ToList();
     }
 
-    // private async Task UpdateMachinesListAsync()
-    // {
-    //     if (OnMachineListUpdated.HasDelegate)
-    //     {
-    //         await OnMachineListUpdated.InvokeAsync(machines);
-    //     }
-    // }
-
     private async Task UpdateMachinesListAsync(IReadOnlyList<MachineListItem> updatedMachinesList)
     {
         machines = updatedMachinesList;
