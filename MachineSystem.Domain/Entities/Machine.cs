@@ -1,8 +1,10 @@
+using System.Text.RegularExpressions;
+using MachineSystem.Domain.Exceptions;
 using MachineSystem.Domain.ValueObjects;
 
 namespace MachineSystem.Domain.Entities;
 
-public class Machine : BaseCreatableEntity<Guid>
+public partial class Machine : BaseCreatableEntity<Guid>
 {
     public override Guid Id { get; set; } = Guid.NewGuid();
 
@@ -16,16 +18,12 @@ public class Machine : BaseCreatableEntity<Guid>
 
     public DateTime LastUpdated { get; set; }
 
-    public void SetStatus(MachineStatus newStatus)
-    {
-        Status = newStatus.Clone();
-    }
-
     public MachineStatus Start()
     {
         var currentStatus = Status.Clone();
 
-        // Enforce invariants
+        EnforceInvariants();
+
         if (
             currentStatus.IsOnline && 
             currentStatus.IsOperational && 
@@ -45,7 +43,8 @@ public class Machine : BaseCreatableEntity<Guid>
     {
         var currentStatus = Status.Clone();
 
-        // Enforce invariants
+        EnforceInvariants();
+
         if (
             currentStatus.IsOnline && 
             currentStatus.IsOperational && 
@@ -65,7 +64,8 @@ public class Machine : BaseCreatableEntity<Guid>
     {
         var currentStatus = Status.Clone();
 
-        // Enforce invariants
+        EnforceInvariants();
+
         if (
             !currentStatus.IsOnline && 
             currentStatus.IsOperational)
@@ -84,7 +84,8 @@ public class Machine : BaseCreatableEntity<Guid>
     {
         var currentStatus = Status.Clone();
 
-        // Enforce invariants
+        EnforceInvariants();
+
         if (currentStatus.IsOnline)
         {
             Status = new MachineStatus(
@@ -96,4 +97,27 @@ public class Machine : BaseCreatableEntity<Guid>
 
         return Status.Clone();
     }
+
+    private void EnforceInvariants()
+    {
+        ValidateMachineName(Name);
+    }
+
+    private static void ValidateMachineName(string name)
+    {
+        if (name.Length < 3)
+            throw new MachineNameTooShortException();
+
+        if (name.Length > 30)
+            throw new MachineNameTooLongException();
+
+        var allowedCharacters = AllowedMachineNameCharactersRegex();
+        if (!allowedCharacters.IsMatch(name))
+        {
+            throw new MachineNameContainsDisallowedCharacterException();
+        }
+    }
+
+    [GeneratedRegex(@"[A-Za-z][A-Za-z0-9\-]*")]
+    private static partial Regex AllowedMachineNameCharactersRegex();
 }
