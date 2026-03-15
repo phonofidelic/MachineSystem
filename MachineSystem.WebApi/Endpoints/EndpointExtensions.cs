@@ -2,9 +2,7 @@ using System.Text.RegularExpressions;
 using MachineSystem.Application.Commands;
 using MachineSystem.Application.Queries;
 using MachineSystem.Application.ServiceContracts;
-using Microsoft.AspNetCore.Http.HttpResults;
 
-// ToDo: Move to separate project
 namespace MachineSystem.WebApi.Endpoints;
 
 public static partial class EndpointExtensions
