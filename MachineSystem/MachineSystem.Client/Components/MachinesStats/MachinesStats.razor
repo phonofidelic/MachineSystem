@@ -15,7 +15,7 @@
             <MachinesStatistic 
                 IsLoading="@(Machines is null)"
                 Title="Total Machines Count"
-                Metric="@Machines.Count.ToString()"
+                Metric="@Machines?.Count.ToString()"
                 Description="21% more than last month"
             />
             <MachinesStatistic 
