@@ -55,4 +55,4 @@ app.MapRazorComponents<App>()
 
 app.MapApiClientProxyEndpoints(nameof(MachineApiClient));
 
-app.Run();
+app.Run("http://*:8080");

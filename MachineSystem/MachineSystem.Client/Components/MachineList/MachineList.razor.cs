@@ -11,6 +11,9 @@ public partial class MachineList
     [Parameter]
     public IReadOnlyList<MachineListItem>? Machines { get; set; } = null;
 
+    [Parameter]
+    public EventCallback<IReadOnlyList<MachineListItem>> OnMachinesListUpdated { get; set; }
+
     private string? ErrorMessage { get; set; } = null;
 
     private ErrorBoundaryBase? errorBoundary;
@@ -18,7 +21,7 @@ public partial class MachineList
     [Inject]
     private IMachineApiClient MachineApiClient { get; set; } = default!;
 
-    private void UpdateMachineStatus(Guid machineId, MachineActionResult result)
+    private async Task UpdateMachineStatus(Guid machineId, MachineActionResult result)
     {
         Machines = Machines?.Select(m =>
         {
@@ -30,6 +33,11 @@ public partial class MachineList
             );
             return m;
         }).ToList();
+
+        if (OnMachinesListUpdated.HasDelegate)
+            await OnMachinesListUpdated.InvokeAsync(Machines);
+
+        StateHasChanged();
     }
     
     private async Task StartMachine(Guid machineId, MachineCommandState commandState)
@@ -39,7 +47,7 @@ public partial class MachineList
             commandState.Set(isPending: true);
 
             var result = await MachineApiClient.StartMachineAsync(new StartMachineCommand(machineId));
-            UpdateMachineStatus(machineId, result);
+            await UpdateMachineStatus(machineId, result);
 
             commandState.Set(isPending: false);
         //} catch(Exception ex)
@@ -57,7 +65,7 @@ public partial class MachineList
         commandState.Set(isPending: true);
 
         var result = await MachineApiClient.StopMachineAsync(new StopMachineCommand(machineId));
-        UpdateMachineStatus(machineId, result);
+        await UpdateMachineStatus(machineId, result);
 
         commandState.Set(isPending: false);
     }
@@ -67,7 +75,7 @@ public partial class MachineList
         commandState?.Set(isPending: true);
 
         var result = await MachineApiClient.ConnectMachineAsync(new ConnectMachineCommand(machineId));
-        UpdateMachineStatus(machineId, result);
+        await UpdateMachineStatus(machineId, result);
 
         commandState?.Set(isPending: false);
     }
@@ -77,7 +85,7 @@ public partial class MachineList
         commandState?.Set(isPending: true);
 
         var result = await MachineApiClient.DisconnectMachineAsync(new DisconnectMachineCommand(machineId));
-        UpdateMachineStatus(machineId, result);
+        await UpdateMachineStatus(machineId, result);
 
         commandState?.Set(isPending: false);
     }
