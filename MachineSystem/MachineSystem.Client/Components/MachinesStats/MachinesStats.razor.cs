@@ -10,30 +10,23 @@ public partial class MachinesStats
     [Parameter]
     public IReadOnlyList<MachineListItem>? Machines { get; set; } = null;
 
-    private int MachinesTotalCount { get; set; }
+    private PercentageMetric MachinesOnlineMetric { get; set; } = new (0, 0);
+    
+    private PercentageMetric MachinesOperationalMetric { get; set; } = new (0, 0);
 
-    private int MachinesOnlineCount { get; set; }
-    private decimal MachinesOnlinePercentage { get; set; }
-
-    private int MachinesOperationalCount { get; set; }
-    private decimal MachinesOperationalPercentage { get; set; }
+    private PercentageMetric MachinesRunningMetric { get; set; } = new(0, 0);
 
     protected override async Task OnParametersSetAsync()
     {
         if (Machines is null || Machines.Count < 1) return;
 
-        MachinesTotalCount = Machines.Count;
-
-        MachinesOnlineCount = Machines.Count(m => m.Status.IsOnline);
-
-        MachinesOnlinePercentage = decimal.Round((decimal)MachinesOnlineCount / MachinesTotalCount * 100, 2);
-
-        MachinesOperationalCount = Machines.Count(m => m.Status.IsOperational);
-
-        MachinesOperationalPercentage = decimal.Round((decimal)MachinesOperationalCount / MachinesTotalCount * 100, 2);
-    }   
+        MachinesOnlineMetric = new PercentageMetric(Machines.Count, Machines.Count(m => m.Status.IsOnline));
+        MachinesOperationalMetric = new PercentageMetric(Machines.Count(m => m.Status.IsOperational), Machines.Count);
+        MachinesRunningMetric = new PercentageMetric(Machines.Count(m => m.Status.IsRunning), Machines.Count);
+    }
 
     private void ToggleOpen() {
         IsOpen = !IsOpen;
     }
 }
+

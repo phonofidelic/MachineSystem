@@ -12,21 +12,30 @@
     </button>
     <div class="collapse-content">
         <div class="stats stats-horizontal sm:stats-vertical w-full">
-            <div class="stat">
-                <div class="stat-title">Total Machines Count</div>
-                <div class="stat-value @(Machines is null ? "skeleton" : "")">@MachinesTotalCount</div>
-                <div class="stat-desc">21% more than last month</div>
-            </div>
-            <div class="stat">
-                <div class="stat-title">Machines Online</div>
-                <div class="stat-value @(Machines is null ? "skeleton" : "")">@MachinesOnlineCount</div>
-                <div class="stat-desc">@MachinesOnlinePercentage %</div>
-            </div>
-            <div class="stat">
-                <div class="stat-title">Machines Operational</div>
-                <div class="stat-value @(Machines is null ? "skeleton" : "")">@MachinesOperationalCount</div>
-                <div class="stat-desc">@MachinesOperationalPercentage %</div>
-            </div>
+            <MachinesStatistic 
+                IsLoading="@(Machines is null)"
+                Title="Total Machines Count"
+                Metric="@Machines.Count.ToString()"
+                Description="21% more than last month"
+            />
+            <MachinesStatistic 
+                IsLoading="@(Machines is null)"
+                Title="Machines running"
+                Metric="@MachinesOnlineMetric.Part.ToString()"
+                Description="@(MachinesOnlineMetric.FormattedValue)"
+            />
+            <MachinesStatistic 
+                IsLoading="@(Machines is null)"
+                Title="Machines running"
+                Metric="@MachinesOperationalMetric.Part.ToString()"
+                Description="@(MachinesOperationalMetric.FormattedValue)"
+            />
+            <MachinesStatistic 
+                IsLoading="@(Machines is null)"
+                Title="Machines running"
+                Metric="@MachinesRunningMetric.Part.ToString()"
+                Description="@(MachinesRunningMetric.FormattedValue)"
+            />
         </div>
     </div>
 </div>
