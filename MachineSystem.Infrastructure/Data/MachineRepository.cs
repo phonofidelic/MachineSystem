@@ -22,4 +22,9 @@ public class MachineRepository(ApplicationDbContext ctx) : IMachineRepository
     {
         return trackChanges ? context.Machines : context.Machines.AsNoTracking();
     }
+
+    public async Task AddAsync(Machine machine)
+    {
+        await context.Machines.AddAsync(machine);
+    }
 }

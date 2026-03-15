@@ -10,4 +10,6 @@ public interface IMachineRepository
     public Task<Machine?> GetMachineAsync(Guid machineId);
 
     public IQueryable<Machine> FindAll(bool trackChanges = false);
+
+    public Task AddAsync(Machine machine);
 }
