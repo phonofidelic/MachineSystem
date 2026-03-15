@@ -10,6 +10,7 @@ public static class ServiceExtensions
 {
     public static void AddScopedHandlers(this IServiceCollection services)
     {
+        services.AddScoped<IHandler<CreateMachineCommand, CreateMachineResult>, CreateMachineHandler>();
         services.AddScoped<IHandler<GetMachinesQuery, GetMachinesResult>, GetMachinesHandler>();
         services.AddScoped<IHandler<GetMachineQuery, GetMachineResult>, GetMachineHandler>();
         services.AddScoped<IHandler<StartMachineCommand, MachineActionResult>, StartMachineHandler>();
