@@ -1,18 +1,17 @@
 ﻿@if (!RendererInfo.IsInteractive) {
-    <button disabled class="@ClassName">
-        <div class="flex w-full skeleton skeleton-text">
-            @ButtonContent
-        </div>
-    </button>
+    <div class="@ClassName flex justify-center relative">
+        <div class="z-10 opacity-1/10">@ButtonContent</div>
+        <div class="absolute w-full h-full skeleton"></div>
+    </div>
 } else {
-    <button class="@ClassName relative"
+    <button class="@ClassName indicator"
             disabled="@(Disabled || CommandState.IsPending)"
             @onclick="@(async (e) => await InvokeCommandAsync())">
         <div class="flex w-full">
             @ButtonContent
         </div>
             @if(CommandState.IsPending) {
-                <div class="absolute -top-[16px] z-10 flex w-full justify-center">
+                <div class="indicator-item">
                     <div class="loading loading-ring loading-xl"></div>
                 </div>
             }

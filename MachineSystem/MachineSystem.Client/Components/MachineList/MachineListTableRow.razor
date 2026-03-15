@@ -1,8 +1,8 @@
 <tr>
     <td>
         <div class="flex-1">
-            <h4>@Title</h4>
-            <p class="text-xs text-nowrap text-base-content/50">
+            <h4 class="@TexCellTruncationStyles">@Title</h4>
+            <p class="text-xs text-nowrap text-base-content/50 @TexCellTruncationStyles">
                 @SubTitle
             </p>
         </div>
@@ -22,3 +22,7 @@
         @Actions
     </td>
 </tr>
+
+@code {
+    const string TexCellTruncationStyles = "max-w-24 sm:max-w-80 w-full overflow-hidden text-ellipsis";
+}

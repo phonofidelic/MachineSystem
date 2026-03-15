@@ -1,7 +1,5 @@
 using Microsoft.AspNetCore.Components;
-using MachineSystem.Application.Services.MachineService.Exceptions;
 using MachineSystem.Application.ServiceContracts;
-using MachineSystem.Application.Queries;
 using MachineSystem.Application.Commands;
 using MachineSystem.Application.ViewModels;
 using MachineSystem.Domain.ValueObjects;
@@ -10,7 +8,11 @@ namespace MachineSystem.BlazorClient.Components.MachineList;
 
 public partial class MachineList
 {
-    private IReadOnlyList<MachineListItem>? machines = [];
+    [Parameter]
+    public IReadOnlyList<MachineListItem>? Machines { get; set; } = null;
+
+    [Parameter]
+    public EventCallback<IReadOnlyList<MachineListItem>> OnMachinesListUpdated { get; set; }
 
     private string? ErrorMessage { get; set; } = null;
 
@@ -19,36 +21,9 @@ public partial class MachineList
     [Inject]
     private IMachineApiClient MachineApiClient { get; set; } = default!;
 
-    protected override async Task OnInitializedAsync()
+    private async Task UpdateMachineStatus(Guid machineId, MachineActionResult result)
     {
-        await FetchMachinesAsync();
-    }
-
-    // ToDo: Cache result of first fetch?
-    private async Task FetchMachinesAsync()
-    {
-        var result = await MachineApiClient.GetMachinesAsync(new GetMachinesQuery());
-
-        if (result == null) {
-            ErrorMessage = GetUiErrorMessage(new MachineNotFoundException());
-            await Task.Delay(3000);
-            ErrorMessage = null;
-            return;
-        }
-
-        machines = result.Machines.ToList();
-    }
-
-    private static string GetUiErrorMessage(Exception ex)
-    {
-        return ex is MachineNotFoundException
-            ? "This Machine could not be found"
-            : "An unexpected error occurred";
-    }
-
-    private void UpdateMachineStatus(Guid machineId, MachineActionResult result)
-    {
-        machines = machines?.Select(m =>
+        Machines = Machines?.Select(m =>
         {
             if (m.Id != machineId) return m;
             m.Status = new MachineStatus(
@@ -58,6 +33,11 @@ public partial class MachineList
             );
             return m;
         }).ToList();
+
+        if (OnMachinesListUpdated.HasDelegate)
+            await OnMachinesListUpdated.InvokeAsync(Machines);
+
+        StateHasChanged();
     }
     
     private async Task StartMachine(Guid machineId, MachineCommandState commandState)
@@ -67,7 +47,7 @@ public partial class MachineList
             commandState.Set(isPending: true);
 
             var result = await MachineApiClient.StartMachineAsync(new StartMachineCommand(machineId));
-            UpdateMachineStatus(machineId, result);
+            await UpdateMachineStatus(machineId, result);
 
             commandState.Set(isPending: false);
         //} catch(Exception ex)
@@ -85,7 +65,7 @@ public partial class MachineList
         commandState.Set(isPending: true);
 
         var result = await MachineApiClient.StopMachineAsync(new StopMachineCommand(machineId));
-        UpdateMachineStatus(machineId, result);
+        await UpdateMachineStatus(machineId, result);
 
         commandState.Set(isPending: false);
     }
@@ -95,7 +75,7 @@ public partial class MachineList
         commandState?.Set(isPending: true);
 
         var result = await MachineApiClient.ConnectMachineAsync(new ConnectMachineCommand(machineId));
-        UpdateMachineStatus(machineId, result);
+        await UpdateMachineStatus(machineId, result);
 
         commandState?.Set(isPending: false);
     }
@@ -105,7 +85,7 @@ public partial class MachineList
         commandState?.Set(isPending: true);
 
         var result = await MachineApiClient.DisconnectMachineAsync(new DisconnectMachineCommand(machineId));
-        UpdateMachineStatus(machineId, result);
+        await UpdateMachineStatus(machineId, result);
 
         commandState?.Set(isPending: false);
     }

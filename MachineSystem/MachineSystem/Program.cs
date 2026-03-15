@@ -55,4 +55,10 @@ app.MapRazorComponents<App>()
 
 app.MapApiClientProxyEndpoints(nameof(MachineApiClient));
 
-app.Run();
+if (app.Environment.IsDevelopment())
+{
+    app.Run("http://*:8080");
+} else
+{
+    app.Run();
+}

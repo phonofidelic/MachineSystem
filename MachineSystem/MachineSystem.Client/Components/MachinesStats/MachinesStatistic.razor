@@ -1,0 +1,5 @@
+﻿<div class="stat">
+    <div class="stat-title">@(Title ?? "loading")</div>
+    <div class="stat-value @(IsLoading ? "skeleton" : "")">@(Metric ?? "loading")</div>
+    <div class="stat-desc">@(Description ?? "loading")</div>
+</div>

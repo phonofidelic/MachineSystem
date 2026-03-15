@@ -1,0 +1,41 @@
+﻿<div class="collapse @(IsOpen ? "collapse-open"  :"collapse-close") sm:collapse-open w-full">
+    <button tabindex="-1" class="p-2 collapse-title text-left sm:pointer-events-none flex w-full justify-between" @onclick="@(() => ToggleOpen())">
+        <h3 class="text-lg text-left w-full">Stats</h3>
+        <div tabindex="0" title="@(IsOpen ? "Close stats" : "Open stats")" class="relative w-6 flex items-center sm:hidden swap swap-rotate @(IsOpen ? "swap-active" : "")">
+            <div class="absolute swap-on rotate-180">
+                <ChevronDownIcon />
+            </div>
+            <div class="absolute swap-off">
+                <ChevronDownIcon />
+            </div>
+        </div>
+    </button>
+    <div class="collapse-content">
+        <div class="stats stats-horizontal sm:stats-vertical w-full">
+            <MachinesStatistic 
+                IsLoading="@(Machines is null)"
+                Title="Total Machines Count"
+                Metric="@Machines.Count.ToString()"
+                Description="21% more than last month"
+            />
+            <MachinesStatistic 
+                IsLoading="@(Machines is null)"
+                Title="Machines Online"
+                Metric="@MachinesOnlineMetric.Part.ToString()"
+                Description="@(MachinesOnlineMetric.FormattedValue)"
+            />
+            <MachinesStatistic 
+                IsLoading="@(Machines is null)"
+                Title="Machines Operational"
+                Metric="@MachinesOperationalMetric.Part.ToString()"
+                Description="@(MachinesOperationalMetric.FormattedValue)"
+            />
+            <MachinesStatistic 
+                IsLoading="@(Machines is null)"
+                Title="Machines running"
+                Metric="@MachinesRunningMetric.Part.ToString()"
+                Description="@(MachinesRunningMetric.FormattedValue)"
+            />
+        </div>
+    </div>
+</div>
