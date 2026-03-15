@@ -20,13 +20,13 @@
             />
             <MachinesStatistic 
                 IsLoading="@(Machines is null)"
-                Title="Machines running"
+                Title="Machines Online"
                 Metric="@MachinesOnlineMetric.Part.ToString()"
                 Description="@(MachinesOnlineMetric.FormattedValue)"
             />
             <MachinesStatistic 
                 IsLoading="@(Machines is null)"
-                Title="Machines running"
+                Title="Machines Operational"
                 Metric="@MachinesOperationalMetric.Part.ToString()"
                 Description="@(MachinesOperationalMetric.FormattedValue)"
             />

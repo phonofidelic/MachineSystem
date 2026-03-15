@@ -20,7 +20,7 @@ public partial class MachinesStats
     {
         if (Machines is null || Machines.Count < 1) return;
 
-        MachinesOnlineMetric = new PercentageMetric(Machines.Count, Machines.Count(m => m.Status.IsOnline));
+        MachinesOnlineMetric = new PercentageMetric(Machines.Count(m => m.Status.IsOnline), Machines.Count);
         MachinesOperationalMetric = new PercentageMetric(Machines.Count(m => m.Status.IsOperational), Machines.Count);
         MachinesRunningMetric = new PercentageMetric(Machines.Count(m => m.Status.IsRunning), Machines.Count);
     }
