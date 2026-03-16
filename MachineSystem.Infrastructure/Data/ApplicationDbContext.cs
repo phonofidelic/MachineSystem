@@ -38,6 +38,7 @@ public class ApplicationDbContext(
         foreach (var entry in creatableEntries)
         {
             ((BaseCreatableEntity<Guid>)entry.Entity).CreatedAt = now;
+            ((Machine)entry.Entity).LastUpdated = now;
         }
 
         var updateableEntries = ChangeTracker.Entries()

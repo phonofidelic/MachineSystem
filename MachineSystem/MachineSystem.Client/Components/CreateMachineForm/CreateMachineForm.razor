@@ -1,23 +1,48 @@
-﻿<form>
-    <h3 class="text-lg">Add a new Machine</h3>
-    <div class="flex flex-col gap-2 w-full sm:w-sm mx-auto py-4">
-        <fieldset class="fieldset w-full">
-            <legend class="fieldset-legend">Name</legend>
-            <input type="text" class="input w-full" placeholder="Mr. Robot" />
-            <p class="label">Add a human-friendly name for the machine</p>
-        </fieldset>
-        <fieldset class="fieldset">
-            <legend class="fieldset-legend">Type</legend>
-            <select class="select w-full">
-                <option disabled selected>Pick a machine type</option>
-                <option>Cartesian</option>
-                <option>Delta</option>
-                <option>SCARA</option>
-            </select>
-            <p class="label">Select the type of machine</p>
-        </fieldset>
-    </div>
-    <div class="flex w-full justify-end">
-        <button class="btn btn-primary">Create</button>
-    </div>
-</form>
+﻿<ErrorBoundary @ref="CreateMachineFormErrorBoundary">
+    <ChildContent>
+        <form @onsubmit="PostCreateMachineRequest" @formname="create-machine-form">
+            <h3 class="text-lg">Add a new Machine</h3>
+            <div class="flex flex-col gap-2 w-full sm:w-sm mx-auto py-4">
+                <fieldset class="fieldset w-full">
+                    <legend class="fieldset-legend">Name</legend>
+                    <InputText
+                        required 
+                        type="text" 
+                        minlength="3" 
+                        maxlength="30"
+                        pattern="[A-Za-z][A-Za-z0-9\-]*"
+                        placeholder="Mr Robot" 
+                        class="input validator w-full"
+                        @bind-Value="MachineName"
+                    />
+                    <p class="label">Add a human-friendly name for the machine</p>
+                </fieldset>
+                <fieldset class="fieldset">
+                    <legend class="fieldset-legend">Type</legend>
+                    <InputSelect class="select w-full" @bind-Value="MachineType">
+                        <option>Cartesian</option>
+                        <option>Delta</option>
+                        <option>SCARA</option>
+                    </InputSelect>
+                    <p class="label">Select the type of machine</p>
+                </fieldset>
+            </div>
+            <div class="flex w-full justify-end">
+                <input type="submit" class="btn btn-primary" value="Create" />
+            </div>
+        </form>
+    </ChildContent>
+    <ErrorContent>
+        <div class="hero py-6 min-h-auto">
+            <div class="hero-content text-center">
+                <div class="max-w-md">
+                    <h4 class="text-5xl">Oops!</h4>
+                    <p class="py-5">
+                        @("Something went wrong :(")
+                    </p>
+                    <button class="btn btn-primary" @onclick="() => CreateMachineFormErrorBoundary?.Recover()">Try to reload</button>
+                </div>
+            </div>
+        </div>
+    </ErrorContent>
+</ErrorBoundary>

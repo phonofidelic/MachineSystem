@@ -33,19 +33,18 @@ public partial class Home
             return;
         }
 
-        machines = result.Machines.ToList();
+        machines = result.Machines
+            .OrderByDescending(m => m.LastUpdated)
+            .ToList();
     }
-
-    // private async Task UpdateMachinesListAsync()
-    // {
-    //     if (OnMachineListUpdated.HasDelegate)
-    //     {
-    //         await OnMachineListUpdated.InvokeAsync(machines);
-    //     }
-    // }
 
     private async Task UpdateMachinesListAsync(IReadOnlyList<MachineListItem> updatedMachinesList)
     {
         machines = updatedMachinesList;
+    }
+
+    private async Task UpdateMachinesListWithUpdaterAsync(Func<IReadOnlyList<MachineListItem>, IReadOnlyList<MachineListItem>> updateMachinesList)
+    {
+        machines = updateMachinesList(machines ?? []);
     }
 };

@@ -1,5 +1,6 @@
 using System.Net;
 using System.Net.Http.Json;
+using System.Text.Json;
 using MachineSystem.Application.Commands;
 using MachineSystem.Application.Queries;
 using MachineSystem.Application.ServiceContracts;
@@ -22,6 +23,20 @@ public class MachineApiClient(IHttpClientFactory clientFactory) : IMachineApiCli
     {
         return await client.GetFromJsonAsync<GetMachineResult>($"/api/machines/{query.MachineId}") 
             ?? throw new MachineNotFoundException();
+    }
+
+    public async Task<CreateMachineResult> CreateMachineAsync(CreateMachineCommand command)
+    {
+        // var response = await client.PostAsJsonAsync("/api/machines/create", JsonSerializer.Serialize(command));
+        var response = await client.PostAsJsonAsync("/api/machines/create", command);
+
+        if (!response.IsSuccessStatusCode)
+            throw new Exception("Could not create machine");
+
+        var result = await response.Content.ReadFromJsonAsync<CreateMachineResult>()
+            ?? throw new Exception("Could not read content");
+        
+        return result;
     }
 
     public async Task<MachineActionResult> StartMachineAsync(StartMachineCommand command)

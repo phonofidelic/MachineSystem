@@ -9,6 +9,9 @@ public interface IMachineApiClient
 
     public Task<GetMachineResult> GetMachineAsync(GetMachineQuery query);
 
+    
+    public Task<CreateMachineResult> CreateMachineAsync(CreateMachineCommand command);
+
     public Task<MachineActionResult> StartMachineAsync(StartMachineCommand command);
 
     public Task<MachineActionResult> StopMachineAsync(StopMachineCommand command);

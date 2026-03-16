@@ -23,10 +23,11 @@ public static class EndpointExtensions
         {
             requestMessage.Content = new StreamContent(http.Request.Body);
 
-            if (!string.IsNullOrWhiteSpace(http.Request.ContentType))
-            {
-                requestMessage.Content.Headers.ContentType = MediaTypeHeaderValue.Parse(http.Request.ContentType);
-            }
+            //// ToDo: Find out why ContentType is added twice on POST
+            // if (!string.IsNullOrWhiteSpace(http.Request.ContentType))
+            // {
+            //     requestMessage.Content.Headers.ContentType = MediaTypeHeaderValue.Parse(http.Request.ContentType);
+            // }
         }
 
         foreach (var header in http.Request.Headers)

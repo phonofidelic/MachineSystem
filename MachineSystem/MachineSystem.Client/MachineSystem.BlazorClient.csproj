@@ -19,8 +19,4 @@
     <ProjectReference Include="..\..\MachineSystem.Application\MachineSystem.Application.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Components/CreateMachineForm/" />
-  </ItemGroup>
-
 </Project>

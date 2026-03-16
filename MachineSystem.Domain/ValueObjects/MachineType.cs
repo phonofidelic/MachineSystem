@@ -7,4 +7,9 @@ public class MachineType(string name) : ValueObject
     {
         yield return Name;
     }
+
+    public override string ToString()
+    {
+        return Name;
+    }
 }

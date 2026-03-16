@@ -8,6 +8,13 @@ public class MachineService : IMachineService
 {    
     private readonly Random random = new();
 
+    public async Task InstallAsync(Machine machine)
+    {
+        await FakeDelay();
+
+        machine.Initialize();
+    }
+
     public async Task<MachineStatus> StartMachineAsync(Machine machine)
     {
         await FakeDelay();

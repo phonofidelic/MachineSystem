@@ -16,7 +16,7 @@ public partial class MachineList
 
     private string? ErrorMessage { get; set; } = null;
 
-    private ErrorBoundaryBase? errorBoundary;
+    private ErrorBoundaryBase? MachineListErrorBoundary;
 
     [Inject]
     private IMachineApiClient MachineApiClient { get; set; } = default!;
@@ -32,12 +32,14 @@ public partial class MachineList
                 isRunning: result.IsRunning
             );
             return m;
-        }).ToList();
+        })
+        .OrderByDescending(m => m.LastUpdated)
+        .ToList();
 
         if (OnMachinesListUpdated.HasDelegate)
             await OnMachinesListUpdated.InvokeAsync(Machines);
 
-        StateHasChanged();
+        // StateHasChanged();
     }
     
     private async Task StartMachine(Guid machineId, MachineCommandState commandState)
