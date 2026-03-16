@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
@@ -36,6 +37,19 @@ public class MachineApiClient(IHttpClientFactory clientFactory) : IMachineApiCli
         var result = await response.Content.ReadFromJsonAsync<CreateMachineResult>()
             ?? throw new Exception("Could not read content");
         
+        return result;
+    }
+
+    public async Task<DeleteMachineResult> DeleteMachineAsync(DeleteMachineCommand command)
+    {
+        var response = await client.DeleteAsync($"/api/machines/{command.MachineId}/delete");
+
+        if (!response.IsSuccessStatusCode)
+            throw new Exception("Could not delete machine");
+
+        var result = await response.Content.ReadFromJsonAsync<DeleteMachineResult>()
+            ?? throw new Exception("Could not read content");
+
         return result;
     }
 

@@ -27,4 +27,9 @@ public class MachineRepository(ApplicationDbContext ctx) : IMachineRepository
     {
         await context.Machines.AddAsync(machine);
     }
+
+    public void Remove(Machine machine)
+    {
+        context.Machines.Remove(machine);
+    }
 }

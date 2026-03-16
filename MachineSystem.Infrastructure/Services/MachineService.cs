@@ -15,6 +15,16 @@ public class MachineService : IMachineService
         machine.Initialize();
     }
 
+    public async Task UninstallAsync(Machine machine)
+    {
+        await FakeDelay();
+
+        if (machine.Status.IsRunning)
+            machine.Stop();
+
+        machine.Disconnect();
+    }
+
     public async Task<MachineStatus> StartMachineAsync(Machine machine)
     {
         await FakeDelay();

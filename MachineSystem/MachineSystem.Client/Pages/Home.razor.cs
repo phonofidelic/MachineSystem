@@ -9,8 +9,6 @@ public partial class Home
 {
     private IReadOnlyList<MachineListItem>? machines = [];
 
-    
-
     private string? ErrorMessage { get; set; } = null;
 
     protected override async Task OnInitializedAsync()
@@ -38,12 +36,8 @@ public partial class Home
             .ToList();
     }
 
-    private async Task UpdateMachinesListAsync(IReadOnlyList<MachineListItem> updatedMachinesList)
-    {
-        machines = updatedMachinesList;
-    }
-
-    private async Task UpdateMachinesListWithUpdaterAsync(Func<IReadOnlyList<MachineListItem>, IReadOnlyList<MachineListItem>> updateMachinesList)
+    private async Task UpdateMachinesListWithUpdaterAsync(
+        Func<IReadOnlyList<MachineListItem>, IReadOnlyList<MachineListItem>> updateMachinesList)
     {
         machines = updateMachinesList(machines ?? []);
     }

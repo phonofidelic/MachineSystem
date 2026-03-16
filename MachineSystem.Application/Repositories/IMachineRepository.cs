@@ -12,4 +12,6 @@ public interface IMachineRepository
     public IQueryable<Machine> FindAll(bool trackChanges = false);
 
     public Task AddAsync(Machine machine);
+
+    public void Remove(Machine machine);
 }

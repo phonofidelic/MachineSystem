@@ -79,6 +79,15 @@ public static partial class EndpointExtensions
                 return Results.Ok(result);
             });
 
+        builder.MapDelete(
+            "/api/machines/{id:Guid}/delete",
+            async (Guid id, IHandler<DeleteMachineCommand, DeleteMachineResult> handler) =>
+            {
+                var result = await handler.HandleAsync(new DeleteMachineCommand(id));
+                return Results.Ok(result);
+            }
+        );
+
         return builder;
     }
 

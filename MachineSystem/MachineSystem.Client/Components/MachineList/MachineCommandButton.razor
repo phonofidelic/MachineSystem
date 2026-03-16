@@ -8,9 +8,12 @@
             disabled="@(Disabled || CommandState.IsPending)"
             @onclick="@(async (e) => await InvokeCommandAsync())">
         <div class="flex w-full">
-            @ButtonContent
+            <div class="mx-auto">
+                @ButtonContent
+            </div>
         </div>
-            @if(CommandState.IsPending) {
+            @if(CommandState.IsPending) 
+            {
                 <div class="indicator-item">
                     <div class="loading loading-ring loading-xl"></div>
                 </div>

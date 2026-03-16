@@ -17,7 +17,7 @@
       <MachinesStats Machines="@machines" />
     </div>
     <div class="w-full h-full sm:w-2/3 bg-base-100 p-2 rounded-box shadow-sm overflow-hidden">
-      <MachineList Machines="@machines" OnMachinesListUpdated="UpdateMachinesListAsync" />
+      <MachineList Machines="@machines" OnMachinesListUpdated="@UpdateMachinesListWithUpdaterAsync" />
     </div>
   </div>
 </main>
