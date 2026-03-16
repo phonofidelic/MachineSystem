@@ -45,7 +45,10 @@
                             >
                                 <Actions>
                                     <div class="flex gap-2">
-                                        <MachineCommandButton ClassName="btn" Disabled="@(!machine.Status.IsOnline)" OnClick="@((commandState) => machine.Status.IsRunning ? StopMachine(machine.Id, commandState) : StartMachine(machine.Id, commandState))">
+                                        <MachineCommandButton 
+                                            ClassName="btn" 
+                                            Disabled="@(!machine.Status.IsOnline)" 
+                                            OnClick="@((commandState) => machine.Status.IsRunning ? StopMachine(machine.Id, commandState) : StartMachine(machine.Id, commandState))">
                                             <ButtonContent>
                                                 <label class="swap @(machine.Status.IsRunning ? "swap-active" : "")">
                                                     <span class="swap-off">Start</span>
@@ -61,14 +64,14 @@
                                                     : "group btn btn-square hover:bg-green-400/20 hover:border-green-400 hover:text-green-400")" 
                                                 OnClick="(commandState) => machine.Status.IsOnline ? DisconnectMachine(machine.Id, commandState) : ConnectMachine(machine.Id, commandState)">
                                                 <ButtonContent>
-                                                        <span class="group-hover:hidden mx-auto">
+                                                        <span class="group-hover:hidden">
                                                             @if (machine.Status.IsOnline) {
                                                                 <WifiOnIcon /> 
                                                             } else {
                                                                 <WifiOffIcon />
                                                             }
                                                         </span>
-                                                        <span class="hidden group-hover:inline mx-auto">
+                                                        <span class="hidden group-hover:inline">
                                                             @if (machine.Status.IsOnline) {
                                                                 <WifiOffIcon />
                                                             } else {
@@ -78,9 +81,13 @@
                                                 </ButtonContent>
                                             </MachineCommandButton>
                                         </div>
-                                        <button class="btn btn-square hover:bg-red-500/20 hover:border-red-400 hover:text-red-400">
-                                            <TrashIcon />
-                                        </button>
+                                        <MachineCommandButton 
+                                            ClassName="btn btn-square hover:bg-red-500/20 hover:border-red-400 hover:text-red-400"
+                                            OnClick="(commandState) => DeleteMachine(machine.Id, commandState)">
+                                            <ButtonContent>
+                                                <TrashIcon />
+                                            </ButtonContent>
+                                        </MachineCommandButton>
                                     </div>
                                 </Actions>
                             </MachineListTableRow>

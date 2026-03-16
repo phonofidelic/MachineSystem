@@ -12,7 +12,7 @@ public partial class MachineList
     public IReadOnlyList<MachineListItem>? Machines { get; set; } = null;
 
     [Parameter]
-    public EventCallback<IReadOnlyList<MachineListItem>> OnMachinesListUpdated { get; set; }
+    public EventCallback<Func<IReadOnlyList<MachineListItem>, IReadOnlyList<MachineListItem>>> OnMachinesListUpdated { get; set; }
 
     private string? ErrorMessage { get; set; } = null;
 
@@ -23,7 +23,8 @@ public partial class MachineList
 
     private async Task UpdateMachineStatus(Guid machineId, MachineActionResult result)
     {
-        Machines = Machines?.Select(m =>
+        if (OnMachinesListUpdated.HasDelegate)
+            await OnMachinesListUpdated.InvokeAsync((machines) => machines = machines.Select(m =>
         {
             if (m.Id != machineId) return m;
             m.Status = new MachineStatus(
@@ -34,12 +35,7 @@ public partial class MachineList
             return m;
         })
         .OrderByDescending(m => m.LastUpdated)
-        .ToList();
-
-        if (OnMachinesListUpdated.HasDelegate)
-            await OnMachinesListUpdated.InvokeAsync(Machines);
-
-        // StateHasChanged();
+        .ToList());
     }
     
     private async Task StartMachine(Guid machineId, MachineCommandState commandState)
@@ -88,6 +84,20 @@ public partial class MachineList
 
         var result = await MachineApiClient.DisconnectMachineAsync(new DisconnectMachineCommand(machineId));
         await UpdateMachineStatus(machineId, result);
+
+        commandState?.Set(isPending: false);
+    }
+
+    private async Task DeleteMachine(Guid machineId, MachineCommandState? commandState = null)
+    {
+        commandState?.Set(isPending: true);
+
+        var result = await MachineApiClient.DeleteMachineAsync(new DeleteMachineCommand(machineId));
+        // ToDo: Implement OnMachinesListUpdated with updater callback
+        await OnMachinesListUpdated.InvokeAsync(machineList => machineList
+            .Where(m => m.Id != machineId)
+            .OrderByDescending(m => m.LastUpdated)
+            .ToList());
 
         commandState?.Set(isPending: false);
     }

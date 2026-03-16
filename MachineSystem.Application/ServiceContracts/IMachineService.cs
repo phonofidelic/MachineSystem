@@ -6,6 +6,8 @@ namespace MachineSystem.Application.ServiceContracts;
 public interface IMachineService
 {
     public Task InstallAsync(Machine machine);
+
+    public Task UninstallAsync(Machine machine);
     
     public Task<MachineStatus> StartMachineAsync(Machine machine);
 
