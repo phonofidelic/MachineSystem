@@ -32,7 +32,9 @@ public partial class MachineList
                 isRunning: result.IsRunning
             );
             return m;
-        }).ToList();
+        })
+        .OrderByDescending(m => m.LastUpdated)
+        .ToList();
 
         if (OnMachinesListUpdated.HasDelegate)
             await OnMachinesListUpdated.InvokeAsync(Machines);

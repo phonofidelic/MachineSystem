@@ -21,7 +21,8 @@ public class GetMachinesHandler(
             Type = m.Type.Name,
             Status = m.Status.Clone(),
             LastData = m.LastData,
-            LastUpdated = m.LastUpdated
+            LastUpdated = m.LastUpdated,
+            CreatedAt = m.CreatedAt
         }).ToList();
 
         return new GetMachinesResult(items);

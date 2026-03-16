@@ -33,7 +33,9 @@ public partial class Home
             return;
         }
 
-        machines = result.Machines.ToList();
+        machines = result.Machines
+            .OrderByDescending(m => m.LastUpdated)
+            .ToList();
     }
 
     private async Task UpdateMachinesListAsync(IReadOnlyList<MachineListItem> updatedMachinesList)

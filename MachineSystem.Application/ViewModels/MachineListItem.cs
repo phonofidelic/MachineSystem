@@ -15,4 +15,6 @@ public class MachineListItem
     public string? LastData { get; set; }
 
     public DateTime LastUpdated { get; set; }
+
+    public DateTime CreatedAt { get; set; }
 }
