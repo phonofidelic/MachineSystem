@@ -27,7 +27,7 @@ public class CreateMachineHandler(
         };
 
         await machineRepository.AddAsync(machine);
-        await machineService.ConnectMachineAsync(machine);
+        await machineService.InstallAsync(machine);
 
         await unitOfWork.SaveAsync();
 

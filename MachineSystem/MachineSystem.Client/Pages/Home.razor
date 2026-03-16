@@ -27,7 +27,7 @@
     <form method="dialog">
       <button title="Cancel" class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"><CloseIcon /></button>
     </form>
-    <CreateMachineForm />
+    <CreateMachineForm OnMachinesListUpdated="@UpdateMachinesListWithUpdaterAsync" />
   </div>
     <form method="dialog" class="modal-backdrop">
       <button class="block sm:hidden">Cancel</button>

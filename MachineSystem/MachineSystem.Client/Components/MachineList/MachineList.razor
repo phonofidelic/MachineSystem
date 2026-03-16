@@ -1,6 +1,6 @@
 @rendermode InteractiveWebAssembly
 
-<ErrorBoundary @ref="errorBoundary">
+<ErrorBoundary @ref="MachineListErrorBoundary">
     <ChildContent>
     @if (Machines is null) {
         <MachineListSkeleton />
@@ -37,6 +37,7 @@
                             <MachineListTableRow
                                 @key="machine.Id"
                                 Title="@machine.Name"
+                                Type="@machine.Type"
                                 SubTitle="@machine.Id.ToString()"
                                 Status="@machine.Status"
                                 LastData="@machine.LastData"
@@ -106,7 +107,7 @@
                     <p class="py-5">
                         Something went wrong :(
                     </p>
-                    <button class="btn btn-primary" @onclick="() => errorBoundary?.Recover()">Try to reload</button>
+                    <button class="btn btn-primary" @onclick="() => MachineListErrorBoundary?.Recover()">Try to reload</button>
                 </div>
             </div>
         </div>

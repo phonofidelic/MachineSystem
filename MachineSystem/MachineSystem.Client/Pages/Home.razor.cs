@@ -40,4 +40,9 @@ public partial class Home
     {
         machines = updatedMachinesList;
     }
+
+    private async Task UpdateMachinesListWithUpdaterAsync(Func<IReadOnlyList<MachineListItem>, IReadOnlyList<MachineListItem>> updateMachinesList)
+    {
+        machines = updateMachinesList(machines ?? []);
+    }
 };

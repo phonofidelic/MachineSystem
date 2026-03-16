@@ -6,6 +6,7 @@ namespace MachineSystem.Domain.Entities;
 
 public partial class Machine : BaseCreatableEntity<Guid>
 {
+    private bool IsInitialized { get; set; } = false;
     public override Guid Id { get; set; } = Guid.NewGuid();
 
     public required string Name { get; set; }
@@ -17,6 +18,24 @@ public partial class Machine : BaseCreatableEntity<Guid>
     public string? LastData { get; set; }
 
     public DateTime LastUpdated { get; set; }
+
+    public void Initialize()
+    {
+        EnforceInvariants();
+
+        if (IsInitialized)
+            return;
+
+        var idString = Id.ToString();
+
+        Name += $" {idString.Substring(idString.Length - 4)}";
+
+        Status = new MachineStatus(
+            isOnline: true,
+            isOperational: true,
+            isRunning: false
+        );
+    }
 
     public MachineStatus Start()
     {

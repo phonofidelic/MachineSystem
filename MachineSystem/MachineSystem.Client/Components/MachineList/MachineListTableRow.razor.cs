@@ -8,6 +8,9 @@ public partial class MachineListTableRow
 {
     [Parameter]
     public string Title { get; set; } = string.Empty;
+
+    [Parameter]
+    public string Type { get; set; } = default!;
     
     [Parameter]
     public string? SubTitle { get; set; }
